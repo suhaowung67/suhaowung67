@@ -1,0 +1,2131 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HanziLearn 华 - Platform Belajar Mandarin Interaktif</title>
+
+  <!-- Google Fonts: Inter & Noto Sans SC (for beautiful Hanzi rendering) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap"
+    rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Hanzi Writer CDN for writing practice -->
+  <script src="https://cdn.jsdelivr.net/npm/hanzi-writer@3.5/dist/hanzi-writer.min.js"></script>
+
+  <!-- Tailwind Custom Configuration -->
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            hanzi: ['Noto Sans SC', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#f5f3ff',
+              100: '#ede9fe',
+              500: '#6366f1',
+              600: '#4f46e5',
+              700: '#4338ca',
+              rose: '#e11d48',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* 3D Card Flip Styling for Flashcard */
+    .perspective-1000 {
+      perspective: 1000px;
+    }
+
+    .transform-style-3d {
+      transform-style: preserve-3d;
+      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .backface-hidden {
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+    }
+
+    .rotate-y-180 {
+      transform: rotateY(180deg);
+    }
+
+    .flipped {
+      transform: rotateY(180deg);
+    }
+
+    /* Rice Grid (米字格) Background for Hanzi Practice Grid */
+    .mizige-bg {
+      background-color: #fffcf9;
+      background-image:
+        linear-gradient(to right, rgba(239, 68, 68, 0.15) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(239, 68, 68, 0.15) 1px, transparent 1px),
+        linear-gradient(to top right, transparent 49%, rgba(239, 68, 68, 0.1) 49%, rgba(239, 68, 68, 0.1) 51%, transparent 51%),
+        linear-gradient(to top left, transparent 49%, rgba(239, 68, 68, 0.1) 49%, rgba(239, 68, 68, 0.1) 51%, transparent 51%);
+      background-size: 100% 100%, 100% 100%, 100% 100%, 100% 100%;
+      border: 2px solid rgba(239, 68, 68, 0.25);
+    }
+
+    .dark .mizige-bg {
+      background-color: #170f11;
+      background-image:
+        linear-gradient(to right, rgba(244, 63, 94, 0.15) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(244, 63, 94, 0.15) 1px, transparent 1px),
+        linear-gradient(to top right, transparent 49%, rgba(244, 63, 94, 0.1) 49%, rgba(244, 63, 94, 0.1) 51%, transparent 51%),
+        linear-gradient(to top left, transparent 49%, rgba(244, 63, 94, 0.1) 49%, rgba(244, 63, 94, 0.1) 51%, transparent 51%);
+      border: 2px solid rgba(244, 63, 94, 0.25);
+    }
+
+    /* Smooth Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 4px;
+    }
+
+    .dark ::-webkit-scrollbar-thumb {
+      background: #334155;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+
+    /* Glassmorphism */
+    .glass-header {
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      background-color: rgba(255, 255, 255, 0.75);
+    }
+
+    .dark .glass-header {
+      background-color: rgba(15, 23, 42, 0.75);
+    }
+  </style>
+</head>
+
+<body
+  class="bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 font-sans transition-colors duration-300 min-h-screen flex flex-col">
+
+  <!-- Header / Navigation Bar -->
+  <header
+    class="sticky top-0 z-40 w-full glass-header border-b border-slate-200/50 dark:border-slate-800/50 shadow-sm transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+
+        <!-- Logo -->
+        <div class="flex items-center gap-2.5 cursor-pointer" onclick="switchTab('vocabulary')">
+          <div
+            class="w-10 h-10 bg-gradient-to-tr from-brand-600 to-rose-500 rounded-xl flex items-center justify-center text-white shadow-md shadow-brand-500/20 transform hover:scale-105 transition duration-300">
+            <span class="font-hanzi text-xl font-bold">华</span>
+          </div>
+          <div class="flex flex-col">
+            <span
+              class="text-lg font-black tracking-tight bg-gradient-to-r from-brand-600 to-rose-500 bg-clip-text text-transparent">HanziLearn</span>
+            <span class="text-[9px] font-semibold text-slate-400 uppercase tracking-widest -mt-1">Belajar
+              Mandarin</span>
+          </div>
+        </div>
+
+        <!-- Navigation Menu (Desktop) -->
+        <nav class="hidden md:flex space-x-1.5">
+          <button onclick="switchTab('vocabulary')" id="nav-vocabulary"
+            class="nav-btn px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 flex items-center gap-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-900">
+            <i class="fa-solid fa-book-open text-xs"></i> Vocabulary
+          </button>
+          <button onclick="switchTab('flashcard')" id="nav-flashcard"
+            class="nav-btn px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 flex items-center gap-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-900">
+            <i class="fa-solid fa-clone text-xs"></i> Flashcard
+          </button>
+          <button onclick="switchTab('reading')" id="nav-reading"
+            class="nav-btn px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 flex items-center gap-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-900">
+            <i class="fa-solid fa-file-lines text-xs"></i> Reading
+          </button>
+          <button onclick="switchTab('test')" id="nav-test"
+            class="nav-btn px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 flex items-center gap-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-900">
+            <i class="fa-solid fa-graduation-cap text-xs"></i> Test
+          </button>
+        </nav>
+
+        <!-- Right Side Settings & Tools -->
+        <div class="flex items-center gap-3">
+          <!-- JSON Data Source Upload Button -->
+          <div class="relative group">
+            <label for="json-upload-input"
+              class="cursor-pointer flex items-center justify-center p-2 rounded-xl bg-slate-100 dark:bg-slate-900 text-slate-600 dark:text-slate-300 hover:bg-brand-50 hover:text-brand-600 dark:hover:bg-brand-950/30 dark:hover:text-brand-400 transition-all shadow-sm border border-slate-200/50 dark:border-slate-800"
+              title="Unggah File JSON">
+              <i class="fa-solid fa-file-import text-sm"></i>
+              <span id="json-badge"
+                class="absolute -top-1.5 -right-1.5 w-3 h-3 bg-emerald-500 border-2 border-white dark:border-slate-950 rounded-full"
+                title="Menggunakan data default"></span>
+            </label>
+            <input type="file" id="json-upload-input" accept=".json" class="hidden" onchange="handleJsonUpload(event)">
+          </div>
+
+          <!-- Light/Dark Mode Switcher -->
+          <button onclick="toggleTheme()"
+            class="p-2 rounded-xl bg-slate-100 dark:bg-slate-900 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-800 transition-all border border-slate-200/50 dark:border-slate-800"
+            aria-label="Toggle Theme">
+            <i id="theme-icon" class="fa-solid fa-moon text-sm"></i>
+          </button>
+
+          <!-- Mobile Menu Drawer Toggle -->
+          <button onclick="toggleMobileMenu()"
+            class="md:hidden p-2 rounded-xl bg-slate-100 dark:bg-slate-900 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-800 transition-all border border-slate-200/50 dark:border-slate-800"
+            aria-label="Menu">
+            <i class="fa-solid fa-bars text-sm"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Navigation Drawer -->
+  <div id="mobile-menu"
+    class="hidden md:hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm transition-opacity duration-300">
+    <div
+      class="fixed right-0 top-0 bottom-0 w-64 bg-white dark:bg-slate-950 p-6 shadow-2xl flex flex-col justify-between border-l border-slate-200/50 dark:border-slate-800/50">
+      <div>
+        <div class="flex items-center justify-between mb-8 pb-4 border-b border-slate-100 dark:border-slate-900">
+          <div class="flex items-center gap-2">
+            <div class="w-8 h-8 bg-brand-600 rounded-lg flex items-center justify-center text-white text-sm font-bold">华
+            </div>
+            <span class="font-black text-slate-900 dark:text-white">Menu Belajar</span>
+          </div>
+          <button onclick="toggleMobileMenu()"
+            class="p-1 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-900 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+            <i class="fa-solid fa-xmark text-lg"></i>
+          </button>
+        </div>
+        <div class="flex flex-col gap-2.5">
+          <button onclick="switchTab('vocabulary'); toggleMobileMenu()" id="mob-nav-vocabulary"
+            class="w-full text-left px-4 py-3 rounded-xl text-sm font-semibold flex items-center gap-3 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-900/50">
+            <i class="fa-solid fa-book-open w-5 text-center"></i> Vocabulary
+          </button>
+          <button onclick="switchTab('flashcard'); toggleMobileMenu()" id="mob-nav-flashcard"
+            class="w-full text-left px-4 py-3 rounded-xl text-sm font-semibold flex items-center gap-3 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-900/50">
+            <i class="fa-solid fa-clone w-5 text-center"></i> Flashcard
+          </button>
+          <button onclick="switchTab('reading'); toggleMobileMenu()" id="mob-nav-reading"
+            class="w-full text-left px-4 py-3 rounded-xl text-sm font-semibold flex items-center gap-3 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-900/50">
+            <i class="fa-solid fa-file-lines w-5 text-center"></i> Reading
+          </button>
+          <button onclick="switchTab('test'); toggleMobileMenu()" id="mob-nav-test"
+            class="w-full text-left px-4 py-3 rounded-xl text-sm font-semibold flex items-center gap-3 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-900/50">
+            <i class="fa-solid fa-graduation-cap w-5 text-center"></i> Test
+          </button>
+        </div>
+      </div>
+      <div class="text-[10px] text-slate-400 text-center font-medium mt-auto">
+        HanziLearn v1.2.0 • Hosted Static Web
+      </div>
+    </div>
+  </div>
+
+  <!-- Notification Toast -->
+  <div id="toast"
+    class="fixed top-20 right-4 z-50 transform translate-x-72 transition-all duration-300 opacity-0 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4 rounded-2xl shadow-xl flex items-center gap-3 max-w-sm">
+    <div id="toast-icon" class="w-8 h-8 rounded-xl flex items-center justify-center text-white">
+      <i class="fa-solid fa-info"></i>
+    </div>
+    <div>
+      <h5 id="toast-title" class="text-xs font-bold text-slate-900 dark:text-white">Notifikasi</h5>
+      <p id="toast-message" class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">Pesan informasi.</p>
+    </div>
+  </div>
+
+  <!-- Main Content Container -->
+  <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+    <!-- ========================================== -->
+    <!-- TAB 1: VOCABULARY                          -->
+    <!-- ========================================== -->
+    <section id="tab-vocabulary" class="tab-content hidden transition-all duration-300">
+      <div class="mb-8">
+        <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">Koleksi Kosakata (词汇)</h2>
+        <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Jelajahi dan pelajari kosakata bahasa Mandarin dengan
+          pelafalan suara serta contoh kalimat.</p>
+      </div>
+
+      <!-- Controls: Search & Category Filter -->
+      <div
+        class="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/80 rounded-2xl p-5 shadow-sm mb-8 flex flex-col md:flex-row gap-4 items-center justify-between transition-all duration-300">
+        <!-- Search bar -->
+        <div class="relative w-full md:max-w-md">
+          <i
+            class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400 text-sm"></i>
+          <input type="text" id="vocab-search" placeholder="Cari Hanzi, Pinyin, atau terjemahan..."
+            oninput="filterVocabulary()"
+            class="w-full pl-11 pr-10 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent text-sm transition-all duration-200">
+          <button id="vocab-search-clear" onclick="clearVocabSearch()"
+            class="hidden absolute right-3.5 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+            <i class="fa-solid fa-circle-xmark"></i>
+          </button>
+        </div>
+        <!-- Category filter pills scroll container -->
+        <div id="vocab-categories-container"
+          class="flex gap-2 overflow-x-auto w-full md:w-auto pb-2 md:pb-0 scrollbar-thin">
+          <!-- Injected dynamically by JS -->
+        </div>
+      </div>
+
+      <!-- Vocabulary Card Grid -->
+      <div id="vocab-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Injected dynamically by JS -->
+      </div>
+
+      <!-- Empty state -->
+      <div id="vocab-empty-state"
+        class="hidden text-center py-16 bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/60 dark:border-slate-800/80 p-8">
+        <div
+          class="w-16 h-16 bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-500 rounded-2xl flex items-center justify-center text-2xl mx-auto mb-4">
+          <i class="fa-solid fa-folder-open"></i>
+        </div>
+        <h4 class="text-base font-bold text-slate-900 dark:text-white">Kosakata Tidak Ditemukan</h4>
+        <p class="text-sm text-slate-400 mt-1 max-w-sm mx-auto">Coba gunakan kata kunci pencarian lain atau pilih
+          kategori yang berbeda.</p>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- TAB 2: FLASHCARD                           -->
+    <!-- ========================================== -->
+    <section id="tab-flashcard" class="tab-content hidden transition-all duration-300">
+      <div class="mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">Flashcard Belajar (卡片)</h2>
+          <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Latih ingatan Anda dengan membalik kartu dan tebak
+            pinyin yang benar.</p>
+        </div>
+        <!-- Study Settings -->
+        <div class="flex items-center gap-2 self-start sm:self-center">
+          <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Mode:</span>
+          <div
+            class="flex bg-slate-100 dark:bg-slate-900 p-1 rounded-xl border border-slate-200/50 dark:border-slate-800">
+            <button onclick="setFlashcardMode('study')" id="fc-mode-study"
+              class="px-3 py-1.5 rounded-lg text-xs font-bold transition-all bg-white dark:bg-slate-950 text-brand-600 dark:text-brand-400 shadow-sm">Belajar
+              Bebas</button>
+            <button onclick="setFlashcardMode('test')" id="fc-mode-test"
+              class="px-3 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200">Uji
+              Pinyin</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Flashcard Arena -->
+      <div class="max-w-xl mx-auto flex flex-col items-center">
+        <!-- 3D Flippable Card Frame -->
+        <div class="perspective-1000 w-full aspect-[1.5/1] sm:h-80 mb-6 cursor-pointer">
+          <div id="flashcard-element"
+            class="transform-style-3d w-full h-full relative rounded-3xl shadow-lg border border-slate-200/60 dark:border-slate-800/80">
+
+            <!-- CARD FRONT -->
+            <div onclick="handleCardClick()"
+              class="backface-hidden absolute inset-0 bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 flex flex-col items-center justify-between text-center select-none">
+              <span id="fc-front-category"
+                class="px-3 py-1 bg-slate-100 dark:bg-slate-800/50 text-slate-500 dark:text-slate-400 rounded-lg text-[10px] font-bold uppercase tracking-wider">Angka</span>
+
+              <!-- Character Display -->
+              <div id="fc-front-character"
+                class="font-hanzi text-8xl font-black text-slate-900 dark:text-white drop-shadow-sm my-4 transition duration-300 group-hover:scale-105">
+                一</div>
+
+              <!-- Action Prompt / Pinyin Test Input -->
+              <div class="w-full" onclick="event.stopPropagation()">
+                <div id="fc-study-prompt"
+                  class="text-xs text-slate-400 font-semibold uppercase tracking-wider flex items-center justify-center gap-1.5">
+                  Klik kartu untuk membalik <i class="fa-solid fa-arrow-rotate-right text-[10px]"></i>
+                </div>
+
+                <div id="fc-test-prompt-area" class="hidden flex flex-col gap-2 w-full max-w-sm mx-auto">
+                  <input type="text" id="fc-pinyin-input" placeholder="Ketik pinyin (contoh: yi atau yī)..."
+                    onkeydown="if(event.key === 'Enter') checkFlashcardPinyin()"
+                    class="w-full px-4 py-2.5 text-center rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent text-sm font-bold transition">
+                  <div id="fc-pinyin-feedback" class="text-xs font-bold hidden py-0.5"></div>
+                  <div class="flex gap-2">
+                    <button onclick="checkFlashcardPinyin()"
+                      class="flex-grow py-2 px-3 bg-brand-600 hover:bg-brand-700 text-white rounded-xl text-xs font-bold shadow-sm transition">Periksa
+                      Pinyin</button>
+                    <button onclick="revealFlashcardAnswer()"
+                      class="py-2 px-3 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-xl text-xs font-semibold transition">Lihat
+                      Arti</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- CARD BACK -->
+            <div onclick="handleCardClick()"
+              class="backface-hidden rotate-y-180 absolute inset-0 bg-gradient-to-br from-brand-600 to-indigo-700 dark:from-brand-800 dark:to-indigo-950 rounded-3xl p-6 sm:p-8 flex flex-col items-center justify-between text-white shadow-2xl">
+              <div class="w-full flex items-center justify-between">
+                <span id="fc-back-category"
+                  class="px-2.5 py-0.5 bg-white/20 text-white rounded text-[9px] font-bold uppercase tracking-wider">Angka</span>
+                <span class="text-[10px] text-white/70 font-semibold flex items-center gap-1"><i
+                    class="fa-solid fa-arrow-rotate-left"></i> Klik untuk balik lagi</span>
+              </div>
+
+              <!-- Translation Info -->
+              <div class="text-center w-full my-auto flex flex-col gap-1.5">
+                <div class="flex items-center justify-center gap-2.5">
+                  <span id="fc-back-meaning" class="text-3xl font-black tracking-tight">Satu</span>
+                  <button onclick="speakHanziCurrent(event)"
+                    class="w-8 h-8 bg-white/10 hover:bg-white/20 text-white rounded-full flex items-center justify-center border border-white/15 hover:scale-105 active:scale-95 transition-all"
+                    title="Dengarkan Pengucapan">
+                    <i class="fa-solid fa-volume-high text-xs"></i>
+                  </button>
+                </div>
+                <span id="fc-back-pinyin" class="text-lg text-brand-100 font-bold tracking-wide italic">Pinyin:
+                  yī</span>
+              </div>
+
+              <!-- Sentence Example -->
+              <div
+                class="w-full bg-black/15 dark:bg-slate-900/40 border border-white/10 rounded-2xl p-3 sm:p-4 text-left"
+                onclick="event.stopPropagation()">
+                <div class="flex items-center justify-between mb-1">
+                  <span class="text-[9px] font-bold text-white/50 uppercase tracking-widest">Contoh Kalimat</span>
+                  <button onclick="speakSentenceCurrent(event)"
+                    class="text-white/40 hover:text-white/80 text-xs transition" title="Dengar Kalimat">
+                    <i class="fa-solid fa-volume-high text-[10px]"></i>
+                  </button>
+                </div>
+                <p id="fc-back-example-zh" class="font-hanzi text-base font-semibold text-brand-50 tracking-wide">
+                  一加一等于二。</p>
+                <p id="fc-back-example-pinyin" class="text-[11px] text-white/70 italic mt-0.5">yī jiā yī děngyú èr.</p>
+                <p id="fc-back-example-id" class="text-xs text-white/85 mt-1">Satu tambah satu sama dengan dua.</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Progress Tracking & Controls -->
+        <div
+          class="w-full bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-3xl p-5 shadow-sm">
+          <!-- Button controls -->
+          <div class="flex justify-between items-center gap-3">
+            <button onclick="prevFlashcard()"
+              class="flex-1 py-3 px-4 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 text-xs font-bold transition-all flex items-center justify-center gap-2">
+              <i class="fa-solid fa-chevron-left"></i> Sebelum
+            </button>
+            <button onclick="toggleFlashcardMastered()" id="fc-master-btn"
+              class="flex-1 py-3 px-4 rounded-xl text-xs font-black transition-all flex items-center justify-center gap-2 border">
+              <!-- Content replaced dynamically by JS -->
+            </button>
+            <button onclick="nextFlashcard()"
+              class="flex-1 py-3 px-4 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 text-xs font-bold transition-all flex items-center justify-center gap-2">
+              Selanjutnya <i class="fa-solid fa-chevron-right"></i>
+            </button>
+          </div>
+
+          <!-- Progress Bar -->
+          <div class="mt-6 border-t border-slate-100 dark:border-slate-800/80 pt-4">
+            <div class="flex justify-between text-xs text-slate-500 dark:text-slate-400 mb-2 font-semibold">
+              <span id="fc-progress-count">Kartu 1 dari 16</span>
+              <span id="fc-progress-percent">0% Dikuasai</span>
+            </div>
+            <div class="w-full bg-slate-100 dark:bg-slate-800 h-2 rounded-full overflow-hidden">
+              <div id="fc-progress-bar"
+                class="bg-gradient-to-r from-brand-600 to-rose-500 h-full rounded-full transition-all duration-500"
+                style="width: 0%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- TAB 3: READING                             -->
+    <!-- ========================================== -->
+    <section id="tab-reading" class="tab-content hidden transition-all duration-300">
+      <!-- Section 1: Article List Home View -->
+      <div id="reading-list-view">
+        <div class="mb-8">
+          <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">Bahan Bacaan Mandarin (阅读)
+          </h2>
+          <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Latih pemahaman membaca teks Mandarin lengkap
+            dengan terjemahan dan pinyin interaktif.</p>
+        </div>
+
+        <div id="reading-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Injected dynamically by JS -->
+        </div>
+      </div>
+
+      <!-- Section 2: Article Active Reader View -->
+      <div id="reading-viewer-view"
+        class="hidden max-w-3xl mx-auto bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-3xl p-6 sm:p-8 shadow-md">
+
+        <!-- Viewer Header -->
+        <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4 mb-6">
+          <button onclick="exitReader()"
+            class="text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition flex items-center gap-1.5 text-xs font-bold">
+            <i class="fa-solid fa-arrow-left"></i> Kembali ke Daftar
+          </button>
+          <span id="reader-category"
+            class="px-3 py-1 bg-brand-50 dark:bg-brand-950/50 text-brand-600 dark:text-brand-400 rounded-full text-[10px] font-bold uppercase tracking-wider">Pemula</span>
+        </div>
+
+        <h3 id="reader-title" class="text-2xl font-black text-slate-900 dark:text-white mb-2">Perkenalan Diri (自我介绍)
+        </h3>
+
+        <!-- Toolbar options -->
+        <div
+          class="flex flex-wrap items-center justify-between gap-4 py-3 px-4 bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-800 rounded-2xl mb-8">
+          <div class="flex items-center gap-2">
+            <button onclick="speakReaderText()"
+              class="px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white rounded-xl text-xs font-bold shadow-sm transition flex items-center gap-2">
+              <i class="fa-solid fa-volume-high"></i> Dengarkan Cerita
+            </button>
+            <button onclick="stopSpeaking()"
+              class="p-2 border border-slate-200 dark:border-slate-800 text-slate-500 hover:text-slate-700 dark:hover:text-slate-200 rounded-xl text-xs font-bold transition"
+              title="Stop Audio">
+              <i class="fa-solid fa-stop"></i>
+            </button>
+          </div>
+          <!-- Toggle views -->
+          <div class="flex items-center gap-4">
+            <label class="relative inline-flex items-center cursor-pointer">
+              <input type="checkbox" id="toggle-pinyin-cb" class="sr-only peer" onchange="toggleReaderPinyin()">
+              <div
+                class="w-9 h-5 bg-slate-200 dark:bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-slate-600 peer-checked:bg-brand-600">
+              </div>
+              <span class="ml-2 text-xs font-bold text-slate-600 dark:text-slate-400">Pinyin</span>
+            </label>
+            <label class="relative inline-flex items-center cursor-pointer">
+              <input type="checkbox" id="toggle-trans-cb" class="sr-only peer" onchange="toggleReaderTranslation()"
+                checked>
+              <div
+                class="w-9 h-5 bg-slate-200 dark:bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-slate-600 peer-checked:bg-brand-600">
+              </div>
+              <span class="ml-2 text-xs font-bold text-slate-600 dark:text-slate-400">Terjemahan</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Chinese Character Text Arena (Interactive Popover Spans injected by JS) -->
+        <div id="reader-chinese-body"
+          class="mb-8 leading-[3.2] tracking-wide text-slate-900 dark:text-white select-text">
+          <!-- Populated by JS -->
+        </div>
+
+        <!-- Optional Full Line-by-Line Pinyin Display -->
+        <div id="reader-pinyin-body"
+          class="hidden mb-8 p-5 bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-800 rounded-2xl text-sm leading-relaxed text-indigo-600 dark:text-indigo-400 italic">
+          <!-- Populated by JS -->
+        </div>
+
+        <!-- Optional Full Indonesian Translation -->
+        <div id="reader-translation-body"
+          class="mb-8 p-5 bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-800 rounded-2xl text-sm leading-relaxed text-slate-600 dark:text-slate-300 border-l-4 border-l-brand-600 font-medium">
+          <!-- Populated by JS -->
+        </div>
+
+        <!-- Reading Vocabulary Key-glossary -->
+        <div class="border-t border-slate-100 dark:border-slate-800 pt-6">
+          <h4 class="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider mb-4"><i
+              class="fa-solid fa-list-ul text-brand-600"></i> Kosakata Penting Bacaan</h4>
+          <div id="reader-words-glossary" class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- TAB 4: TEST                                -->
+    <!-- ========================================== -->
+    <section id="tab-test" class="tab-content hidden transition-all duration-300">
+
+      <!-- Section 1: Test Selection Dashboard -->
+      <div id="test-menu-view">
+        <div class="mb-8">
+          <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">Pusat Ujian Mandarin (测试)
+          </h2>
+          <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Uji kemampuan membaca pinyin dan melatih goresan
+            menulis karakter Hanzi secara interaktif.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+          <!-- Test Mode 1: Pinyin Quiz -->
+          <div
+            class="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-3xl p-6 sm:p-8 shadow-sm flex flex-col justify-between hover:shadow-md hover:border-brand-500/20 transition group">
+            <div>
+              <div
+                class="w-14 h-14 bg-brand-50 dark:bg-brand-950/40 text-brand-600 dark:text-brand-400 rounded-2xl flex items-center justify-center text-2xl shadow-inner mb-6 group-hover:scale-110 transition duration-300">
+                <i class="fa-solid fa-keyboard"></i>
+              </div>
+              <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">Tes Menulis Pinyin</h3>
+              <p class="text-xs text-slate-400 leading-relaxed mb-6">Uji ingatan pinyin Anda dari kosakata acak. Baca
+                karakter Hanzi dan tuliskan pelafalan pinyin yang benar (tanpa nada angka).</p>
+            </div>
+            <button onclick="startQuiz('pinyin')"
+              class="w-full py-3 bg-brand-600 hover:bg-brand-700 text-white rounded-2xl text-xs font-bold shadow-md shadow-brand-500/10 hover:shadow-brand-500/20 hover:scale-[1.01] active:scale-[0.99] transition duration-200">
+              Mulai Uji Pinyin <i class="fa-solid fa-play ml-1"></i>
+            </button>
+          </div>
+
+          <!-- Test Mode 2: Hanzi Writing Quiz -->
+          <div
+            class="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-3xl p-6 sm:p-8 shadow-sm flex flex-col justify-between hover:shadow-md hover:border-rose-500/20 transition group">
+            <div>
+              <div
+                class="w-14 h-14 bg-rose-50 dark:bg-rose-950/40 text-rose-500 rounded-2xl flex items-center justify-center text-2xl shadow-inner mb-6 group-hover:scale-110 transition duration-300">
+                <i class="fa-solid fa-paintbrush"></i>
+              </div>
+              <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">Tes Menulis Hanzi</h3>
+              <p class="text-xs text-slate-400 leading-relaxed mb-6">Latih coretan kaligrafi mandarin Anda secara
+                interaktif. Baca pinyin & artinya, lalu gambarkan karakter Hanzi coretan-demi-coretan secara presisi.
+              </p>
+            </div>
+            <button onclick="startQuiz('hanzi')"
+              class="w-full py-3 bg-rose-600 hover:bg-rose-700 text-white rounded-2xl text-xs font-bold shadow-md shadow-rose-500/10 hover:shadow-rose-500/20 hover:scale-[1.01] active:scale-[0.99] transition duration-200">
+              Mulai Uji Hanzi <i class="fa-solid fa-play ml-1"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 2: Quiz Player (Shared Screen for Pinyin and Hanzi write tests) -->
+      <div id="test-player-view"
+        class="hidden max-w-2xl mx-auto bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-3xl p-6 sm:p-8 shadow-md">
+
+        <!-- Player Header -->
+        <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4 mb-6">
+          <span id="quiz-header-type"
+            class="text-xs font-black uppercase text-brand-600 dark:text-brand-400 tracking-wider">Tes Pinyin</span>
+          <span id="quiz-progress-text"
+            class="text-xs font-bold text-slate-500 dark:text-slate-400 px-2.5 py-1 bg-slate-100 dark:bg-slate-800/80 rounded-lg">Soal
+            1/5</span>
+        </div>
+
+        <!-- Question Body wrapper -->
+        <div id="quiz-question-body" class="mb-8 text-center flex flex-col items-center">
+
+          <!-- PINYIN TEST: Shows Hanzi, asks Pinyin -->
+          <div id="quiz-pinyin-layout" class="w-full">
+            <h4 class="text-sm font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4">Tuliskan
+              Pinyin yang Benar:</h4>
+            <div id="quiz-pinyin-hanzi" class="font-hanzi text-7xl font-black text-slate-900 dark:text-white mb-6">谢谢
+            </div>
+            <p id="quiz-pinyin-meaning" class="text-sm font-semibold text-slate-500 dark:text-slate-400 mb-8 italic">
+              Arti: Terima kasih</p>
+
+            <input type="text" id="quiz-pinyin-input" placeholder="Masukkan pinyin..."
+              onkeydown="if(event.key === 'Enter') checkQuizAnswer()"
+              class="w-full max-w-sm px-4 py-3 text-center rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent font-bold transition text-base mb-2">
+          </div>
+
+          <!-- HANZI WRITING TEST: Shows Pinyin/Meaning, asks Hanzi Drawing -->
+          <div id="quiz-hanzi-layout" class="w-full hidden flex flex-col items-center">
+            <h4 class="text-sm font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-2">Gambarkan
+              Karakter Hanzi:</h4>
+            <div class="mb-5 flex flex-col gap-1">
+              <span id="quiz-hanzi-pinyin" class="text-2xl font-black text-rose-600 dark:text-rose-400">wǒ</span>
+              <span id="quiz-hanzi-meaning"
+                class="text-sm font-semibold text-slate-500 dark:text-slate-400 italic">Arti: Saya / Aku</span>
+            </div>
+
+            <!-- Canvas Grid Container -->
+            <div
+              class="relative w-[260px] h-[260px] mizige-bg rounded-2xl overflow-hidden shadow-inner flex items-center justify-center bg-white dark:bg-slate-950 mb-4">
+
+              <!-- Target element for Hanzi Writer (SVG rendering) -->
+              <div id="hanzi-writer-quiz-container" class="absolute z-10"></div>
+
+              <!-- Fallback Drawing Canvas (mouse/touch drawing if Writer load fails or custom fallback is needed) -->
+              <canvas id="hanzi-fallback-canvas" width="260" height="260"
+                class="absolute z-20 cursor-crosshair touch-none hidden"></canvas>
+            </div>
+
+            <!-- Drawing Canvas Controls -->
+            <div class="flex items-center gap-3 w-full max-w-[260px] mb-4">
+              <button onclick="clearHanziCanvas()"
+                class="flex-1 py-2 px-3 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 text-[11px] font-bold transition flex items-center justify-center gap-1.5 text-slate-600 dark:text-slate-400">
+                <i class="fa-solid fa-eraser"></i> Bersihkan
+              </button>
+              <button id="hanzi-guide-btn" onclick="toggleHanziOutlineGuide()"
+                class="flex-1 py-2 px-3 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 text-[11px] font-bold transition flex items-center justify-center gap-1.5 text-slate-600 dark:text-slate-400">
+                <i class="fa-solid fa-eye"></i> Tampil Hint
+              </button>
+            </div>
+
+            <p id="hanzi-canvas-tip" class="text-[10px] text-slate-400 text-center max-w-[260px] leading-relaxed mb-4">
+              Ikuti urutan goresan garis pandu untuk menulis karakter secara benar.</p>
+
+            <!-- Fallback Manual Verification controls (Used when manual canvas fallback is active) -->
+            <div id="hanzi-fallback-evaluation" class="hidden flex flex-col items-center gap-3 w-full">
+              <button id="hanzi-fallback-check-btn" onclick="revealManualHanziAnswer()"
+                class="py-2.5 px-6 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-bold shadow transition-all">Selesai
+                & Cek Jawaban</button>
+
+              <div id="hanzi-fallback-grade-buttons" class="hidden flex gap-2 w-full max-w-sm justify-center">
+                <button onclick="gradeManualHanziAnswer(false)"
+                   class="flex-1 py-2 px-3 bg-slate-100 hover:bg-rose-50 hover:text-rose-600 dark:bg-slate-800 dark:hover:bg-rose-950/20 text-slate-600 dark:text-slate-400 rounded-xl text-xs font-bold transition border border-transparent hover:border-rose-200">Salah</button>
+                <button onclick="gradeManualHanziAnswer(true)"
+                  class="flex-1 py-2 px-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition shadow-sm">Tulisan
+                  Saya Benar</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Answer Feedback Area -->
+          <div id="quiz-answer-feedback"
+            class="hidden w-full max-w-sm border p-4 rounded-2xl flex items-center gap-3 mt-4 text-left transition-all duration-200">
+            <div id="quiz-feedback-badge-icon"
+              class="w-8 h-8 rounded-xl flex items-center justify-center text-white text-base">
+              <i class="fa-solid fa-circle-check"></i>
+            </div>
+            <div>
+              <h5 id="quiz-feedback-title" class="text-xs font-bold text-slate-900 dark:text-white">Hebat, Jawaban Benar!</h5>
+              <p id="quiz-feedback-text" class="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">Penjelasan arti kata.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quiz Footer controls -->
+        <div class="flex items-center justify-between border-t border-slate-100 dark:border-slate-800 pt-6 mt-8">
+          <button onclick="exitQuiz()"
+            class="px-4.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 text-xs font-bold transition-all flex items-center gap-1.5">
+            <i class="fa-solid fa-right-from-bracket"></i> Keluar Tes
+          </button>
+
+          <!-- Submit Answer button (Pinyin Quiz mode only) -->
+          <button id="quiz-submit-btn" onclick="checkQuizAnswer()"
+            class="px-6 py-2.5 bg-brand-600 hover:bg-brand-700 text-white rounded-xl text-xs font-bold shadow-md shadow-brand-500/10 transition-all flex items-center gap-1.5">
+            Periksa Jawaban
+          </button>
+
+          <!-- Next Question Button (shown after feedback/writing complete) -->
+          <button id="quiz-next-btn" onclick="goToNextQuizQuestion()"
+            class="hidden px-6 py-2.5 bg-brand-600 hover:bg-brand-700 text-white rounded-xl text-xs font-bold shadow-md shadow-brand-500/10 transition-all flex items-center gap-1.5">
+            Soal Berikutnya <i class="fa-solid fa-arrow-right"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Section 3: Quiz Result Panel -->
+      <div id="test-result-view"
+        class="hidden max-w-md mx-auto bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-3xl p-6 sm:p-8 shadow-lg text-center">
+        <div id="quiz-result-emoji"
+          class="w-20 h-20 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-500 rounded-full flex items-center justify-center text-4xl mx-auto mb-6 shadow-inner">
+          🎉
+        </div>
+        <h3 id="quiz-result-title" class="text-2xl font-black text-slate-900 dark:text-white mb-2">Tes Selesai!</h3>
+        <p class="text-sm text-slate-400 max-w-xs mx-auto mb-6">Hasil evaluasi pencapaian pemahaman belajar bahasa
+          Mandarin Anda.</p>
+
+        <!-- Scoreboard card -->
+        <div class="bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-900 rounded-2xl p-6 mb-8">
+          <span class="text-[10px] font-bold uppercase tracking-widest text-slate-400">Skor Ujian</span>
+          <div class="flex items-baseline justify-center gap-1.5 mt-1.5">
+            <span id="quiz-result-score-val" class="text-5xl font-black text-brand-600 dark:text-brand-400">80</span>
+            <span class="text-slate-400 font-bold text-lg">/ 100</span>
+          </div>
+          <!-- Answer count summary -->
+          <div
+            class="flex items-center justify-center gap-5 mt-5 pt-4 border-t border-slate-200/40 dark:border-slate-800/40 text-xs font-semibold">
+            <span class="text-emerald-500"><i class="fa-regular fa-circle-check"></i> <span
+                id="quiz-correct-summary">4</span> Benar</span>
+            <span class="text-rose-500"><i class="fa-regular fa-circle-xmark"></i> <span
+                id="quiz-wrong-summary">1</span> Salah</span>
+          </div>
+        </div>
+
+        <!-- Result action buttons -->
+        <div class="flex flex-col gap-2.5">
+          <button onclick="retryCurrentQuiz()"
+            class="w-full py-3 bg-brand-600 hover:bg-brand-700 text-white rounded-2xl text-sm font-bold shadow-md shadow-brand-500/10 transition-all flex items-center justify-center gap-2">
+            <i class="fa-solid fa-rotate-right"></i> Ulangi Kuis
+          </button>
+          <button onclick="exitQuiz()"
+            class="w-full py-3 bg-slate-100 dark:bg-slate-900 hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 rounded-2xl text-sm font-semibold transition-all flex items-center justify-center gap-2 border border-slate-200/50 dark:border-slate-800">
+            <i class="fa-solid fa-arrow-left"></i> Kembali ke Menu Utama
+          </button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer Section -->
+  <footer
+    class="bg-white dark:bg-slate-950 border-t border-slate-200/50 dark:border-slate-800/50 py-8 text-center text-xs text-slate-400 mt-auto transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="flex items-center justify-center gap-2 mb-2">
+        <div
+          class="w-6 h-6 bg-brand-600 rounded flex items-center justify-center text-white font-hanzi font-bold text-xs">
+          华</div>
+        <span class="font-extrabold text-slate-700 dark:text-slate-300 tracking-tight">HanziLearn</span>
+      </div>
+      <p class="mb-4">Website Interaktif Belajar Mandarin & Coretan Huruf Hanzi secara Mandiri.</p>
+      <p>&copy; 2026 HanziLearn. Seluruh hak cipta dilindungi undang-undang.</p>
+    </div>
+  </footer>
+
+  <!-- Embedded Dataset Default Fallback (Standard HSK Vocabulary & Readings) -->
+  <script>
+    const DEFAULT_DATA = {
+      vocabulary: [
+        { id: "v-1", hanzi: "一", pinyin: "yī", meaning: "Satu", category: "Angka", exampleZh: "一加一等于二。", examplePinyin: "yī jiā yī děngyú èr.", exampleId: "Satu tambah satu sama dengan dua." },
+        { id: "v-2", hanzi: "人", pinyin: "rén", meaning: "Orang / Manusia", category: "Sosial", exampleZh: "他是一个好人。", examplePinyin: "tā shì yī gè hǎo rén.", exampleId: "Dia adalah orang baik." },
+        { id: "v-3", hanzi: "口", pinyin: "kǒu", meaning: "Mulut / Pintu masuk / Anggota keluarga", category: "Anggota Tubuh", exampleZh: "我家 heartbeat 有四口人。", examplePinyin: "wǒ jiā yǒu sì kǒu rén.", exampleId: "Keluarga saya memiliki empat orang anggota." },
+        { id: "v-4", hanzi: "日", pinyin: "rì", meaning: "Hari / Matahari", category: "Alam", exampleZh: "今天是星期日。", examplePinyin: "jīntiān shì xīngqīrì.", exampleId: "Hari ini adalah hari Minggu." },
+        { id: "v-5", hanzi: "月", pinyin: "yuè", meaning: "Bulan", category: "Alam", exampleZh: "今晚的月亮很圆。", examplePinyin: "jīnwǎn de yuèliang hěn yuán.", exampleId: "Bulan malam ini sangat bulat." },
+        { id: "v-6", hanzi: "山", pinyin: "shān", meaning: "Gunung", category: "Alam", exampleZh: "富士山在日本。", examplePinyin: "fùshìshān zài rìběn.", exampleId: "Gunung Fuji berada di Jepang." },
+        { id: "v-7", hanzi: "水", pinyin: "shuǐ", meaning: "Air", category: "Alam", exampleZh: "请给我一杯水。", examplePinyin: "qǐng gěi wǒ yī bēi shuǐ.", exampleId: "Tolong beri saya segelas air." },
+        { id: "v-8", hanzi: "火", pinyin: "huǒ", meaning: "Api", category: "Alam", exampleZh: "不要玩火。", examplePinyin: "bùyào wán huǒ.", exampleId: "Jangan bermain api." },
+        { id: "v-9", hanzi: "木", pinyin: "mù", meaning: "Kayu / Pohon", category: "Alam", exampleZh: "这张桌子是木头做的。", examplePinyin: "zhè zhāng zhuōzi shì mùtou zuò de.", exampleId: "Meja ini terbuat dari kayu." },
+        { id: "v-10", hanzi: "土", pinyin: "tǔ", meaning: "Tanah / Bumi", category: "Alam", exampleZh: "花盆里有红色的土。", examplePinyin: "huāpén lǐ yǒu hóngsè de tǔ.", exampleId: "Di dalam pot bunga ada tanah berwarna merah." },
+        { id: "v-11", hanzi: "谢谢", pinyin: "xièxie", meaning: "Terima kasih", category: "Sosial", exampleZh: "谢谢你的帮助！", examplePinyin: "xièxie nǐ de bāngzhù!", exampleId: "Terima kasih atas bantuanmu!" },
+        { id: "v-12", hanzi: "再见", pinyin: "zàijiàn", meaning: "Sampai jumpa", category: "Sosial", exampleZh: "老师，再见！", examplePinyin: "lǎoshī, zàijiàn!", exampleId: "Sampai jumpa, Guru!" },
+        { id: "v-13", hanzi: "苹果", pinyin: "píngguǒ", meaning: "Apel", category: "Makanan", exampleZh: "我每天吃一个苹果。", examplePinyin: "wǒ melián chī yī gè píngguǒ.", exampleId: "Saya makan sebuah apel setiap hari." },
+        { id: "v-14", hanzi: "老师", "pinyin": "lǎoshī", "meaning": "Guru", "category": "Sekolah", "exampleZh": "我们的老师非常好。", "examplePinyin": "wǒmen de lǎoshī fēicháng hǎo.", "exampleId": "Guru kami sangat baik." },
+        { id: "v-15", hanzi: "学生", "pinyin": "xuéshēng", "meaning": "Siswa / Murid", "category": "Sekolah", "exampleZh": "他是一个聪明的学生。", "examplePinyin": "tā shì yī gè cōngmíng de xuéshēng.", "exampleId": "Dia adalah seorang siswa yang cerdas." },
+        { id: "v-16", hanzi: "家", "pinyin": "jiā", "meaning": "Rumah / Keluarga", "category": "Keluarga", "exampleZh": "wǒ ài wǒ de jiā.", "examplePinyin": "wǒ ài wǒ de jiā.", "exampleId": "Saya mencintai keluarga/rumah saya." }
+      ],
+      reading: [
+        {
+          id: "r-1",
+          title: "Perkenalan Diri (自我介绍)",
+          category: "Pemula",
+          contentZh: "你好！我叫王小明。我是学生。我今年十八岁。我喜欢学习汉语。汉语很有趣！我是中国人，我的家在北京。我有一个姐姐和一个弟弟。我爱 my 家人。",
+          translation: "Halo! Nama saya Wang Xiaoming. Saya adalah siswa. Umur saya delapan belas tahun tahun ini. Saya suka belajar bahasa Mandarin. Bahasa Mandarin sangat menyenangkan! Saya orang Tiongkok, rumah saya di Beijing. Saya memiliki satu kakak perempuan dan satu adik laki-laki. Saya menyayangi keluarga saya.",
+          words: [
+            { hanzi: "自我介绍", pinyin: "zìwǒ jièshào", meaning: "perkenalan diri" },
+            { hanzi: "学生", pinyin: "xuéshēng", meaning: "siswa" },
+            { hanzi: "学习", pinyin: "xuéxí", meaning: "belajar" },
+            { hanzi: "汉语", pinyin: "hànyǔ", meaning: "bahasa Mandarin" },
+            { hanzi: "有趣", pinyin: "yǒuqù", meaning: "menarik / menyenangkan" },
+            { hanzi: "北京", pinyin: "Běijīng", meaning: "Beijing" },
+            { hanzi: "姐姐", pinyin: "jiějie", meaning: "kakak perempuan" },
+            { hanzi: "弟弟", pinyin: "dìdi", meaning: "adik laki-laki" },
+            { hanzi: "家人", pinyin: "jiārén", meaning: "keluarga" }
+          ]
+        },
+        {
+          id: "r-2",
+          title: "Keluarga Saya (我的家)",
+          category: "Pemula",
+          contentZh: "这是我的家。我家有五口人：爸爸、妈妈、哥哥、妹妹和我。我爸爸是老师，他工作很忙。我妈妈不工作，她是家庭主妇。我哥哥是大学生，我妹妹是小学生. 在我们家有一只小狗，it叫小白。小白很可爱，我们都很喜欢它。",
+          translation: "Ini adalah rumah saya. Keluarga saya memiliki lima orang: Ayah, Ibu, Kakak laki-laki, Adik perempuan, dan saya. Ayah saya adalah guru, dia sangat sibuk bekerja. Ibu saya tidak bekerja, dia adalah ibu rumah tangga. Kakak laki-laki saya adalah mahasiswa, adik perempuan saya adalah siswa sekolah dasar. Di rumah kami ada seekor anjing kecil, namanya Xiao Bai (Putih Kecil). Xiao Bai sangat lucu, kami semua sangat menyukainya.",
+          words: [
+            { hanzi: "爸爸", pinyin: "bàba", meaning: "ayah" },
+            { hanzi: "妈妈", pinyin: "māma", meaning: "ibu" },
+            { hanzi: "哥哥", pinyin: "gēge", meaning: "kakak laki-laki" },
+            { hanzi: "妹妹", "pinyin": "mèimei", meaning: "adik perempuan" },
+            { hanzi: "家庭主妇", "pinyin": "jiātíng zhǔfù", meaning: "ibu rumah tangga" },
+            { hanzi: "大学生", "pinyin": "dàxuéshēng", "meaning": "mahasiswa" },
+            { hanzi: "狗", "pinyin": "gǒu", "meaning": "anjing" },
+            { hanzi: "可爱", "pinyin": "kě'ài", "meaning": "lucu / imut" }
+          ]
+        }
+      ],
+      tests: [
+        { id: "t-1", type: "pinyin", question: "Apa pinyin dari karakter ini?", hanzi: "老师", correctAnswer: "laoshi", meaning: "Guru" },
+        { id: "t-2", type: "pinyin", question: "Apa pinyin dari karakter ini?", hanzi: "苹果", correctAnswer: "pingguo", meaning: "Apel" },
+        { id: "t-3", type: "pinyin", question: "Apa pinyin dari karakter ini?", hanzi: "谢谢", correctAnswer: "xiexie", meaning: "Terima kasih" },
+        { id: "t-4", type: "pinyin", question: "Apa pinyin dari karakter ini?", hanzi: "再见", correctAnswer: "zaijian", meaning: "Sampai jumpa" },
+        { id: "t-5", type: "hanzi", question: "Tulis karakter Hanzi untuk arti kata berikut:", meaning: "Saya / Aku", pinyin: "wǒ", correctAnswer: "wǒ" },
+        { id: "t-6", type: "hanzi", question: "Tulis karakter Hanzi untuk arti kata berikut:", meaning: "Orang / Manusia", pinyin: "rén", correctAnswer: "rén" },
+        { id: "t-7", type: "hanzi", question: "Tulis karakter Hanzi untuk arti kata berikut:", meaning: "Gunung", pinyin: "shān", correctAnswer: "shān" },
+        { id: "t-8", type: "hanzi", question: "Tulis karakter Hanzi untuk arti kata berikut:", meaning: "Air", pinyin: "shuǐ", correctAnswer: "shuǐ" }
+      ]
+    };
+
+    // ==========================================
+    // 2. GLOBAL STATE VARIABLES                 
+    // ==========================================
+    let appData = JSON.parse(JSON.stringify(DEFAULT_DATA)); // Clone structure
+    let currentTab = "vocabulary";
+
+    // Search / Filter states
+    let currentCategoryFilter = "Semua";
+
+    // Flashcard study states
+    let flashcardsList = [];
+    let currentFlashcardIndex = 0;
+    let flashcardMode = "study"; // 'study' (free flip) or 'test' (verify input first)
+    let masteredFlashcards = new Set(); // Store ID of mastered words
+
+    // Reading states
+    let activeReadingPassage = null;
+
+    // Test states
+    let activeQuizType = null; // 'pinyin' or 'hanzi'
+    let quizQuestions = [];
+    let currentQuizIndex = 0;
+    let quizScore = 0;
+    let quizAnswersLog = []; // logs: { question, type, userVal, correctVal, isCorrect }
+    let hanziWriterInstance = null;
+    let isHanziWriterLoaded = false;
+    let isOutlineGuideActive = false;
+
+    // Manual Drawing Canvas Context (Fallback)
+    let fallbackCanvas = null;
+    let fallbackCtx = null;
+    let isDrawingOnCanvas = false;
+
+    // ==========================================
+    // 3. PAGE INITIALIZATION & FETCH            
+    // ==========================================
+    window.addEventListener("DOMContentLoaded", () => {
+      // Setup Canvas
+      fallbackCanvas = document.getElementById("hanzi-fallback-canvas");
+      fallbackCtx = fallbackCanvas.getContext("2d");
+      setupCanvasDrawHandlers();
+
+      // Check if Hanzi Writer was fetched correctly
+      if (typeof HanziWriter !== "undefined") {
+        isHanziWriterLoaded = true;
+        document.getElementById("json-badge").classList.remove("bg-rose-500");
+        document.getElementById("json-badge").classList.add("bg-emerald-500");
+      } else {
+        console.warn("HanziWriter CDN could not be loaded. Falling back to canvas drawing.");
+        document.getElementById("json-badge").classList.add("bg-rose-500");
+      }
+
+      // Initialize system theme
+      initTheme();
+
+      // Load initial JSON (attempt data.json, fallback to localStorage, fallback to embedded)
+      loadInitialData();
+    });
+
+    async function loadInitialData() {
+      try {
+        const response = await fetch("data.json");
+        if (response.ok) {
+          const fetchedData = await response.json();
+          if (validateJsonSchema(fetchedData)) {
+            appData = fetchedData;
+            document.getElementById("json-badge").setAttribute("title", "Memuat data dari data.json");
+            showNotification("Data berhasil dimuat dari data.json", "success");
+            initAppModules();
+            return;
+          }
+        }
+      } catch (err) {
+        console.log("data.json fetch failed, using local/fallback storage.");
+      }
+
+      // Try LocalStorage
+      const cached = localStorage.getItem("hanzilearn_dataset");
+      if (cached) {
+        try {
+          const parsed = JSON.parse(cached);
+          if (validateJsonSchema(parsed)) {
+            appData = parsed;
+            document.getElementById("json-badge").setAttribute("title", "Memuat data dari memori browser");
+            showNotification("Kosakata kustom dimuat dari penyimpanan lokal", "info");
+            initAppModules();
+            return;
+          }
+        } catch (e) { }
+      }
+
+      // Embedded Default fallback
+      appData = DEFAULT_DATA;
+      document.getElementById("json-badge").setAttribute("title", "Menggunakan data bawaan aplikasi");
+      initAppModules();
+    }
+
+    function initAppModules() {
+      // Re-fill cached variables
+      const savedMastered = localStorage.getItem("hanzilearn_mastered_ids");
+      if (savedMastered) {
+        masteredFlashcards = new Set(JSON.parse(savedMastered));
+      }
+
+      // 1. Setup Vocabulary View Categories
+      initVocabCategories();
+      renderVocabularyGrid();
+
+      // 2. Setup Flashcard deck
+      flashcardsList = [...appData.vocabulary];
+      currentFlashcardIndex = 0;
+      renderCurrentFlashcard();
+      updateFlashcardProgress();
+
+      // 3. Setup Reading passages grid
+      renderReadingGrid();
+
+      // 4. Reset quiz players
+      exitQuiz();
+
+      // Switch to default tab
+      switchTab(currentTab);
+    }
+
+    // ==========================================
+    // 4. CORE CONTROLLERS & JSON HANDLERS       
+    // ==========================================
+    function switchTab(tabId) {
+      currentTab = tabId;
+
+      // Hide all tab screens
+      document.querySelectorAll(".tab-content").forEach(el => el.classList.add("hidden"));
+      // Show selected screen
+      document.getElementById(`tab-${tabId}`).classList.remove("hidden");
+
+      // Update Nav buttons (Desktop)
+      document.querySelectorAll(".nav-btn").forEach(btn => {
+        btn.className = "nav-btn px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 flex items-center gap-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-900";
+      });
+      const activeBtn = document.getElementById(`nav-${tabId}`);
+      if (activeBtn) {
+        activeBtn.className = "nav-btn px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 flex items-center gap-2 bg-indigo-50 dark:bg-indigo-950/40 text-brand-600 dark:text-brand-400 border border-brand-200/40 dark:border-brand-900/30";
+      }
+
+      // Update Mobile nav buttons
+      document.querySelectorAll("#mobile-menu button").forEach(btn => {
+        if (btn.id && btn.id.startsWith("mob-nav-")) {
+          btn.className = "w-full text-left px-4 py-3 rounded-xl text-sm font-semibold flex items-center gap-3 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-900/50";
+        }
+      });
+      const activeMobBtn = document.getElementById(`mob-nav-${tabId}`);
+      if (activeMobBtn) {
+        activeMobBtn.className = "w-full text-left px-4 py-3 rounded-xl text-sm font-black flex items-center gap-3 bg-indigo-50 dark:bg-indigo-950/40 text-brand-600 dark:text-brand-400";
+      }
+
+      // Stop speech synthesizer on page turn
+      stopSpeaking();
+    }
+
+    function handleJsonUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        try {
+          const parsed = JSON.parse(e.target.result);
+          if (validateJsonSchema(parsed)) {
+            appData = parsed;
+            localStorage.setItem("hanzilearn_dataset", JSON.stringify(parsed));
+            showNotification("Data JSON berhasil dimuat dan disimpan!", "success");
+            initAppModules();
+          } else {
+            showNotification("Struktur JSON tidak valid. Periksa spesifikasi schema.", "error");
+          }
+        } catch (err) {
+          showNotification("Gagal parsing file JSON. Pastikan file valid.", "error");
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    function validateJsonSchema(data) {
+      if (!data || typeof data !== "object") return false;
+      if (!Array.isArray(data.vocabulary)) return false;
+      if (!Array.isArray(data.reading)) return false;
+      if (!Array.isArray(data.tests)) return false;
+      return true;
+    }
+
+    // ==========================================
+    // 5. VOCABULARY VIEW CONTROLLER             
+    // ==========================================
+    function initVocabCategories() {
+      const container = document.getElementById("vocab-categories-container");
+      container.innerHTML = "";
+
+      // Gather unique categories
+      const categories = new Set();
+      appData.vocabulary.forEach(v => {
+        if (v.category) categories.add(v.category);
+      });
+
+      // Add "Semua" pill
+      const allPill = document.createElement("button");
+      allPill.innerText = "Semua";
+      allPill.onclick = () => filterVocabByCategory("Semua");
+      allPill.id = "pill-cat-Semua";
+      allPill.className = "vocab-pill px-4 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all duration-200 bg-brand-600 text-white shadow-sm";
+      container.appendChild(allPill);
+
+      // Add dynamic category pills
+      categories.forEach(cat => {
+        const pill = document.createElement("button");
+        pill.innerText = cat;
+        pill.onclick = () => filterVocabByCategory(cat);
+        pill.id = `pill-cat-${cat}`;
+        pill.className = "vocab-pill px-4 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all duration-200 bg-slate-100 dark:bg-slate-900 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800";
+        container.appendChild(pill);
+      });
+    }
+
+    function filterVocabByCategory(category) {
+      currentCategoryFilter = category;
+
+      // Update visual pills styling
+      document.querySelectorAll(".vocab-pill").forEach(el => {
+        el.className = "vocab-pill px-4 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all duration-200 bg-slate-100 dark:bg-slate-900 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800";
+      });
+      const activePill = document.getElementById(`pill-cat-${category}`);
+      if (activePill) {
+        activePill.className = "vocab-pill px-4 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all duration-200 bg-brand-600 text-white shadow-sm";
+      }
+
+      renderVocabularyGrid();
+    }
+
+    function filterVocabulary() {
+      const searchVal = document.getElementById("vocab-search").value.trim().toLowerCase();
+      const clearBtn = document.getElementById("vocab-search-clear");
+
+      if (searchVal.length > 0) {
+        clearBtn.classList.remove("hidden");
+      } else {
+        clearBtn.classList.add("hidden");
+      }
+
+      renderVocabularyGrid();
+    }
+
+    function clearVocabSearch() {
+      document.getElementById("vocab-search").value = "";
+      document.getElementById("vocab-search-clear").classList.add("hidden");
+      renderVocabularyGrid();
+    }
+
+    function renderVocabularyGrid() {
+      const grid = document.getElementById("vocab-grid");
+      const emptyState = document.getElementById("vocab-empty-state");
+      grid.innerHTML = "";
+
+      const searchVal = document.getElementById("vocab-search").value.trim().toLowerCase();
+
+      // Filter vocabulary items
+      const filtered = appData.vocabulary.filter(item => {
+        // Category check
+        if (currentCategoryFilter !== "Semua" && item.category !== currentCategoryFilter) {
+          return false;
+        }
+        // Keyword check
+        if (searchVal) {
+          const matchHanzi = item.hanzi.toLowerCase().includes(searchVal);
+          const matchPinyin = item.pinyin.toLowerCase().includes(searchVal);
+          const matchMeaning = item.meaning.toLowerCase().includes(searchVal);
+          return matchHanzi || matchPinyin || matchMeaning;
+        }
+        return true;
+      });
+
+      if (filtered.length === 0) {
+        grid.classList.add("hidden");
+        emptyState.classList.remove("hidden");
+        return;
+      }
+
+      grid.classList.remove("hidden");
+      emptyState.classList.add("hidden");
+
+      filtered.forEach(item => {
+        const isMastered = masteredFlashcards.has(item.id);
+        const card = document.createElement("div");
+        card.className = "bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/80 rounded-3xl p-6 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between group";
+
+        card.innerHTML = `
+          <div>
+            <div class="flex items-center justify-between gap-2 mb-4">
+              <span class="px-2.5 py-0.5 bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 rounded-lg text-[10px] font-bold uppercase tracking-wider">${item.category || "Kosakata"}</span>
+              <button onclick="bookmarkVocabDirect('${item.id}', this)" class="text-xs transition-colors duration-200 ${isMastered ? 'text-emerald-500 hover:text-emerald-600' : 'text-slate-300 dark:text-slate-700 hover:text-slate-500'}" title="${isMastered ? 'Sudah Dikuasai' : 'Belum Dikuasai'}">
+                <i class="fa-solid fa-circle-check text-base"></i>
+              </button>
+            </div>
+            
+            <!-- Character Section -->
+            <div class="flex items-baseline gap-3 mb-2.5">
+              <h3 class="font-hanzi text-4xl font-extrabold text-slate-900 dark:text-white select-all">${item.hanzi}</h3>
+              <button onclick="speakWordsText('${item.hanzi}')" class="w-7 h-7 rounded-full bg-slate-50 dark:bg-slate-950 border border-slate-150 dark:border-slate-850 hover:bg-brand-50 hover:text-brand-600 dark:hover:bg-brand-950/40 text-slate-400 dark:text-slate-500 flex items-center justify-center hover:scale-105 active:scale-95 transition-all" title="Dengar Pelafalan">
+                <i class="fa-solid fa-volume-high text-[10px]"></i>
+              </button>
+            </div>
+
+            <!-- Pinyin and translation -->
+            <div class="mb-4">
+              <p class="text-sm font-semibold text-brand-600 dark:text-brand-400 italic">${item.pinyin}</p>
+              <p class="text-sm text-slate-600 dark:text-slate-300 font-medium mt-1">${item.meaning}</p>
+            </div>
+          </div>
+
+          <!-- Accordion Sentence Example -->
+          <div class="border-t border-slate-100 dark:border-slate-800/80 pt-3 mt-2">
+            <button onclick="toggleCardSentenceAccordion(this)" class="w-full flex items-center justify-between text-[11px] font-bold text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition">
+              <span>CONTOH KALIMAT</span>
+              <i class="fa-solid fa-chevron-down transition-transform duration-200"></i>
+            </button>
+            <div class="accordion-content hidden mt-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-800/60 rounded-xl p-3 text-xs leading-relaxed">
+              <div class="flex items-center justify-between">
+                <p class="font-hanzi font-bold text-slate-800 dark:text-white text-sm tracking-wide">${item.exampleZh || ''}</p>
+                <button onclick="speakWordsText('${item.exampleZh}')" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200" title="Dengar Kalimat">
+                  <i class="fa-solid fa-volume-high text-[10px]"></i>
+                </button>
+              </div>
+              <p class="text-[10px] text-indigo-500 dark:text-indigo-400 italic mt-0.5">${item.examplePinyin || ''}</p>
+              <p class="text-slate-500 dark:text-slate-400 mt-1">${item.exampleId || ''}</p>
+            </div>
+          </div>
+        `;
+
+        grid.appendChild(card);
+      });
+    }
+
+    function toggleCardSentenceAccordion(buttonEl) {
+      const arrow = buttonEl.querySelector("i");
+      const content = buttonEl.nextElementSibling;
+
+      if (content.classList.contains("hidden")) {
+        content.classList.remove("hidden");
+        arrow.style.transform = "rotate(180deg)";
+      } else {
+        content.classList.add("hidden");
+        arrow.style.transform = "rotate(0deg)";
+      }
+    }
+
+    function bookmarkVocabDirect(vocabId, buttonEl) {
+      if (masteredFlashcards.has(vocabId)) {
+        masteredFlashcards.delete(vocabId);
+        buttonEl.className = "text-xs text-slate-300 dark:text-slate-700 hover:text-slate-500 transition-colors duration-200";
+        showNotification("Kosakata dihapus dari daftar dikuasai", "info");
+      } else {
+        masteredFlashcards.add(vocabId);
+        buttonEl.className = "text-xs text-emerald-500 hover:text-emerald-600 transition-colors duration-200";
+        showNotification("Kosakata ditandai sebagai telah dikuasai!", "success");
+      }
+
+      // Save changes
+      localStorage.setItem("hanzilearn_mastered_ids", JSON.stringify(Array.from(masteredFlashcards)));
+
+      // Update flashcards components
+      updateFlashcardProgress();
+      renderCurrentFlashcard();
+    }
+
+    // ==========================================
+    // 6. FLASHCARD ENGINE CONTROLLERS           
+    // ==========================================
+    function setFlashcardMode(mode) {
+      flashcardMode = mode;
+
+      const studyBtn = document.getElementById("fc-mode-study");
+      const testBtn = document.getElementById("fc-mode-test");
+
+      if (mode === "study") {
+        studyBtn.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition-all bg-white dark:bg-slate-950 text-brand-600 dark:text-brand-400 shadow-sm";
+        testBtn.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200";
+        document.getElementById("fc-study-prompt").classList.remove("hidden");
+        document.getElementById("fc-test-prompt-area").classList.add("hidden");
+      } else {
+        testBtn.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition-all bg-white dark:bg-slate-950 text-brand-600 dark:text-brand-400 shadow-sm";
+        studyBtn.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200";
+        document.getElementById("fc-study-prompt").classList.add("hidden");
+        document.getElementById("fc-test-prompt-area").classList.remove("hidden");
+      }
+
+      // Reset card state
+      resetFlashcardState();
+    }
+
+    function resetFlashcardState() {
+      // Un-flip
+      document.getElementById("flashcard-element").classList.remove("flipped");
+
+      // Clear pinyin input and feedback
+      document.getElementById("fc-pinyin-input").value = "";
+      const feedback = document.getElementById("fc-pinyin-feedback");
+      feedback.className = "text-xs font-bold hidden py-0.5";
+      feedback.innerText = "";
+    }
+
+    function handleCardClick() {
+      // Flip is only allowed in 'study' mode OR when already flipped back in 'test' mode
+      const card = document.getElementById("flashcard-element");
+      if (flashcardMode === "study" || card.classList.contains("flipped")) {
+        card.classList.toggle("flipped");
+      }
+    }
+
+    function renderCurrentFlashcard() {
+      if (flashcardsList.length === 0) return;
+
+      const item = flashcardsList[currentFlashcardIndex];
+
+      // Front elements
+      document.getElementById("fc-front-category").innerText = item.category || "Kosakata";
+      document.getElementById("fc-front-character").innerText = item.hanzi;
+
+      // Back elements
+      document.getElementById("fc-back-category").innerText = item.category || "Kosakata";
+      document.getElementById("fc-back-meaning").innerText = item.meaning;
+      document.getElementById("fc-back-pinyin").innerText = `Pinyin: ${item.pinyin}`;
+      document.getElementById("fc-back-example-zh").innerText = item.exampleZh || "";
+      document.getElementById("fc-back-example-pinyin").innerText = item.examplePinyin || "";
+      document.getElementById("fc-back-example-id").innerText = item.exampleId || "";
+
+      // Mastered state button
+      const masterBtn = document.getElementById("fc-master-btn");
+      const isMastered = masteredFlashcards.has(item.id);
+      if (isMastered) {
+        masterBtn.className = "flex-1 py-3 px-4 rounded-xl text-xs font-black transition-all flex items-center justify-center gap-2 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 border-emerald-250 dark:border-emerald-900/60";
+        masterBtn.innerHTML = `<i class="fa-solid fa-circle-check"></i> Sudah Dikuasai`;
+      } else {
+        masterBtn.className = "flex-1 py-3 px-4 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 border border-slate-200 dark:border-slate-800 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-850 dark:hover:text-slate-200";
+        masterBtn.innerHTML = `<i class="fa-regular fa-circle"></i> Tandai Kuasa`;
+      }
+    }
+
+    function checkFlashcardPinyin() {
+      const item = flashcardsList[currentFlashcardIndex];
+      const userInput = document.getElementById("fc-pinyin-input").value.trim().toLowerCase();
+      const feedback = document.getElementById("fc-pinyin-feedback");
+
+      if (!userInput) {
+        feedback.className = "text-xs font-bold py-0.5 text-rose-500";
+        feedback.innerText = "Masukkan jawaban terlebih dahulu!";
+        return;
+      }
+
+      // Check logic
+      const isCorrect = verifyPinyinMatch(userInput, item.pinyin, item.correctAnswer);
+
+      feedback.classList.remove("hidden");
+      if (isCorrect) {
+        feedback.className = "text-xs font-bold py-0.5 text-emerald-500";
+        feedback.innerText = "Benar! Membuka kartu...";
+        playQuizBeep("success");
+
+        // Auto master
+        if (!masteredFlashcards.has(item.id)) {
+          masteredFlashcards.add(item.id);
+          localStorage.setItem("hanzilearn_mastered_ids", JSON.stringify(Array.from(masteredFlashcards)));
+          updateFlashcardProgress();
+          renderCurrentFlashcard();
+        }
+
+        // Delay flip slightly
+        setTimeout(() => {
+          document.getElementById("flashcard-element").classList.add("flipped");
+        }, 600);
+      } else {
+        feedback.className = "text-xs font-bold py-0.5 text-rose-500";
+        feedback.innerText = "Kurang tepat! Coba lagi.";
+        playQuizBeep("error");
+      }
+    }
+
+    function revealFlashcardAnswer() {
+      document.getElementById("flashcard-element").classList.add("flipped");
+    }
+
+    function prevFlashcard() {
+      if (currentFlashcardIndex > 0) {
+        currentFlashcardIndex--;
+        resetFlashcardState();
+        renderCurrentFlashcard();
+        updateFlashcardProgress();
+      }
+    }
+
+    function nextFlashcard() {
+      if (currentFlashcardIndex < flashcardsList.length - 1) {
+        currentFlashcardIndex++;
+        resetFlashcardState();
+        renderCurrentFlashcard();
+        updateFlashcardProgress();
+      }
+    }
+
+    function toggleFlashcardMastered() {
+      if (flashcardsList.length === 0) return;
+      const item = flashcardsList[currentFlashcardIndex];
+
+      if (masteredFlashcards.has(item.id)) {
+        masteredFlashcards.delete(item.id);
+        showNotification("Kosakata dikeluarkan dari daftar dikuasai", "info");
+      } else {
+        masteredFlashcards.add(item.id);
+        showNotification("Kosakata ditandai sebagai dikuasai!", "success");
+      }
+
+      // Save
+      localStorage.setItem("hanzilearn_mastered_ids", JSON.stringify(Array.from(masteredFlashcards)));
+
+      updateFlashcardProgress();
+      renderCurrentFlashcard();
+      renderVocabularyGrid();
+    }
+
+    function updateFlashcardProgress() {
+      if (flashcardsList.length === 0) return;
+
+      document.getElementById("fc-progress-count").innerText = `Kartu ${currentFlashcardIndex + 1} dari ${flashcardsList.length}`;
+
+      // Calculate global percentage mastered
+      let masteredCount = 0;
+      flashcardsList.forEach(item => {
+        if (masteredFlashcards.has(item.id)) masteredCount++;
+      });
+
+      const percentage = Math.round((masteredCount / flashcardsList.length) * 100);
+      document.getElementById("fc-progress-percent").innerText = `${percentage}% Kuasai`;
+      document.getElementById("fc-progress-bar").style.width = `${percentage}%`;
+    }
+
+    function speakHanziCurrent(event) {
+      event.stopPropagation();
+      const item = flashcardsList[currentFlashcardIndex];
+      speakWordsText(item.hanzi);
+    }
+
+    function speakSentenceCurrent(event) {
+      event.stopPropagation();
+      const item = flashcardsList[currentFlashcardIndex];
+      speakWordsText(item.exampleZh);
+    }
+
+    // ==========================================
+    // 7. READING MODULE CONTROLLERS              
+    // ==========================================
+    function renderReadingGrid() {
+      const container = document.getElementById("reading-grid");
+      container.innerHTML = "";
+
+      appData.reading.forEach(passage => {
+        const wordCount = passage.contentZh.length;
+        const card = document.createElement("div");
+        card.className = "bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-3xl p-6 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between group";
+
+        card.innerHTML = `
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <span class="px-2.5 py-0.5 bg-indigo-50 dark:bg-indigo-950/40 text-brand-600 dark:text-brand-400 rounded-lg text-[10px] font-bold uppercase tracking-wider">${passage.category || 'Bacaan'}</span>
+              <span class="text-[10px] text-slate-400 font-semibold"><i class="fa-regular fa-file-word mr-1"></i> ${wordCount} Huruf</span>
+            </div>
+            <h3 class="text-lg font-black text-slate-900 dark:text-white mb-2 group-hover:text-brand-600 dark:group-hover:text-brand-400 transition">${passage.title}</h3>
+            <p class="text-xs text-slate-400 dark:text-slate-500 leading-relaxed mb-6 line-clamp-3">${passage.translation}</p>
+          </div>
+          <button onclick="openReader('${passage.id}')" class="w-full py-2.5 bg-slate-50 hover:bg-brand-50 hover:text-brand-600 dark:bg-slate-950 dark:hover:bg-brand-950/30 border border-slate-200/60 dark:border-slate-800/80 text-slate-700 dark:text-slate-300 rounded-xl text-xs font-bold shadow-sm transition flex items-center justify-center gap-1.5">
+            Mulai Membaca <i class="fa-solid fa-arrow-right text-[10px] group-hover:translate-x-1 transition-transform"></i>
+          </button>
+        `;
+
+        container.appendChild(card);
+      });
+    }
+
+    function openReader(passageId) {
+      const passage = appData.reading.find(r => r.id === passageId);
+      if (!passage) return;
+
+      activeReadingPassage = passage;
+
+      document.getElementById("reader-title").innerText = passage.title;
+      document.getElementById("reader-category").innerText = passage.category || "Bacaan";
+
+      // Render text
+      renderInteractiveChineseText(passage);
+
+      // Render static pinyin block
+      document.getElementById("reader-pinyin-body").innerText = passage.contentPinyin || "Pinyin tidak tersedia untuk teks ini.";
+
+      // Render static translation block
+      document.getElementById("reader-translation-body").innerText = passage.translation;
+
+      // Render Glossary
+      renderReaderGlossary(passage);
+
+      // Controls setup
+      document.getElementById("toggle-pinyin-cb").checked = false;
+      document.getElementById("toggle-trans-cb").checked = true;
+      document.getElementById("reader-pinyin-body").classList.add("hidden");
+      document.getElementById("reader-translation-body").classList.remove("hidden");
+
+      // Slide view
+      document.getElementById("reading-list-view").classList.add("hidden");
+      document.getElementById("reading-viewer-view").classList.remove("hidden");
+    }
+
+    function renderInteractiveChineseText(passage) {
+      const container = document.getElementById("reader-chinese-body");
+      container.innerHTML = "";
+
+      let text = passage.contentZh;
+      const glossary = passage.words || [];
+
+      // Sort words by length descending to match longest substrings first
+      const sortedGlossary = [...glossary].sort((a, b) => b.hanzi.length - a.hanzi.length);
+
+      // Tokenize the string to inject spans around glossary terms
+      let tokens = [{ text: text, isWord: false }];
+
+      sortedGlossary.forEach(word => {
+        let newTokens = [];
+        tokens.forEach(tok => {
+          if (tok.isWord) {
+            newTokens.push(tok);
+          } else {
+            let tempText = tok.text;
+            let index = tempText.indexOf(word.hanzi);
+
+            while (index !== -1) {
+              if (index > 0) {
+                newTokens.push({ text: tempText.substring(0, index), isWord: false });
+              }
+              newTokens.push({
+                text: word.hanzi,
+                isWord: true,
+                pinyin: word.pinyin,
+                meaning: word.meaning
+              });
+              tempText = tempText.substring(index + word.hanzi.length);
+              index = tempText.indexOf(word.hanzi);
+            }
+            if (tempText.length > 0) {
+              newTokens.push({ text: tempText, isWord: false });
+            }
+          }
+        });
+        tokens = newTokens;
+      });
+
+      // Render tokens
+      tokens.forEach(tok => {
+        if (tok.isWord) {
+          const span = document.createElement("span");
+          span.className = "relative group inline-block font-hanzi text-3xl sm:text-4xl tracking-wide cursor-help border-b-2 border-dashed border-indigo-500/50 hover:border-indigo-600 hover:text-indigo-600 dark:hover:text-indigo-400 py-1 transition-all mx-0.5";
+          span.innerHTML = `
+            ${tok.text}
+            <span class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-40 bg-slate-900/95 dark:bg-slate-800/95 text-white text-[11px] rounded-xl p-2.5 shadow-xl opacity-0 group-hover:opacity-100 pointer-events-none transition duration-200 z-30 font-sans normal-case text-center">
+              <span class="block text-xs font-bold text-indigo-300 mb-0.5">${tok.pinyin}</span>
+              <span class="block text-slate-200 font-medium">${tok.meaning}</span>
+            </span>
+          `;
+          // Quick TTS listen on click
+          span.addEventListener("click", (e) => {
+            speakWordsText(tok.text);
+          });
+          container.appendChild(span);
+        } else {
+          // Render characters individually or as plain texts
+          const span = document.createElement("span");
+          span.className = "font-hanzi text-3xl sm:text-4xl tracking-wide py-1 text-slate-800 dark:text-slate-100";
+          span.innerText = tok.text;
+          container.appendChild(span);
+        }
+      });
+    }
+
+    function renderReaderGlossary(passage) {
+      const container = document.getElementById("reader-words-glossary");
+      container.innerHTML = "";
+
+      const words = passage.words || [];
+      if (words.length === 0) {
+        container.innerHTML = `<p class="text-xs text-slate-400 italic col-span-2">Tidak ada kosakata glossary terdaftar.</p>`;
+        return;
+      }
+
+      words.forEach(w => {
+        const item = document.createElement("div");
+        item.className = "bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-800/60 rounded-xl p-3 flex items-center justify-between";
+        item.innerHTML = `
+          <div>
+            <div class="flex items-center gap-1.5">
+              <h5 class="font-hanzi font-bold text-slate-900 dark:text-white text-base">${w.hanzi}</h5>
+              <button onclick="speakWordsText('${w.hanzi}')" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+                <i class="fa-solid fa-volume-high text-[9px]"></i>
+              </button>
+            </div>
+            <p class="text-[10px] text-indigo-600 dark:text-indigo-400 italic">${w.pinyin}</p>
+          </div>
+          <span class="text-xs text-slate-600 dark:text-slate-400 font-medium">${w.meaning}</span>
+        `;
+        container.appendChild(item);
+      });
+    }
+
+    function toggleReaderPinyin() {
+      const cb = document.getElementById("toggle-pinyin-cb");
+      const block = document.getElementById("reader-pinyin-body");
+      if (cb.checked) {
+        block.classList.remove("hidden");
+      } else {
+        block.classList.add("hidden");
+      }
+    }
+
+    function toggleReaderTranslation() {
+      const cb = document.getElementById("toggle-trans-cb");
+      const block = document.getElementById("reader-translation-body");
+      if (cb.checked) {
+        block.classList.remove("hidden");
+      } else {
+        block.classList.add("hidden");
+      }
+    }
+
+    function speakReaderText() {
+      if (!activeReadingPassage) return;
+      speakWordsText(activeReadingPassage.contentZh);
+    }
+
+    function exitReader() {
+      activeReadingPassage = null;
+      stopSpeaking();
+      document.getElementById("reading-viewer-view").classList.add("hidden");
+      document.getElementById("reading-list-view").classList.remove("hidden");
+    }
+
+    // ==========================================
+    // 8. TEST MODULE & INTERACTIVE QUIZ         
+    // ==========================================
+    function startQuiz(type) {
+      activeQuizType = type;
+      quizScore = 0;
+      currentQuizIndex = 0;
+      quizAnswersLog = [];
+
+      // Filter questions of specified type
+      quizQuestions = appData.tests.filter(q => q.type === type);
+
+      if (quizQuestions.length === 0) {
+        showNotification("Tidak ada soal kuis yang terdaftar untuk mode ini!", "error");
+        return;
+      }
+
+      // Show player screen
+      document.getElementById("test-menu-view").classList.add("hidden");
+      document.getElementById("test-player-view").classList.remove("hidden");
+      document.getElementById("test-result-view").classList.add("hidden");
+
+      // Setup UI
+      const headerType = document.getElementById("quiz-header-type");
+      if (type === "pinyin") {
+        headerType.innerText = "Ujian Menulis Pinyin";
+        headerType.className = "text-xs font-black uppercase text-brand-600 dark:text-brand-400 tracking-wider";
+        document.getElementById("quiz-pinyin-layout").classList.remove("hidden");
+        document.getElementById("quiz-hanzi-layout").classList.add("hidden");
+      } else {
+        headerType.innerText = "Ujian Menulis Hanzi";
+        headerType.className = "text-xs font-black uppercase text-rose-600 dark:text-rose-400 tracking-wider";
+        document.getElementById("quiz-pinyin-layout").classList.add("hidden");
+        document.getElementById("quiz-hanzi-layout").classList.remove("hidden");
+      }
+
+      loadCurrentQuizQuestion();
+    }
+
+    function loadCurrentQuizQuestion() {
+      const q = quizQuestions[currentQuizIndex];
+
+      // Update progress
+      document.getElementById("quiz-progress-text").innerText = `Soal ${currentQuizIndex + 1}/${quizQuestions.length}`;
+
+      // Reset feedback arena
+      const feedback = document.getElementById("quiz-answer-feedback");
+      feedback.className = "hidden w-full max-w-sm border p-4 rounded-2xl flex items-center gap-3 mt-4 text-left transition-all duration-200";
+
+      // Toggle buttons
+      document.getElementById("quiz-next-btn").classList.add("hidden");
+
+      if (activeQuizType === "pinyin") {
+        // Setup Pinyin Question
+        document.getElementById("quiz-pinyin-hanzi").innerText = q.hanzi;
+        document.getElementById("quiz-pinyin-meaning").innerText = `Arti: ${q.meaning}`;
+
+        const input = document.getElementById("quiz-pinyin-input");
+        input.value = "";
+        input.disabled = false;
+        input.focus();
+
+        document.getElementById("quiz-submit-btn").classList.remove("hidden");
+        document.getElementById("quiz-submit-btn").disabled = false;
+      } else {
+        // Setup Hanzi quiz (Writer canvas or fallback)
+        document.getElementById("quiz-hanzi-pinyin").innerText = q.pinyin;
+        document.getElementById("quiz-hanzi-meaning").innerText = `Arti: ${q.meaning}`;
+
+        document.getElementById("quiz-submit-btn").classList.add("hidden"); // Canvas verification is done via complete hook / self check
+
+        // Initialize Hanzi canvas or HanziWriter
+        setupHanziPracticeGrid(q.hanzi);
+      }
+    }
+
+    function setupHanziPracticeGrid(targetChar) {
+      // Clear containers
+      document.getElementById("hanzi-writer-quiz-container").innerHTML = "";
+      isOutlineGuideActive = false;
+
+      // Check if library is available
+      if (isHanziWriterLoaded) {
+        document.getElementById("hanzi-fallback-canvas").classList.add("hidden");
+        document.getElementById("hanzi-fallback-evaluation").classList.add("hidden");
+        document.getElementById("hanzi-guide-btn").classList.remove("hidden");
+
+        try {
+          hanziWriterInstance = HanziWriter.create("hanzi-writer-quiz-container", targetChar, {
+            width: 200,
+            height: 200,
+            showOutline: true,
+            showCharacter: false,
+            strokeColor: "#4f46e5", // indigo stroke
+            outlineColor: "#f1f5f9", // light background helper outline
+            drawingColor: "#e11d48", // rose drawing color
+            highlightColor: "#10b981", // green successful stroke
+            padding: 10
+          });
+
+          // Start the quiz automatically
+          hanziWriterInstance.quiz({
+            onComplete: function (summary) {
+              playQuizBeep("success");
+              showQuizCorrectFeedback("Bagus sekali! Coretan karakter berhasil diselesaikan dengan benar.");
+              logQuizAnswer(true, "", targetChar);
+            }
+          });
+        } catch (e) {
+          console.error("HanziWriter init failed, falling back to manual canvas.", e);
+          initCanvasFallback(targetChar);
+        }
+      } else {
+        initCanvasFallback(targetChar);
+      }
+    }
+
+    function initCanvasFallback(targetChar) {
+      document.getElementById("hanzi-fallback-canvas").classList.remove("hidden");
+      document.getElementById("hanzi-guide-btn").classList.add("hidden");
+      document.getElementById("hanzi-fallback-evaluation").classList.remove("hidden");
+      document.getElementById("hanzi-fallback-check-btn").classList.remove("hidden");
+      document.getElementById("hanzi-fallback-grade-buttons").classList.add("hidden");
+
+      clearHanziCanvas();
+    }
+
+    // --- FALLBACK CANVAS PEN DRAWING ---
+    function setupCanvasDrawHandlers() {
+      const getMousePos = (canvasDom, mouseEvent) => {
+        const rect = canvasDom.getBoundingClientRect();
+        return {
+          x: mouseEvent.clientX - rect.left,
+          y: mouseEvent.clientY - rect.top
+        };
+      };
+
+      const getTouchPos = (canvasDom, touchEvent) => {
+        const rect = canvasDom.getBoundingClientRect();
+        return {
+          x: touchEvent.touches[0].clientX - rect.left,
+          y: touchEvent.touches[0].clientY - rect.top
+        };
+      };
+
+      // Mouse Events
+      fallbackCanvas.addEventListener("mousedown", (e) => {
+        isDrawingOnCanvas = true;
+        const pos = getMousePos(fallbackCanvas, e);
+        fallbackCtx.beginPath();
+        fallbackCtx.moveTo(pos.x, pos.y);
+      });
+
+      fallbackCanvas.addEventListener("mousemove", (e) => {
+        if (!isDrawingOnCanvas) return;
+        const pos = getMousePos(fallbackCanvas, e);
+        fallbackCtx.lineTo(pos.x, pos.y);
+        fallbackCtx.strokeStyle = "#e11d48"; // Rose brush
+        fallbackCtx.lineWidth = 5;
+        fallbackCtx.lineCap = "round";
+        fallbackCtx.lineJoin = "round";
+        fallbackCtx.stroke();
+      });
+
+      window.addEventListener("mouseup", () => {
+        isDrawingOnCanvas = false;
+      });
+
+      // Touch Events (mobile friendly)
+      fallbackCanvas.addEventListener("touchstart", (e) => {
+        e.preventDefault();
+        isDrawingOnCanvas = true;
+        const pos = getTouchPos(fallbackCanvas, e);
+        fallbackCtx.beginPath();
+        fallbackCtx.moveTo(pos.x, pos.y);
+      }, { passive: false });
+
+      fallbackCanvas.addEventListener("touchmove", (e) => {
+        e.preventDefault();
+        if (!isDrawingOnCanvas) return;
+        const pos = getTouchPos(fallbackCanvas, e);
+        fallbackCtx.lineTo(pos.x, pos.y);
+        fallbackCtx.strokeStyle = "#e11d48";
+        fallbackCtx.lineWidth = 5;
+        fallbackCtx.lineCap = "round";
+        fallbackCtx.lineJoin = "round";
+        fallbackCtx.stroke();
+      }, { passive: false });
+    }
+
+    function clearHanziCanvas() {
+      if (isHanziWriterLoaded && hanziWriterInstance) {
+        hanziWriterInstance.cancelQuiz();
+        // restart quiz
+        hanziWriterInstance.quiz({
+          onComplete: function (summary) {
+            playQuizBeep("success");
+            showQuizCorrectFeedback("Bagus sekali! Coretan karakter berhasil diselesaikan dengan benar.");
+            logQuizAnswer(true, "", quizQuestions[currentQuizIndex].hanzi);
+          }
+        });
+      } else {
+        fallbackCtx.clearRect(0, 0, fallbackCanvas.width, fallbackCanvas.height);
+      }
+    }
+
+    function toggleHanziOutlineGuide() {
+      if (isHanziWriterLoaded && hanziWriterInstance) {
+        isOutlineGuideActive = !isOutlineGuideActive;
+        if (isOutlineGuideActive) {
+          hanziWriterInstance.showOutline();
+        } else {
+          hanziWriterInstance.hideOutline();
+        }
+      }
+    }
+
+    // Reveal correct drawing background help
+    function revealManualHanziAnswer() {
+      const q = quizQuestions[currentQuizIndex];
+      // Draw correct character on background in light gray
+      fallbackCtx.fillStyle = "rgba(100, 116, 139, 0.15)";
+      fallbackCtx.font = "bold 160px 'Noto Sans SC'";
+      fallbackCtx.textAlign = "center";
+      fallbackCtx.textBaseline = "middle";
+      fallbackCtx.fillText(q.hanzi, fallbackCanvas.width / 2, fallbackCanvas.height / 2 + 10);
+
+      document.getElementById("hanzi-fallback-check-btn").classList.add("hidden");
+      document.getElementById("hanzi-fallback-grade-buttons").classList.remove("hidden");
+    }
+
+    function gradeManualHanziAnswer(isCorrect) {
+      if (isCorrect) {
+        playQuizBeep("success");
+        showQuizCorrectFeedback("Luar biasa! Karakter tergambar dengan benar.");
+      } else {
+        playQuizBeep("error");
+        showQuizWrongFeedback(quizQuestions[currentQuizIndex].hanzi, "Penulisan coretan tidak tepat.");
+      }
+
+      logQuizAnswer(isCorrect, "Gambar coretan", quizQuestions[currentQuizIndex].hanzi);
+    }
+
+    // --- VERIFICATION & SCORE CALCULATION ---
+    function checkQuizAnswer() {
+      const q = quizQuestions[currentQuizIndex];
+      const userInput = document.getElementById("quiz-pinyin-input").value.trim().toLowerCase();
+
+      if (!userInput) {
+        showNotification("Harap masukkan jawaban pinyin!", "info");
+        return;
+      }
+
+      document.getElementById("quiz-submit-btn").classList.add("hidden");
+      document.getElementById("quiz-pinyin-input").disabled = true;
+
+      // Pinyin match check
+      const isCorrect = verifyPinyinMatch(userInput, q.pinyin, q.correctAnswer);
+
+      if (isCorrect) {
+        playQuizBeep("success");
+        showQuizCorrectFeedback(`Tepat! Pinyin: ${q.correctAnswer || q.pinyin}`);
+      } else {
+        playQuizBeep("error");
+        showQuizWrongFeedback(q.correctAnswer || q.pinyin, `Jawaban Anda: ${userInput}`);
+      }
+
+      logQuizAnswer(isCorrect, userInput, q.correctAnswer || q.pinyin);
+    }
+
+    function verifyPinyinMatch(userInput, dbPinyin, dbCorrectAnswer) {
+      // Normalization check: remove spaces, accents, lowercase
+      const normalize = (str) => {
+        if (!str) return "";
+        return str
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "") // remove tone accents
+          .replace(/\s+/g, "") // remove spaces
+          .replace(/[1-5]/g, "") // remove numeric tones
+          .toLowerCase();
+      };
+
+      const normalizedInput = normalize(userInput);
+      const normalizedPinyin = normalize(dbPinyin);
+      const normalizedCorrect = normalize(dbCorrectAnswer);
+
+      // Check direct exact match, or normalized match
+      const match1 = userInput === dbPinyin || userInput === dbCorrectAnswer;
+      const match2 = normalizedInput === normalizedPinyin || normalizedInput === normalizedCorrect;
+
+      return match1 || match2;
+    }
+
+    function showQuizCorrectFeedback(text) {
+      const fb = document.getElementById("quiz-answer-feedback");
+      fb.className = "w-full max-w-sm border border-emerald-200 dark:border-emerald-950 bg-emerald-50/50 dark:bg-emerald-950/20 p-4 rounded-2xl flex items-center gap-3 mt-4 text-left transition-all duration-200";
+
+      document.getElementById("quiz-feedback-badge-icon").className = "w-8 h-8 rounded-xl bg-emerald-500 flex items-center justify-center text-white text-base shadow-sm";
+      document.getElementById("quiz-feedback-badge-icon").innerHTML = `<i class="fa-solid fa-circle-check"></i>`;
+      document.getElementById("quiz-feedback-title").innerText = "Jawaban Benar!";
+      document.getElementById("quiz-feedback-title").className = "text-xs font-black text-emerald-600 dark:text-emerald-400";
+      document.getElementById("quiz-feedback-text").innerText = text;
+
+      document.getElementById("quiz-next-btn").classList.remove("hidden");
+    }
+
+    function showQuizWrongFeedback(correctVal, detailText) {
+      const fb = document.getElementById("quiz-answer-feedback");
+      fb.className = "w-full max-w-sm border border-rose-200 dark:border-rose-950 bg-rose-50/50 dark:bg-rose-950/20 p-4 rounded-2xl flex items-center gap-3 mt-4 text-left transition-all duration-200";
+
+      document.getElementById("quiz-feedback-badge-icon").className = "w-8 h-8 rounded-xl bg-rose-600 flex items-center justify-center text-white text-base shadow-sm";
+      document.getElementById("quiz-feedback-badge-icon").innerHTML = `<i class="fa-solid fa-circle-xmark"></i>`;
+      document.getElementById("quiz-feedback-title").innerText = "Jawaban Kurang Tepat";
+      document.getElementById("quiz-feedback-title").className = "text-xs font-black text-rose-600 dark:text-rose-450";
+      document.getElementById("quiz-feedback-text").innerHTML = `Harusnya: <span class="font-bold text-slate-800 dark:text-white text-xs">${correctVal}</span><br><span class="text-[9px] text-slate-400">${detailText}</span>`;
+
+      document.getElementById("quiz-next-btn").classList.remove("hidden");
+    }
+
+    function logQuizAnswer(isCorrect, userVal, correctVal) {
+      const q = quizQuestions[currentQuizIndex];
+      quizAnswersLog.push({
+        question: q.type === "pinyin" ? q.hanzi : `${q.pinyin} (${q.meaning})`,
+        type: q.type,
+        userVal: userVal || "-",
+        correctVal: correctVal,
+        isCorrect: isCorrect
+      });
+
+      if (isCorrect) quizScore++;
+    }
+
+    function goToNextQuizQuestion() {
+      if (currentQuizIndex < quizQuestions.length - 1) {
+        currentQuizIndex++;
+        loadCurrentQuizQuestion();
+      } else {
+        // Complete Quiz, calculate percentage score
+        finishQuizResult();
+      }
+    }
+
+    function finishQuizResult() {
+      document.getElementById("test-player-view").classList.add("hidden");
+      document.getElementById("test-result-view").classList.remove("hidden");
+
+      const rawScore = quizQuestions.length > 0 ? (quizScore / quizQuestions.length) * 100 : 0;
+      const score = Math.round(rawScore);
+
+      document.getElementById("quiz-result-score-val").innerText = score;
+
+      // Correct/wrong metrics
+      document.getElementById("quiz-correct-summary").innerText = quizScore;
+      document.getElementById("quiz-wrong-summary").innerText = quizQuestions.length - quizScore;
+
+      // Emoticon check
+      const emojiEl = document.getElementById("quiz-result-emoji");
+      const titleEl = document.getElementById("quiz-result-title");
+      if (score >= 90) {
+        emojiEl.innerText = "🏆";
+        emojiEl.className = "w-20 h-20 bg-yellow-50 dark:bg-yellow-950/40 text-yellow-500 rounded-full flex items-center justify-center text-4xl mx-auto mb-6 shadow-inner";
+        titleEl.innerText = "Sempurna! Luar Biasa";
+      } else if (score >= 70) {
+        emojiEl.innerText = "🎉";
+        emojiEl.className = "w-20 h-20 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-500 rounded-full flex items-center justify-center text-4xl mx-auto mb-6 shadow-inner";
+        titleEl.innerText = "Kerja Bagus!";
+      } else {
+        emojiEl.innerText = "💪";
+        emojiEl.className = "w-20 h-20 bg-slate-100 dark:bg-slate-800 text-slate-500 rounded-full flex items-center justify-center text-4xl mx-auto mb-6 shadow-inner";
+        titleEl.innerText = "Ayo Latihan Lagi!";
+      }
+    }
+
+    function retryCurrentQuiz() {
+      startQuiz(activeQuizType);
+    }
+
+    function exitQuiz() {
+      activeQuizType = null;
+      document.getElementById("test-player-view").classList.add("hidden");
+      document.getElementById("test-result-view").classList.add("hidden");
+      document.getElementById("test-menu-view").classList.remove("hidden");
+    }
+
+    // ==========================================
+    // 9. TEXT-TO-SPEECH SOUND ENGINE            
+    // ==========================================
+    function speakWordsText(text) {
+      if (!text) return;
+
+      // Stop ongoing speech
+      window.speechSynthesis.cancel();
+
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = "zh-CN";
+
+      // Attempt to assign a Chinese voice
+      const voices = window.speechSynthesis.getVoices();
+      const cnVoice = voices.find(voice => voice.lang.includes("ZH") || voice.lang.includes("CN") || voice.lang.includes("zh-CN"));
+      if (cnVoice) {
+        utterance.voice = cnVoice;
+      }
+
+      utterance.rate = 0.85; // Slightly slower rate for learners
+      window.speechSynthesis.speak(utterance);
+    }
+
+    function stopSpeaking() {
+      window.speechSynthesis.cancel();
+    }
+
+    // Play synthesized HTML5 beeps for quiz answers feedback
+    function playQuizBeep(type) {
+      try {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (!AudioCtx) return;
+        const ctx = new AudioCtx();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        if (type === "success") {
+          osc.type = "sine";
+          osc.frequency.setValueAtTime(523.25, ctx.currentTime); // C5
+          osc.frequency.setValueAtTime(659.25, ctx.currentTime + 0.08); // E5
+          gain.gain.setValueAtTime(0.08, ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.2);
+          osc.start(ctx.currentTime);
+          osc.stop(ctx.currentTime + 0.2);
+        } else {
+          osc.type = "sawtooth";
+          osc.frequency.setValueAtTime(220.00, ctx.currentTime); // A3
+          osc.frequency.setValueAtTime(146.83, ctx.currentTime + 0.12); // D3
+          gain.gain.setValueAtTime(0.08, ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.35);
+          osc.start(ctx.currentTime);
+          osc.stop(ctx.currentTime + 0.35);
+        }
+      } catch (e) {
+        console.error("Quiz beep synthesis failed", e);
+      }
+    }
+
+    // Load voices list (needed for some browsers like Chrome to pop voices on async load)
+    if (typeof window.speechSynthesis !== "undefined" && window.speechSynthesis.onvoiceschanged !== undefined) {
+      window.speechSynthesis.onvoiceschanged = () => { };
+    }
+
+    // ==========================================
+    // 10. SYSTEM UTILITIES (TOAST, THEME)       
+    // ==========================================
+    function showNotification(message, type = "info") {
+      const toast = document.getElementById("toast");
+      const icon = document.getElementById("toast-icon");
+      const title = document.getElementById("toast-title");
+      const msg = document.getElementById("toast-message");
+
+      msg.innerText = message;
+
+      if (type === "success") {
+        icon.className = "w-8 h-8 rounded-xl bg-emerald-500 flex items-center justify-center text-white shadow";
+        icon.innerHTML = `<i class="fa-solid fa-circle-check"></i>`;
+        title.innerText = "Sukses";
+      } else if (type === "error") {
+        icon.className = "w-8 h-8 rounded-xl bg-rose-600 flex items-center justify-center text-white shadow";
+        icon.innerHTML = `<i class="fa-solid fa-circle-xmark"></i>`;
+        title.innerText = "Error";
+      } else {
+        icon.className = "w-8 h-8 rounded-xl bg-indigo-500 flex items-center justify-center text-white shadow";
+        icon.innerHTML = `<i class="fa-solid fa-circle-info"></i>`;
+        title.innerText = "Informasi";
+      }
+
+      // Slide in
+      toast.classList.remove("translate-x-72", "opacity-0");
+      toast.classList.add("translate-x-0", "opacity-100");
+
+      // Auto dismiss
+      setTimeout(() => {
+        toast.classList.remove("translate-x-0", "opacity-100");
+        toast.classList.add("translate-x-72", "opacity-0");
+      }, 3500);
+    }
+
+    function initTheme() {
+      const isDark = localStorage.getItem("hanzilearn_theme") === "dark" ||
+        (!("hanzilearn_theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches);
+
+      if (isDark) {
+        document.documentElement.classList.add("dark");
+        document.getElementById("theme-icon").className = "fa-solid fa-sun text-sm";
+      } else {
+        document.documentElement.classList.remove("dark");
+        document.getElementById("theme-icon").className = "fa-solid fa-moon text-sm";
+      }
+    }
+
+    function toggleTheme() {
+      const root = document.documentElement;
+      const themeIcon = document.getElementById("theme-icon");
+
+      if (root.classList.contains("dark")) {
+        root.classList.remove("dark");
+        localStorage.setItem("hanzilearn_theme", "light");
+        themeIcon.className = "fa-solid fa-moon text-sm";
+        showNotification("Beralih ke Mode Terang", "info");
+      } else {
+        root.classList.add("dark");
+        localStorage.setItem("hanzilearn_theme", "dark");
+        themeIcon.className = "fa-solid fa-sun text-sm";
+        showNotification("Beralih ke Mode Gelap", "info");
+      }
+    }
+
+    function toggleMobileMenu() {
+      const menu = document.getElementById("mobile-menu");
+      menu.classList.toggle("hidden");
+    }
+  </script>
+</body>
+
+</html>

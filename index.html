@@ -1,0 +1,1394 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Michael Wung - Personal Profile & School Assignments</title>
+
+  <!-- SEO Meta Tags -->
+  <meta name="description"
+    content="Website portofolio Michael Wung, siswa kelas 11 SMA Cinta Kasih Tzu Chi. Menyajikan informasi profil, keahlian, dan kumpulan tugas sekolah Informatika dan Bahasa Indonesia.">
+  <meta name="author" content="Michael Wung">
+
+  <!-- Early Theme Detector -->
+  <script>
+    const savedTheme = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  </script>
+
+  <!-- Google Fonts: Plus Jakarta Sans & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Tailwind Configuration -->
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'Inter', 'sans-serif'],
+          },
+          colors: {
+            theme: {
+              dark: 'var(--bg-primary)',
+              card: 'var(--bg-card)',
+              cardHover: 'var(--bg-card-hover)',
+              accent: 'var(--accent)',
+              accentHover: 'var(--accent-hover)',
+              border: 'var(--border)',
+              borderStrong: 'var(--border-strong)',
+              accentLight: 'var(--bg-accent-light)',
+              darker: 'var(--bg-darker)',
+              textPrimary: 'var(--text-primary)',
+              textSecondary: 'var(--text-secondary)',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Custom CSS for Premium FX -->
+  <style>
+    :root {
+      /* Light Mode colors (Red & White) */
+      --bg-primary: #f8fafc;
+      --bg-card: #ffffff;
+      --bg-card-hover: #f1f5f9;
+      --accent: #dc2626;
+      /* Red 600 */
+      --accent-hover: #b91c1c;
+      /* Red 700 */
+      --border: rgba(220, 38, 38, 0.08);
+      --border-strong: rgba(220, 38, 38, 0.15);
+      --bg-accent-light: rgba(220, 38, 38, 0.04);
+      --bg-darker: #f1f5f9;
+      --text-primary: #0f172a;
+      /* slate 900 */
+      --text-secondary: #475569;
+      /* slate 600 */
+      --glass-bg-rgb: 255, 255, 255;
+      --nav-bg-rgb: 248, 250, 252;
+    }
+
+    .dark {
+      /* Dark Mode colors (Red & Black) */
+      --bg-primary: #09090b;
+      /* Blackish */
+      --bg-card: #121216;
+      /* Dark gray */
+      --bg-card-hover: #1c1c22;
+      --accent: #ef4444;
+      /* Red 500 */
+      --accent-hover: #f87171;
+      /* Red 400 */
+      --border: rgba(239, 68, 68, 0.08);
+      --border-strong: rgba(239, 68, 68, 0.18);
+      --bg-accent-light: rgba(239, 68, 68, 0.06);
+      --bg-darker: #040406;
+      --text-primary: #f8fafc;
+      /* slate 50 */
+      --text-secondary: #94a3b8;
+      /* slate 400 */
+      --glass-bg-rgb: 18, 18, 22;
+      --nav-bg-rgb: 10, 10, 12;
+    }
+
+    /* Global Transition for smooth theme switching */
+    body {
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .glass,
+    .glass-nav,
+    header,
+    footer,
+    card,
+    section,
+    button,
+    input,
+    textarea {
+      transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--bg-darker);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--border-strong);
+      border-radius: 9999px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--accent);
+    }
+
+    /* Glassmorphism utility */
+    .glass {
+      background: rgba(var(--glass-bg-rgb), 0.75);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--border);
+    }
+
+    .glass-nav {
+      background: rgba(var(--nav-bg-rgb), 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .glow-red {
+      box-shadow: 0 0 25px rgba(239, 68, 68, 0.08);
+    }
+
+    .glow-red-lg {
+      box-shadow: 0 0 50px rgba(239, 68, 68, 0.15);
+    }
+  </style>
+</head>
+
+<body class="bg-theme-dark text-theme-textPrimary font-sans min-h-screen flex flex-col relative overflow-x-hidden">
+
+  <!-- Background Decorative Glowing Blobs -->
+  <div
+    class="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-red-500/[0.03] dark:bg-red-950/[0.06] blur-[150px] -z-10 pointer-events-none">
+  </div>
+  <div
+    class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-red-500/[0.03] dark:bg-red-950/[0.06] blur-[150px] -z-10 pointer-events-none">
+  </div>
+
+  <!-- Header Navigation -->
+  <header class="sticky top-0 z-40 w-full glass-nav shadow-lg transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+
+        <!-- Logo / Brand -->
+        <a href="index.html" class="flex items-center gap-2 cursor-pointer group">
+          <div
+            class="w-8 h-8 rounded-lg bg-gradient-to-tr from-theme-accent to-red-700 dark:from-red-600 dark:to-red-500 flex items-center justify-center text-white font-extrabold shadow-md shadow-red-500/10 group-hover:scale-105 transition-all">
+            MW
+          </div>
+          <span
+            class="text-lg font-bold tracking-tight text-theme-textPrimary group-hover:text-theme-accent transition-colors">
+            Michael<span class="text-theme-accent font-extrabold">Wung</span>
+          </span>
+        </a>
+
+        <!-- Navigation Menu (Desktop) -->
+        <nav class="hidden md:flex space-x-1.5">
+          <a href="index.html" id="nav-dashboard"
+            class="nav-btn px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 flex items-center gap-2 bg-blue-600/10 text-blue-400 border border-blue-500/20 shadow-sm">
+            <i class="fa-solid fa-chart-pie text-xs"></i> Dashboard
+          </a>
+          <a href="profile.html" id="nav-profile"
+            class="nav-btn px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 flex items-center gap-2 text-theme-textSecondary hover:text-theme-textPrimary hover:bg-theme-cardHover">
+            <i class="fa-solid fa-user text-xs"></i> Profile
+          </a>
+          <a href="informatika.html" id="nav-informatika"
+            class="nav-btn px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 flex items-center gap-2 text-theme-textSecondary hover:text-theme-textPrimary hover:bg-theme-cardHover">
+            <i class="fa-solid fa-code text-xs"></i> Informatika
+          </a>
+          <a href="bahasa-indonesia.html" id="nav-bahasa-indonesia"
+            class="nav-btn px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 flex items-center gap-2 text-theme-textSecondary hover:text-theme-textPrimary hover:bg-theme-cardHover">
+            <i class="fa-solid fa-book-open text-xs"></i> Bahasa Indonesia
+          </a>
+          <a href="games.html" id="nav-games"
+            class="nav-btn px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 flex items-center gap-2 text-theme-textSecondary hover:text-theme-textPrimary hover:bg-purple-500/10 hover:text-purple-400 hover:border-purple-500/20 border border-transparent">
+            <i class="fa-solid fa-gamepad text-xs"></i> Mini Games
+          </a>
+          <a href="songs.html" id="nav-songs" class="nav-btn px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 flex items-center gap-2 text-theme-textSecondary hover:text-theme-textPrimary hover:bg-pink-500/10 hover:text-pink-400 border border-transparent">
+            <i class="fa-solid fa-music text-xs"></i> Songs
+          </a>
+        </nav>
+
+        <!-- Right Controls -->
+        <div class="flex items-center gap-3">
+          <!-- Dark Mode Toggle Button -->
+          <button id="theme-toggle" onclick="toggleDarkMode()"
+            class="p-2.5 rounded-xl bg-theme-accentLight border border-theme-border text-theme-accent hover:bg-theme-accent hover:text-white transition-all duration-300"
+            title="Ganti Tema">
+            <i id="theme-toggle-icon" class="fa-solid fa-moon text-sm animate-pulse"></i>
+          </button>
+
+          <!-- PETUNJUK WHATSAPP: Ganti nomor '6281234567890' di bawah dengan nomor WhatsApp Anda sendiri (gunakan kode negara, misal 62) -->
+          <a href="https://wa.me/qr/5PR5E4Z4VZIVH1." target="_blank"
+            class="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-emerald-500/10 hover:bg-emerald-500 border border-emerald-500/20 text-emerald-500 hover:text-white text-xs font-bold transition-all shadow-sm">
+            <i class="fa-brands fa-whatsapp text-sm"></i> Hubungi Saya
+          </a>
+          <button onclick="toggleMobileMenu()"
+            class="md:hidden p-2.5 rounded-xl bg-theme-cardHover border border-theme-border text-theme-textSecondary hover:text-theme-textPrimary transition-all">
+            <i class="fa-solid fa-bars text-sm"></i>
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Drawer Menu -->
+  <div id="mobile-menu"
+    class="hidden md:hidden fixed inset-0 z-50 bg-black/40 dark:bg-black/70 backdrop-blur-sm transition-opacity duration-300">
+    <div
+      class="fixed right-0 top-0 bottom-0 w-64 bg-theme-card border-l border-theme-border p-6 shadow-2xl flex flex-col justify-between">
+      <div>
+        <div class="flex items-center justify-between mb-8 pb-4 border-b border-theme-border">
+          <span class="font-extrabold text-sm tracking-wider text-theme-textSecondary">MENU</span>
+          <button onclick="toggleMobileMenu()"
+            class="p-1 rounded-lg hover:bg-theme-cardHover text-theme-textSecondary hover:text-theme-textPrimary">
+            <i class="fa-solid fa-xmark text-lg"></i>
+          </button>
+        </div>
+        <div class="flex flex-col gap-2">
+          <a href="index.html" id="mob-nav-dashboard"
+            class="w-full text-left px-4 py-3 rounded-xl text-sm font-bold flex items-center gap-3 bg-blue-600/10 text-blue-400 border border-blue-500/10">
+            <i class="fa-solid fa-chart-pie w-5 text-center"></i> Dashboard
+          </a>
+          <a href="profile.html" id="mob-nav-profile"
+            class="w-full text-left px-4 py-3 rounded-xl text-sm font-semibold flex items-center gap-3 text-theme-textSecondary hover:bg-theme-cardHover hover:text-theme-textPrimary transition">
+            <i class="fa-solid fa-user w-5 text-center"></i> Profil
+          </a>
+          <a href="informatika.html" id="mob-nav-informatika"
+            class="w-full text-left px-4 py-3 rounded-xl text-sm font-semibold flex items-center gap-3 text-theme-textSecondary hover:bg-theme-cardHover hover:text-theme-textPrimary transition">
+            <i class="fa-solid fa-code w-5 text-center"></i> Informatika
+          </a>
+          <a href="bahasa-indonesia.html" id="mob-nav-bahasa-indonesia"
+            class="w-full text-left px-4 py-3 rounded-xl text-sm font-semibold flex items-center gap-3 text-theme-textSecondary hover:bg-theme-cardHover hover:text-theme-textPrimary transition">
+            <i class="fa-solid fa-book-open w-5 text-center"></i> Bahasa Indonesia
+          </a>
+          <a href="games.html" id="mob-nav-games"
+            class="w-full text-left px-4 py-3 rounded-xl text-sm font-semibold flex items-center gap-3 text-theme-textSecondary hover:bg-purple-500/10 hover:text-purple-400 transition">
+            <i class="fa-solid fa-gamepad w-5 text-center"></i> Mini Games
+          </a>
+          <a href="songs.html" id="mob-nav-songs" class="w-full text-left px-4 py-3 rounded-xl text-sm font-semibold flex items-center gap-3 text-theme-textSecondary hover:bg-pink-500/10 hover:text-pink-400 transition">
+            <i class="fa-solid fa-music w-5 text-center"></i> Songs
+          </a>
+
+          <!-- PETUNJUK WHATSAPP MOBILE: Ganti nomor '6281234567890' di bawah dengan nomor WhatsApp Anda -->
+          <a href="https://wa.me/qr/5PR5E4Z4VZIVH1" target="_blank"
+            class="w-full mt-4 py-3 rounded-xl text-center text-xs font-bold flex items-center justify-center gap-2 bg-emerald-500/10 hover:bg-emerald-500 border border-emerald-500/20 text-emerald-500 hover:text-white transition-all shadow-sm">
+            <i class="fa-brands fa-whatsapp text-sm"></i> Hubungi Saya (WhatsApp)
+          </a>
+        </div>
+      </div>
+      <div class="text-[10px] text-theme-textSecondary/50 text-center font-medium mt-auto">
+        Michael Wung &bull; Portofolio v1.1
+      </div>
+    </div>
+  </div>
+
+  <!-- Notification Success Toast -->
+  <div id="toast"
+    class="fixed bottom-6 right-6 z-50 transform translate-y-24 transition-all duration-300 opacity-0 glass p-4 rounded-2xl shadow-2xl flex items-center gap-3 max-w-sm">
+    <div class="w-8 h-8 rounded-xl bg-theme-accentLight text-theme-accent flex items-center justify-center text-sm">
+      <i class="fa-solid fa-circle-check"></i>
+    </div>
+    <div>
+      <h5 class="text-xs font-bold text-theme-textPrimary">Sukses</h5>
+      <p id="toast-message" class="text-[10px] text-theme-textSecondary mt-0.5">Pesan dikirim!</p>
+    </div>
+  </div>
+
+  <!-- Main Container -->
+  <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+    <!-- ========================================== -->
+    <!-- TAB 1: DASHBOARD                           -->
+    <!-- ========================================== -->
+    <section id="tab-dashboard" class="tab-content transition-all duration-300">
+
+      <!-- Greeting Banner -->
+      <div class="glass rounded-3xl p-6 sm:p-8 mb-8 relative overflow-hidden glow-red">
+        <div
+          class="absolute -right-10 -bottom-10 w-40 h-40 bg-red-500/[0.04] dark:bg-red-950/[0.08] rounded-full blur-2xl">
+        </div>
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <span id="dashboard-date" class="text-xs font-bold text-theme-accent uppercase tracking-widest">20 Juli
+              2026</span>
+            <h1 id="dashboard-greeting" class="text-2xl sm:text-3xl font-extrabold text-theme-textPrimary mt-1">
+              Selamat
+              Malam, Michael!</h1>
+            <p class="text-xs sm:text-sm text-theme-textSecondary mt-2">Selamat datang di hub portofolio Anda. Kelola
+              tugas sekolah, bagikan profil Anda, dan tinjau proyek secara teratur di satu portal terpusat.</p>
+          </div>
+          <div
+            class="flex items-center gap-2 bg-theme-darker border border-theme-border rounded-2xl px-4.5 py-2.5 self-start md:self-center shadow-inner">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+            <span class="text-xs font-bold tracking-tight text-theme-textSecondary">Status Portal: <span
+                class="text-emerald-500 dark:text-emerald-450">Siap Deploy</span></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Metrics Grid -->
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        <div class="glass rounded-2xl p-5 shadow-sm">
+          <div class="flex items-center justify-between text-theme-textSecondary mb-2">
+            <span class="text-[11px] font-bold uppercase tracking-wider">Sekolah</span>
+            <i class="fa-solid fa-school text-xs text-theme-accent"></i>
+          </div>
+          <p class="text-sm font-extrabold text-theme-textPrimary">SMA Cinta Kasih</p>
+          <span class="text-[10px] text-theme-textSecondary font-semibold">Tzu Chi Jakarta</span>
+        </div>
+        <div class="glass rounded-2xl p-5 shadow-sm">
+          <div class="flex items-center justify-between text-theme-textSecondary mb-2">
+            <span class="text-[11px] font-bold uppercase tracking-wider">Tingkat Kelas</span>
+            <i class="fa-solid fa-graduation-cap text-xs text-theme-accent"></i>
+          </div>
+          <p class="text-sm font-extrabold text-theme-textPrimary">Kelas XI.3</p>
+          <span class="text-[10px] text-theme-textSecondary font-semibold">Tahun Ajaran 2026/2027</span>
+        </div>
+        <div
+          class="glass rounded-2xl p-5 shadow-sm cursor-pointer hover:border-theme-accent/30 hover:shadow-sm transition"
+          onclick="location.href='informatika.html'">
+          <div class="flex items-center justify-between text-theme-textSecondary mb-2">
+            <span class="text-[11px] font-bold uppercase tracking-wider">Tugas Informatika</span>
+            <i class="fa-solid fa-code text-xs text-theme-accent"></i>
+          </div>
+          <p class="text-sm font-extrabold text-theme-textPrimary">3 Proyek</p>
+          <span class="text-[10px] text-emerald-500 font-semibold"><i class="fa-solid fa-check mr-0.5"></i> 1 Fitur
+            Unggulan</span>
+        </div>
+        <div
+          class="glass rounded-2xl p-5 shadow-sm cursor-pointer hover:border-theme-accent/30 hover:shadow-sm transition"
+          onclick="location.href='bahasa-indonesia.html'">
+          <div class="flex items-center justify-between text-theme-textSecondary mb-2">
+            <span class="text-[11px] font-bold uppercase tracking-wider">Tugas B. Indonesia</span>
+            <i class="fa-solid fa-file-invoice text-xs text-theme-accent"></i>
+          </div>
+          <p class="text-sm font-extrabold text-theme-textPrimary">3 Dokumen</p>
+          <span class="text-[10px] text-theme-textSecondary font-semibold">Interactive Reader</span>
+        </div>
+      </div>
+
+      <!-- Main Dashboard Content Split -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+        <!-- Left Column: Jadwal & Aktivitas -->
+        <div class="lg:col-span-2 flex flex-col gap-6">
+
+          <!-- Jadwal Pelajaran Section (Tabbed & Dynamic) -->
+          <div class="glass rounded-3xl p-6 sm:p-8 relative overflow-hidden glow-red">
+            <div
+              class="absolute -right-10 -bottom-10 w-40 h-40 bg-red-500/[0.02] dark:bg-red-950/[0.04] rounded-full blur-2xl pointer-events-none">
+            </div>
+
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+              <div>
+                <h3 class="text-lg font-bold text-theme-textPrimary flex items-center gap-2.5">
+                  <i class="fa-regular fa-calendar-days text-theme-accent"></i> Jadwal Pelajaran Kelas XI.3
+                </h3>
+                <p class="text-xs text-theme-textSecondary mt-1">Pilih hari untuk melihat jadwal pelajaran aktif</p>
+              </div>
+              <span
+                class="self-start sm:self-center text-[10px] bg-theme-accentLight border border-theme-border text-theme-accent px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">
+                Semester Ganjil
+              </span>
+            </div>
+
+            <!-- Day Selection Tabs -->
+            <div class="flex gap-2 pb-2 mb-6 overflow-x-auto whitespace-nowrap scrollbar-none">
+              <button onclick="switchScheduleDay('senin')" id="tab-senin"
+                class="schedule-tab px-4 py-2 text-xs font-bold rounded-xl border transition-all duration-300">
+                Senin
+              </button>
+              <button onclick="switchScheduleDay('selasa')" id="tab-selasa"
+                class="schedule-tab px-4 py-2 text-xs font-bold rounded-xl border transition-all duration-300">
+                Selasa
+              </button>
+              <button onclick="switchScheduleDay('rabu')" id="tab-rabu"
+                class="schedule-tab px-4 py-2 text-xs font-bold rounded-xl border transition-all duration-300">
+                Rabu
+              </button>
+              <button onclick="switchScheduleDay('kamis')" id="tab-kamis"
+                class="schedule-tab px-4 py-2 text-xs font-bold rounded-xl border transition-all duration-300">
+                Kamis
+              </button>
+              <button onclick="switchScheduleDay('jumat')" id="tab-jumat"
+                class="schedule-tab px-4 py-2 text-xs font-bold rounded-xl border transition-all duration-300">
+                Jumat
+              </button>
+            </div>
+
+            <!-- Schedules Container -->
+            <div id="schedule-contents" class="relative min-h-[220px]">
+              <!-- Monday (Senin) -->
+              <div id="content-senin"
+                class="schedule-content hidden transition-all duration-350 opacity-0 transform translate-y-2">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div
+                    class="flex items-center gap-3 p-3 rounded-2xl bg-theme-darker/60 border border-theme-border hover:border-theme-accent/20 transition-all duration-300">
+                    <div
+                      class="w-9 h-9 rounded-xl bg-theme-accentLight border border-theme-border text-theme-accent flex items-center justify-center text-sm shrink-0">
+                      <i class="fa-solid fa-flag"></i>
+                    </div>
+                    <div>
+                      <span class="text-[10px] text-theme-textSecondary block"><i
+                          class="fa-regular fa-clock mr-0.5"></i> 06:30 - 07:30</span>
+                      <h5 class="text-xs font-extrabold text-theme-textPrimary mt-0.5">Upacara / Wali Kelas</h5>
+                    </div>
+                  </div>
+                  <div
+                    class="flex items-center gap-3 p-3 rounded-2xl bg-theme-darker/60 border border-theme-border hover:border-theme-accent/20 transition-all duration-300">
+                    <div
+                      class="w-9 h-9 rounded-xl bg-theme-accentLight border border-theme-border text-theme-accent flex items-center justify-center text-sm shrink-0">
+                      <i class="fa-solid fa-users"></i>
+                    </div>
+                    <div>
+                      <span class="text-[10px] text-theme-textSecondary block"><i
+                          class="fa-regular fa-clock mr-0.5"></i> 07:30 - 09:00</span>
+                      <h5 class="text-xs font-extrabold text-theme-textPrimary mt-0.5">Sosiologi</h5>
+                      <p class="text-[9px] text-theme-textSecondary">Pak Cornel</p>
+                    </div>
+                  </div>
+                  <div
+                    class="flex items-center gap-3 p-3 rounded-2xl bg-emerald-500/5 border border-emerald-500/10 hover:border-emerald-500/20 transition-all duration-300 sm:col-span-2">
+                    <div
+                      class="w-9 h-9 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center text-sm shrink-0">
+                      <i class="fa-solid fa-mug-hot"></i>
+                    </div>
+                    <div>
+                      <span class="text-[10px] text-emerald-500/80 block"><i class="fa-regular fa-clock mr-0.5"></i>
+                        09:00 - 09:30</span>
+                      <h5 class="text-xs font-extrabold text-emerald-500 mt-0.5">Istirahat</h5>
+                    </div>
+                  </div>
+                  <div
+                    class="flex items-center gap-3 p-3 rounded-2xl bg-theme-darker/60 border border-theme-border hover:border-theme-accent/20 transition-all duration-300">
+                    <div
+                      class="w-9 h-9 rounded-xl bg-theme-accentLight border border-theme-border text-theme-accent flex items-center justify-center text-sm shrink-0">
+                      <i class="fa-solid fa-language"></i>
+                    </div>
+                    <div>
+                      <span class="text-[10px] text-theme-textSecondary block"><i
+                          class="fa-regular fa-clock mr-0.5"></i> 09:30 - 10:50</span>
+                      <h5 class="text-xs font-extrabold text-theme-textPrimary mt-0.5">Bahasa Mandarin</h5>
+                      <p class="text-[9px] text-theme-textSecondary">Laoshi Mul</p>
+                    </div>
+                  </div>
+                  <div
+                    class="flex items-center gap-3 p-3 rounded-2xl bg-theme-darker/60 border border-theme-border hover:border-theme-accent/20 transition-all duration-300">
+                    <div
+                      class="w-9 h-9 rounded-xl bg-theme-accentLight border border-theme-border text-theme-accent flex items-center justify-center text-sm shrink-0">
+                      <i class="fa-solid fa-heart"></i>
+                    </div>
+                    <div>
+                      <span class="text-[10px] text-theme-textSecondary block"><i
+                          class="fa-regular fa-clock mr-0.5"></i> 10:50 - 12:10</span>
+                      <h5 class="text-xs font-extrabold text-theme-textPrimary mt-0.5">Bahasa Humanis</h5>
+                      <p class="text-[9px] text-theme-textSecondary">Laoshi Iriwati</p>
+                    </div>
+                  </div>
+                  <div
+                    class="flex items-center gap-3 p-3 rounded-2xl bg-emerald-500/5 border border-emerald-500/10 hover:border-emerald-500/20 transition-all duration-300 sm:col-span-2">
+                    <div
+                      class="w-9 h-9 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center text-sm shrink-0">
+                      <i class="fa-solid fa-mug-hot"></i>
+                    </div>
+                    <div>
+                      <span class="text-[10px] text-emerald-500/80 block"><i class="fa-regular fa-clock mr-0.5"></i>
+                        12:10 - 12:40</span>
+                      <h5 class="text-xs font-extrabold text-emerald-500 mt-0.5">Istirahat</h5>
+                    </div>
+                  </div>
+                  <div
+                    class="flex items-center gap-3 p-3 rounded-2xl bg-theme-darker/60 border border-theme-border hover:border-theme-accent/20 transition-all duration-300">
+                    <div
+                      class="w-9 h-9 rounded-xl bg-theme-accentLight border border-theme-border text-theme-accent flex items-center justify-center text-sm shrink-0">
+                      <i class="fa-solid fa-calculator"></i>
+                    </div>
+                    <div>
+                      <span class="text-[10px] text-theme-textSecondary block"><i
+                          class="fa-regular fa-clock mr-0.5"></i> 12:40 - 13:20</span>
+                      <h5 class="text-xs font-extrabold text-theme-textPrimary mt-0.5">Matematika Wajib</h5>
+                      <p class="text-[9px] text-theme-textSecondary">Pak Jefry</p>
+                    </div>
+                  </div>
+                  <div
+                    class="flex items-center gap-3 p-3 rounded-2xl bg-theme-darker/60 border border-theme-border hover:border-theme-accent/20 transition-all duration-300">
+                    <div
+                      class="w-9 h-9 rounded-xl bg-theme-accentLight border border-theme-border text-theme-accent flex items-center justify-center text-sm shrink-0">
+                      <i class="fa-solid fa-chart-line"></i>
+                    </div>
+                    <div>
+                      <span class="text-[10px] text-theme-textSecondary block"><i
+                          class="fa-regular fa-clock mr-0.5"></i> 13:20 - 14:40</span>
+                      <h5 class="text-xs font-extrabold text-theme-textPrimary mt-0.5">Ekonomi</h5>
+                      <p class="text-[9px] text-theme-textSecondary">Miss Debie</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Tuesday (Selasa) -->
+              <div id="content-selasa"
+                class="schedule-content hidden transition-all duration-350 opacity-0 transform translate-y-2">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div
+                    class="flex items-center gap-3 p-3 rounded-2xl bg-theme-darker/60 border border-theme-border hover:border-theme-accent/20 transition-all duration-300">
+                    <div
+                      class="w-9 h-9 rounded-xl bg-theme-accentLight border border-theme-border text-theme-accent flex items-center justify-center text-sm shrink-0">
+                      <i class="fa-solid fa-clock"></i>
+                    </div>
+                    <div>
+                      <span class="text-[10px] text-theme-textSecondary block"><i
+                          class="fa-regular fa-clock mr-0.5"></i> 06:30 - 06:45</span>
+                      <h5 class="text-xs font-extrabold text-theme-textPrimary mt-0.5">Pembiasaan Awal</h5>
+                    </div>
+                  </div>
+                  <div
+                    class="flex items-center gap-3 p-3 rounded-2xl bg-theme-darker/60 border border-theme-border hover:border-theme-accent/20 transition-all duration-300">
+                    <div
+                      class="w-9 h-9 rounded-xl bg-theme-accentLight border border-theme-border text-theme-accent flex items-center justify-center text-sm shrink-0">
+                      <i class="fa-solid fa-hands-praying"></i>
+                    </div>
+                    <div>
+                      <span class="text-[10px] text-theme-textSecondary block"><i
+                          class="fa-regular fa-clock mr-0.5"></i> 06:45 - 08:15</span>
+                      <h5 class="text-xs font-extrabold text-theme-textPrimary mt-0.5">Pendidikan Agama</h5>
+                      <p class="text-[9px] text-theme-textSecondary">Pak Dedy</p>
+                    </div>
+                  </div>
+                  <div
+                    class="flex items-center gap-3 p-3 rounded-2xl bg-theme-darker/60 border border-theme-border hover:border-theme-accent/20 transition-all duration-300">
+                    <div
+                      class="w-9 h-9 rounded-xl bg-theme-accentLight border border-theme-border text-theme-accent flex items-center justify-center text-sm shrink-0">
+                      <i class="fa-solid fa-book-open"></i>
+                    </div>
+                    <div>
+                      <span class="text-[10px] text-theme-textSecondary block"><i
+                          class="fa-regular fa-clock mr-0.5"></i> 08:15 - 09:45</span>
+                      <h5 class="text-xs font-extrabold text-theme-textPrimary mt-0.5">Bahasa Indonesia</h5>
+                      <p class="text-[9px] text-theme-textSecondary">Bu Ruly</p>
+                    </div>
+                  </div>
+                  <div
+                    class="flex items-center gap-3 p-3 rounded-2xl bg-emerald-500/5 border border-emerald-500/10 hover:border-emerald-500/20 transition-all duration-300">
+                    <div
+                      class="w-9 h-9 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center text-sm shrink-0">
+                      <i class="fa-solid fa-mug-hot"></i>
+                    </div>
+                    <div>
+                      <span class="text-[10px] text-emerald-500/80 block"><i class="fa-regular fa-clock mr-0.5"></i>
+                        09:45 - 10:05</span>
+                      <h5 class="text-xs font-extrabold text-emerald-500 mt-0.5">Istirahat</h5>
+                    </div>
+                  </div>
+                  <div
+                    class="flex items-center gap-3 p-3 rounded-2xl bg-theme-darker/60 border border-theme-border hover:border-theme-accent/20 transition-all duration-300">
+                    <div
+                      class="w-9 h-9 rounded-xl bg-theme-accentLight border border-theme-border text-theme-accent flex items-center justify-center text-sm shrink-0">
+                      <i class="fa-solid fa-earth-americas"></i>
+                    </div>
+                    <div>
+                      <span class="text-[10px] text-theme-textSecondary block"><i
+                          class="fa-regular fa-clock mr-0.5"></i> 10:05 - 11:35</span>
+                      <h5 class="text-xs font-extrabold text-theme-textPrimary mt-0.5">Geografi</h5>
+                      <p class="text-[9px] text-theme-textSecondary">Pak Fajar</p>
+                    </div>
+                  </div>
+                  <div
+                    class="flex items-center gap-3 p-3 rounded-2xl bg-emerald-500/5 border border-emerald-500/10 hover:border-emerald-500/20 transition-all duration-300">
+                    <div
+                      class="w-9 h-9 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center text-sm shrink-0">
+                      <i class="fa-solid fa-mug-hot"></i>
+                    </div>
+                    <div>
+                      <span class="text-[10px] text-emerald-500/80 block"><i class="fa-regular fa-clock mr-0.5"></i>
+                        11:35 - 12:00</span>
+                      <h5 class="text-xs font-extrabold text-emerald-500 mt-0.5">Istirahat</h5>
+                    </div>
+                  </div>
+                  <div
+                    class="flex items-center gap-3 p-3 rounded-2xl bg-theme-darker/60 border border-theme-border hover:border-theme-accent/20 transition-all duration-300">
+                    <div
+                      class="w-9 h-9 rounded-xl bg-theme-accentLight border border-theme-border text-theme-accent flex items-center justify-center text-sm shrink-0">
+                      <i class="fa-solid fa-chart-line"></i>
+                    </div>
+                    <div>
+                      <span class="text-[10px] text-theme-textSecondary block"><i
+                          class="fa-regular fa-clock mr-0.5"></i> 12:00 - 13:20</span>
+                      <h5 class="text-xs font-extrabold text-theme-textPrimary mt-0.5">Ekonomi</h5>
+                      <p class="text-[9px] text-theme-textSecondary">Miss Debie</p>
+                    </div>
+                  </div>
+                  <div
+                    class="flex items-center gap-3 p-3 rounded-2xl bg-theme-darker/60 border border-theme-border hover:border-theme-accent/20 transition-all duration-300">
+                    <div
+                      class="w-9 h-9 rounded-xl bg-theme-accentLight border border-theme-border text-theme-accent flex items-center justify-center text-sm shrink-0">
+                      <i class="fa-solid fa-users"></i>
+                    </div>
+                    <div>
+                      <span class="text-[10px] text-theme-textSecondary block"><i
+                          class="fa-regular fa-clock mr-0.5"></i> 13:20 - 14:30</span>
+                      <h5 class="text-xs font-extrabold text-theme-textPrimary mt-0.5">Sosiologi</h5>
+                      <p class="text-[9px] text-theme-textSecondary">Pak Cornel</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Wednesday (Rabu) -->
+              <div id="content-rabu"
+                class="schedule-content hidden transition-all duration-350 opacity-0 transform translate-y-2">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div
+                    class="flex items-center gap-3 p-3 rounded-2xl bg-theme-darker/60 border border-theme-border hover:border-theme-accent/20 transition-all duration-300">
+                    <div
+                      class="w-9 h-9 rounded-xl bg-theme-accentLight border border-theme-border text-theme-accent flex items-center justify-center text-sm shrink-0">
+                      <i class="fa-solid fa-clock"></i>
+                    </div>
+                    <div>
+                      <span class="text-[10px] text-theme-textSecondary block"><i
+                          class="fa-regular fa-clock mr-0.5"></i> 06:30 - 06:45</span>
+                      <h5 class="text-xs font-extrabold text-theme-textPrimary mt-0.5">Pembiasaan Awal</h5>
+                    </div>
+                  </div>
+                  <div
+                    class="flex items-center gap-3 p-3 rounded-2xl bg-theme-darker/60 border border-theme-border hover:border-theme-accent/20 transition-all duration-300">
+                    <div
+                      class="w-9 h-9 rounded-xl bg-theme-accentLight border border-theme-border text-theme-accent flex items-center justify-center text-sm shrink-0">
+                      <i class="fa-solid fa-laptop-code"></i>
+                    </div>
+                    <div>
+                      <span class="text-[10px] text-theme-textSecondary block"><i
+                          class="fa-regular fa-clock mr-0.5"></i> 06:45 - 08:15</span>
+                      <h5 class="text-xs font-extrabold text-theme-textPrimary mt-0.5">Informatika</h5>
+                      <p class="text-[9px] text-theme-textSecondary">Pak Yahya</p>
+                    </div>
+                  </div>
+                  <div
+                    class="flex items-center gap-3 p-3 rounded-2xl bg-theme-darker/60 border border-theme-border hover:border-theme-accent/20 transition-all duration-300">
+                    <div
+                      class="w-9 h-9 rounded-xl bg-theme-accentLight border border-theme-border text-theme-accent flex items-center justify-center text-sm shrink-0">
+                      <i class="fa-solid fa-language"></i>
+                    </div>
+                    <div>
+                      <span class="text-[10px] text-theme-textSecondary block"><i
+                          class="fa-regular fa-clock mr-0.5"></i> 08:15 - 09:00</span>
+                      <h5 class="text-xs font-extrabold text-theme-textPrimary mt-0.5">Bahasa Mandarin</h5>
+                      <p class="text-[9px] text-theme-textSecondary">Laoshi Mul</p>
+                    </div>
+                  </div>
+                  <div
+                    class="flex items-center gap-3 p-3 rounded-2xl bg-emerald-500/5 border border-emerald-500/10 hover:border-emerald-500/20 transition-all duration-300">
+                    <div
+                      class="w-9 h-9 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center text-sm shrink-0">
+                      <i class="fa-solid fa-mug-hot"></i>
+                    </div>
+                    <div>
+                      <span class="text-[10px] text-emerald-500/80 block"><i class="fa-regular fa-clock mr-0.5"></i>
+                        09:00 - 09:30</span>
+                      <h5 class="text-xs font-extrabold text-emerald-500 mt-0.5">Istirahat</h5>
+                    </div>
+                  </div>
+                  <div
+                    class="flex items-center gap-3 p-3 rounded-2xl bg-theme-darker/60 border border-theme-border hover:border-theme-accent/20 transition-all duration-300">
+                    <div
+                      class="w-9 h-9 rounded-xl bg-theme-accentLight border border-theme-border text-theme-accent flex items-center justify-center text-sm shrink-0">
+                      <i class="fa-solid fa-language"></i>
+                    </div>
+                    <div>
+                      <span class="text-[10px] text-theme-textSecondary block"><i
+                          class="fa-regular fa-clock mr-0.5"></i> 09:30 - 10:15</span>
+                      <h5 class="text-xs font-extrabold text-theme-textPrimary mt-0.5">Bahasa Mandarin</h5>
+                      <p class="text-[9px] text-theme-textSecondary">Laoshi Mul</p>
+                    </div>
+                  </div>
+                  <div
+                    class="flex items-center gap-3 p-3 rounded-2xl bg-theme-darker/60 border border-theme-border hover:border-theme-accent/20 transition-all duration-300">
+                    <div
+                      class="w-9 h-9 rounded-xl bg-theme-accentLight border border-theme-border text-theme-accent flex items-center justify-center text-sm shrink-0">
+                      <i class="fa-solid fa-users"></i>
+                    </div>
+                    <div>
+                      <span class="text-[10px] text-theme-textSecondary block"><i
+                          class="fa-regular fa-clock mr-0.5"></i> 10:10 - 11:30</span>
+                      <h5 class="text-xs font-extrabold text-theme-textPrimary mt-0.5">Sosiologi</h5>
+                      <p class="text-[9px] text-theme-textSecondary">Pak Cornel</p>
+                    </div>
+                  </div>
+                  <div
+                    class="flex items-center gap-3 p-3 rounded-2xl bg-theme-darker/60 border border-theme-border hover:border-theme-accent/20 transition-all duration-300">
+                    <div
+                      class="w-9 h-9 rounded-xl bg-theme-accentLight border border-theme-border text-theme-accent flex items-center justify-center text-sm shrink-0">
+                      <i class="fa-solid fa-puzzle-piece"></i>
+                    </div>
+                    <div>
+                      <span class="text-[10px] text-theme-textSecondary block"><i
+                          class="fa-regular fa-clock mr-0.5"></i> 11:30 - 12:10</span>
+                      <h5 class="text-xs font-extrabold text-theme-textPrimary mt-0.5">Ko-Kurikuler</h5>
+                      <p class="text-[9px] text-theme-textSecondary">Miss Debie</p>
+                    </div>
+                  </div>
+                  <div
+                    class="flex items-center gap-3 p-3 rounded-2xl bg-emerald-500/5 border border-emerald-500/10 hover:border-emerald-500/20 transition-all duration-300">
+                    <div
+                      class="w-9 h-9 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center text-sm shrink-0">
+                      <i class="fa-solid fa-mug-hot"></i>
+                    </div>
+                    <div>
+                      <span class="text-[10px] text-emerald-500/80 block"><i class="fa-regular fa-clock mr-0.5"></i>
+                        12:10 - 12:40</span>
+                      <h5 class="text-xs font-extrabold text-emerald-500 mt-0.5">Istirahat</h5>
+                    </div>
+                  </div>
+                  <div
+                    class="flex items-center gap-3 p-3 rounded-2xl bg-theme-darker/60 border border-theme-border hover:border-theme-accent/20 transition-all duration-300">
+                    <div
+                      class="w-9 h-9 rounded-xl bg-theme-accentLight border border-theme-border text-theme-accent flex items-center justify-center text-sm shrink-0">
+                      <i class="fa-solid fa-landmark"></i>
+                    </div>
+                    <div>
+                      <span class="text-[10px] text-theme-textSecondary block"><i
+                          class="fa-regular fa-clock mr-0.5"></i> 12:40 - 14:00</span>
+                      <h5 class="text-xs font-extrabold text-theme-textPrimary mt-0.5">Sejarah</h5>
+                      <p class="text-[9px] text-theme-textSecondary">Pak Cornel</p>
+                    </div>
+                  </div>
+                  <div
+                    class="flex items-center gap-3 p-3 rounded-2xl bg-theme-darker/60 border border-theme-border hover:border-theme-accent/20 transition-all duration-300">
+                    <div
+                      class="w-9 h-9 rounded-xl bg-theme-accentLight border border-theme-border text-theme-accent flex items-center justify-center text-sm shrink-0">
+                      <i class="fa-solid fa-palette"></i>
+                    </div>
+                    <div>
+                      <span class="text-[10px] text-theme-textSecondary block"><i
+                          class="fa-regular fa-clock mr-0.5"></i> 14:00 - 15:20</span>
+                      <h5 class="text-xs font-extrabold text-theme-textPrimary mt-0.5">Seni Budaya</h5>
+                      <p class="text-[9px] text-theme-textSecondary">Miss Diyana</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Thursday (Kamis) -->
+              <div id="content-kamis"
+                class="schedule-content hidden transition-all duration-350 opacity-0 transform translate-y-2">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div
+                    class="flex items-center gap-3 p-3 rounded-2xl bg-theme-darker/60 border border-theme-border hover:border-theme-accent/20 transition-all duration-300">
+                    <div
+                      class="w-9 h-9 rounded-xl bg-theme-accentLight border border-theme-border text-theme-accent flex items-center justify-center text-sm shrink-0">
+                      <i class="fa-solid fa-clock"></i>
+                    </div>
+                    <div>
+                      <span class="text-[10px] text-theme-textSecondary block"><i
+                          class="fa-regular fa-clock mr-0.5"></i> 06:30 - 06:45</span>
+                      <h5 class="text-xs font-extrabold text-theme-textPrimary mt-0.5">Pembiasaan Awal</h5>
+                    </div>
+                  </div>
+                  <div
+                    class="flex items-center gap-3 p-3 rounded-2xl bg-theme-darker/60 border border-theme-border hover:border-theme-accent/20 transition-all duration-300">
+                    <div
+                      class="w-9 h-9 rounded-xl bg-theme-accentLight border border-theme-border text-theme-accent flex items-center justify-center text-sm shrink-0">
+                      <i class="fa-solid fa-laptop-code"></i>
+                    </div>
+                    <div>
+                      <span class="text-[10px] text-theme-textSecondary block"><i
+                          class="fa-regular fa-clock mr-0.5"></i> 06:45 - 08:15</span>
+                      <h5 class="text-xs font-extrabold text-theme-textPrimary mt-0.5">Informatika</h5>
+                      <p class="text-[9px] text-theme-textSecondary">Pak Yahya</p>
+                    </div>
+                  </div>
+                  <div
+                    class="flex items-center gap-3 p-3 rounded-2xl bg-theme-darker/60 border border-theme-border hover:border-theme-accent/20 transition-all duration-300">
+                    <div
+                      class="w-9 h-9 rounded-xl bg-theme-accentLight border border-theme-border text-theme-accent flex items-center justify-center text-sm shrink-0">
+                      <i class="fa-solid fa-calculator"></i>
+                    </div>
+                    <div>
+                      <span class="text-[10px] text-theme-textSecondary block"><i
+                          class="fa-regular fa-clock mr-0.5"></i> 08:15 - 09:00</span>
+                      <h5 class="text-xs font-extrabold text-theme-textPrimary mt-0.5">Matematika Wajib</h5>
+                      <p class="text-[9px] text-theme-textSecondary">Pak Jefry</p>
+                    </div>
+                  </div>
+                  <div
+                    class="flex items-center gap-3 p-3 rounded-2xl bg-emerald-500/5 border border-emerald-500/10 hover:border-emerald-500/20 transition-all duration-300">
+                    <div
+                      class="w-9 h-9 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center text-sm shrink-0">
+                      <i class="fa-solid fa-mug-hot"></i>
+                    </div>
+                    <div>
+                      <span class="text-[10px] text-emerald-500/80 block"><i class="fa-regular fa-clock mr-0.5"></i>
+                        09:00 - 09:30</span>
+                      <h5 class="text-xs font-extrabold text-emerald-500 mt-0.5">Istirahat</h5>
+                    </div>
+                  </div>
+                  <div
+                    class="flex items-center gap-3 p-3 rounded-2xl bg-theme-darker/60 border border-theme-border hover:border-theme-accent/20 transition-all duration-300">
+                    <div
+                      class="w-9 h-9 rounded-xl bg-theme-accentLight border border-theme-border text-theme-accent flex items-center justify-center text-sm shrink-0">
+                      <i class="fa-solid fa-comments"></i>
+                    </div>
+                    <div>
+                      <span class="text-[10px] text-theme-textSecondary block"><i
+                          class="fa-regular fa-clock mr-0.5"></i> 09:30 - 10:15</span>
+                      <h5 class="text-xs font-extrabold text-theme-textPrimary mt-0.5">Matematika Wajib</h5>
+                      <p class="text-[9px] text-theme-textSecondary">Pak Jefry</p>
+                    </div>
+                  </div>
+                  <div
+                    class="flex items-center gap-3 p-3 rounded-2xl bg-theme-darker/60 border border-theme-border hover:border-theme-accent/20 transition-all duration-300">
+                    <div
+                      class="w-9 h-9 rounded-xl bg-theme-accentLight border border-theme-border text-theme-accent flex items-center justify-center text-sm shrink-0">
+                      <i class="fa-solid fa-building-shield"></i>
+                    </div>
+                    <div>
+                      <span class="text-[10px] text-theme-textSecondary block"><i
+                          class="fa-regular fa-clock mr-0.5"></i> 10:15 - 11:45</span>
+                      <h5 class="text-xs font-extrabold text-theme-textPrimary mt-0.5">Pendidikan Pancasila</h5>
+                      <p class="text-[9px] text-theme-textSecondary">Pak Agus</p>
+                    </div>
+                  </div>
+                  <div
+                    class="flex items-center gap-3 p-3 rounded-2xl bg-emerald-500/5 border border-emerald-500/10 hover:border-emerald-500/20 transition-all duration-300 sm:col-span-2">
+                    <div
+                      class="w-9 h-9 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center text-sm shrink-0">
+                      <i class="fa-solid fa-mug-hot"></i>
+                    </div>
+                    <div>
+                      <span class="text-[10px] text-emerald-500/80 block"><i class="fa-regular fa-clock mr-0.5"></i>
+                        11:45 - 12:30</span>
+                      <h5 class="text-xs font-extrabold text-emerald-500 mt-0.5">Istirahat</h5>
+                    </div>
+                  </div>
+                  <div
+                    class="flex items-center gap-3 p-3 rounded-2xl bg-theme-darker/60 border border-theme-border hover:border-theme-accent/20 transition-all duration-300">
+                    <div
+                      class="w-9 h-9 rounded-xl bg-theme-accentLight border border-theme-border text-theme-accent flex items-center justify-center text-sm shrink-0">
+                      <i class="fa-solid fa-comments"></i>
+                    </div>
+                    <div>
+                      <span class="text-[10px] text-theme-textSecondary block"><i
+                          class="fa-regular fa-clock mr-0.5"></i> 12:30 - 14:35</span>
+                      <h5 class="text-xs font-extrabold text-theme-textPrimary mt-0.5">Bahasa Inggris</h5>
+                      <p class="text-[9px] text-theme-textSecondary">Miss Intan</p>
+                    </div>
+                  </div>
+                  <div
+                    class="flex items-center gap-3 p-3 rounded-2xl bg-theme-darker/60 border border-theme-border hover:border-theme-accent/20 transition-all duration-300">
+                    <div
+                      class="w-9 h-9 rounded-xl bg-theme-accentLight border border-theme-border text-theme-accent flex items-center justify-center text-sm shrink-0">
+                      <i class="fa-solid fa-chart-line"></i>
+                    </div>
+                    <div>
+                      <span class="text-[10px] text-theme-textSecondary block"><i
+                          class="fa-regular fa-clock mr-0.5"></i> 14:35 - 15:15</span>
+                      <h5 class="text-xs font-extrabold text-theme-textPrimary mt-0.5">Ekonomi</h5>
+                      <p class="text-[9px] text-theme-textSecondary">Miss Debie</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Friday (Jumat) -->
+              <div id="content-jumat"
+                class="schedule-content hidden transition-all duration-350 opacity-0 transform translate-y-2">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div
+                    class="flex items-center gap-3 p-3 rounded-2xl bg-theme-darker/60 border border-theme-border hover:border-theme-accent/20 transition-all duration-300">
+                    <div
+                      class="w-9 h-9 rounded-xl bg-theme-accentLight border border-theme-border text-theme-accent flex items-center justify-center text-sm shrink-0">
+                      <i class="fa-solid fa-broom"></i>
+                    </div>
+                    <div>
+                      <span class="text-[10px] text-theme-textSecondary block"><i
+                          class="fa-regular fa-clock mr-0.5"></i> 06:30 - 07:15</span>
+                      <h5 class="text-xs font-extrabold text-theme-textPrimary mt-0.5">Jumat Bersih / Sehat</h5>
+                    </div>
+                  </div>
+                  <div
+                    class="flex items-center gap-3 p-3 rounded-2xl bg-theme-darker/60 border border-theme-border hover:border-theme-accent/20 transition-all duration-300">
+                    <div
+                      class="w-9 h-9 rounded-xl bg-theme-accentLight border border-theme-border text-theme-accent flex items-center justify-center text-sm shrink-0">
+                      <i class="fa-solid fa-scissors"></i>
+                    </div>
+                    <div>
+                      <span class="text-[10px] text-theme-textSecondary block"><i
+                          class="fa-regular fa-clock mr-0.5"></i> 07:15 - 08:45</span>
+                      <h5 class="text-xs font-extrabold text-theme-textPrimary mt-0.5">Prakarya & Kewirausahaan (PKWU)
+                      </h5>
+                      <p class="text-[9px] text-theme-textSecondary">Miss Debie</p>
+                    </div>
+                  </div>
+                  <div
+                    class="flex items-center gap-3 p-3 rounded-2xl bg-emerald-500/5 border border-emerald-500/10 hover:border-emerald-500/20 transition-all duration-300 sm:col-span-2">
+                    <div
+                      class="w-9 h-9 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center text-sm shrink-0">
+                      <i class="fa-solid fa-mug-hot"></i>
+                    </div>
+                    <div>
+                      <span class="text-[10px] text-emerald-500/80 block"><i class="fa-regular fa-clock mr-0.5"></i>
+                        08:45 - 09:15</span>
+                      <h5 class="text-xs font-extrabold text-emerald-500 mt-0.5">Istirahat</h5>
+                    </div>
+                  </div>
+                  <div
+                    class="flex items-center gap-3 p-3 rounded-2xl bg-theme-darker/60 border border-theme-border hover:border-theme-accent/20 transition-all duration-300">
+                    <div
+                      class="w-9 h-9 rounded-xl bg-theme-accentLight border border-theme-border text-theme-accent flex items-center justify-center text-sm shrink-0">
+                      <i class="fa-solid fa-dumbbell"></i>
+                    </div>
+                    <div>
+                      <span class="text-[10px] text-theme-textSecondary block"><i
+                          class="fa-regular fa-clock mr-0.5"></i> 09:15 - 10:45</span>
+                      <h5 class="text-xs font-extrabold text-theme-textPrimary mt-0.5">Penjasorkes (PJOK)</h5>
+                      <p class="text-[9px] text-theme-textSecondary">Pak Sopyan</p>
+                    </div>
+                  </div>
+                  <div
+                    class="flex items-center gap-3 p-3 rounded-2xl bg-theme-darker/60 border border-theme-border hover:border-theme-accent/20 transition-all duration-300">
+                    <div
+                      class="w-9 h-9 rounded-xl bg-theme-accentLight border border-theme-border text-theme-accent flex items-center justify-center text-sm shrink-0">
+                      <i class="fa-solid fa-handshake"></i>
+                    </div>
+                    <div>
+                      <span class="text-[10px] text-theme-textSecondary block"><i
+                          class="fa-regular fa-clock mr-0.5"></i> 10:45 - 11:30</span>
+                      <h5 class="text-xs font-extrabold text-theme-textPrimary mt-0.5">Bimbingan Konseling (BK)</h5>
+                      <p class="text-[9px] text-theme-textSecondary">Miss Kathrine</p>
+                    </div>
+                  </div>
+                  <div
+                    class="flex items-center gap-3 p-3 rounded-2xl bg-theme-darker/60 border border-theme-border hover:border-theme-accent/20 transition-all duration-300">
+                    <div
+                      class="w-9 h-9 rounded-xl bg-theme-accentLight border border-theme-border text-theme-accent flex items-center justify-center text-sm shrink-0">
+                      <i class="fa-solid fa-place-of-worship"></i>
+                    </div>
+                    <div>
+                      <span class="text-[10px] text-theme-textSecondary block"><i
+                          class="fa-regular fa-clock mr-0.5"></i> 11:30 - 12:30</span>
+                      <h5 class="text-xs font-extrabold text-theme-textPrimary mt-0.5">Jumat Ibadah</h5>
+                    </div>
+                  </div>
+                  <div
+                    class="flex items-center gap-3 p-3 rounded-2xl bg-emerald-500/5 border border-emerald-500/10 hover:border-emerald-500/20 transition-all duration-300 sm:col-span-2">
+                    <div
+                      class="w-9 h-9 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center text-sm shrink-0">
+                      <i class="fa-solid fa-mug-hot"></i>
+                    </div>
+                    <div>
+                      <span class="text-[10px] text-emerald-500/80 block"><i class="fa-regular fa-clock mr-0.5"></i>
+                        12:30 - 13:00</span>
+                      <h5 class="text-xs font-extrabold text-emerald-500 mt-0.5">Istirahat</h5>
+                    </div>
+                  </div>
+                  <div
+                    class="flex items-center gap-3 p-3 rounded-2xl bg-theme-darker/60 border border-theme-border hover:border-theme-accent/20 transition-all duration-300">
+                    <div
+                      class="w-9 h-9 rounded-xl bg-theme-accentLight border border-theme-border text-theme-accent flex items-center justify-center text-sm shrink-0">
+                      <i class="fa-solid fa-earth-americas"></i>
+                    </div>
+                    <div>
+                      <span class="text-[10px] text-theme-textSecondary block"><i
+                          class="fa-regular fa-clock mr-0.5"></i> 13:00 - 14:30</span>
+                      <h5 class="text-xs font-extrabold text-theme-textPrimary mt-0.5">Geografi</h5>
+                      <p class="text-[9px] text-theme-textSecondary">Pak Fajar</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Recent Activity / Timeline -->
+          <div class="glass rounded-3xl p-6 sm:p-8">
+            <h3 class="text-base font-extrabold text-theme-textPrimary mb-5 flex items-center gap-2.5 tracking-tight">
+              <i class="fa-solid fa-clock-rotate-left text-theme-accent"></i> Aktivitas Terkini
+            </h3>
+            <div class="relative pl-6 border-l-2 border-theme-border space-y-5">
+
+              <!-- Timeline Item 1 -->
+              <div class="relative group">
+                <span
+                  class="absolute -left-[31px] top-1 w-3.5 h-3.5 bg-theme-accent rounded-full border-2 border-theme-dark flex items-center justify-center glow-red animate-pulse group-hover:scale-110 transition-transform"></span>
+                <div
+                  class="p-3 rounded-2xl bg-theme-darker/30 hover:bg-theme-cardHover/50 border border-theme-border hover:border-theme-accent/20 transition-all duration-300">
+                  <span class="text-[9px] text-theme-accent font-extrabold uppercase tracking-widest">Informatika &bull;
+                    Baru Saja</span>
+                  <h4 class="text-sm font-bold text-theme-textPrimary mt-1 leading-snug">Merancang Hub Portfolio Baru
+                  </h4>
+                  <p class="text-[11px] text-theme-textSecondary mt-1.5 leading-relaxed">Mengintegrasikan seluruh data
+                    profil, skill, tugas pemrograman, dan ulasan sastra ke dalam layout SPA yang responsif.</p>
+                </div>
+              </div>
+
+              <!-- Timeline Item 2 -->
+              <div class="relative group">
+                <span
+                  class="absolute -left-[31px] top-1 w-3.5 h-3.5 bg-theme-accent/70 rounded-full border-2 border-theme-dark flex items-center justify-center group-hover:scale-110 transition-transform"></span>
+                <div
+                  class="p-3 rounded-2xl bg-theme-darker/30 hover:bg-theme-cardHover/50 border border-theme-border hover:border-theme-accent/20 transition-all duration-300">
+                  <span class="text-[9px] text-theme-accent/75 font-extrabold uppercase tracking-widest">Informatika
+                    &bull; Kemarin</span>
+                  <h4 class="text-sm font-bold text-theme-textPrimary mt-1 leading-snug">Menghubungkan Aplikasi Mandarin
+                    Learn</h4>
+                  <p class="text-[11px] text-theme-textSecondary mt-1.5 leading-relaxed">Membuat tautan terintegrasi
+                    menuju modul belajar HSK &amp; TOCFL (mandarin-learn.html) agar mudah diakses oleh penguji.</p>
+                </div>
+              </div>
+
+              <!-- Timeline Item 3 -->
+              <div class="relative group">
+                <span
+                  class="absolute -left-[31px] top-1 w-3.5 h-3.5 bg-theme-accent/40 rounded-full border-2 border-theme-dark flex items-center justify-center group-hover:scale-110 transition-transform"></span>
+                <div
+                  class="p-3 rounded-2xl bg-theme-darker/30 hover:bg-theme-cardHover/50 border border-theme-border hover:border-theme-accent/20 transition-all duration-300">
+                  <span class="text-[9px] text-theme-accent/50 font-extrabold uppercase tracking-widest">Bahasa
+                    Indonesia &bull; 3 Hari Lalu</span>
+                  <h4 class="text-sm font-bold text-theme-textPrimary mt-1 leading-snug">Menyelesaikan Analisis Resensi
+                    Buku</h4>
+                  <p class="text-[11px] text-theme-textSecondary mt-1.5 leading-relaxed">Menganalisis novel Laskar
+                    Pelangi Andrea Hirata secara intrinsik dan menuliskan ulasannya di portal Bahasa Indonesia.</p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Right Column: Tasks & Quotes -->
+        <div class="flex flex-col gap-6">
+
+          <!-- Target Tugas Sekolah -->
+          <div class="glass rounded-3xl p-6 sm:p-8 flex flex-col">
+            <h3 class="text-base font-extrabold text-theme-textPrimary mb-1.5 flex items-center gap-2.5 tracking-tight">
+              <i class="fa-solid fa-list-check text-theme-accent"></i> Target Tugas Sekolah
+            </h3>
+            <p class="text-[11px] text-theme-textSecondary mb-4 leading-relaxed">List tugas sekolah aktif di kelas 11.
+              Data tersimpan di memori browser lokal.</p>
+
+            <!-- Progress Bar Tugas -->
+            <div class="mb-5 p-3.5 rounded-2xl bg-theme-darker/40 border border-theme-border">
+              <div class="flex justify-between items-center mb-2">
+                <span class="text-[10px] font-extrabold text-theme-textSecondary uppercase tracking-widest">Progress
+                  Tugas</span>
+                <span id="todo-progress-text" class="text-xs font-extrabold text-theme-accent">0%</span>
+              </div>
+              <div class="w-full h-2 bg-theme-darker rounded-full overflow-hidden border border-theme-border">
+                <div id="todo-progress-bar"
+                  class="h-full bg-gradient-to-r from-theme-accent to-red-500 transition-all duration-500 rounded-full"
+                  style="width: 0%"></div>
+              </div>
+            </div>
+
+            <!-- Tasks list items wrapper -->
+            <div id="todo-list" class="space-y-2.5 max-h-72 overflow-y-auto mb-5 pr-1 scrollbar-thin">
+              <!-- Rendered dynamically -->
+            </div>
+
+            <!-- Task Input form -->
+            <div class="mt-auto border-t border-theme-border pt-4">
+              <div class="flex gap-2">
+                <input type="text" id="todo-input" placeholder="Tambah tugas baru..."
+                  onkeydown="if(event.key === 'Enter') addTodo()"
+                  class="flex-grow px-3 py-2 text-[11px] font-medium rounded-xl bg-theme-darker border border-theme-border text-theme-textPrimary placeholder-theme-textSecondary/50 focus:outline-none focus:border-theme-accent/60 transition">
+                <button onclick="addTodo()"
+                  class="w-9 h-9 rounded-xl bg-theme-accent hover:bg-theme-accentHover text-white flex items-center justify-center text-sm shadow transition shrink-0">
+                  <i class="fa-solid fa-plus"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Dynamic Quote Generator -->
+          <div
+            class="glass rounded-3xl p-6 sm:p-8 bg-gradient-to-br from-theme-card to-theme-darker relative overflow-hidden">
+            <i
+              class="fa-solid fa-quote-left absolute top-4 left-6 text-7xl text-theme-accent/5 select-none font-black"></i>
+            <div class="relative z-10">
+              <span class="text-[9px] font-extrabold tracking-widest text-theme-accent uppercase">&#x2728; Inspirasi
+                Pembelajaran</span>
+              <p id="quote-text" class="text-[13px] font-semibold italic text-theme-textPrimary mt-3 leading-relaxed">
+                &ldquo;Ilmu pengetahuan adalah senjata paling mematikan di dunia, karena dengan itu kamu bisa mengubah
+                dunia.&rdquo;
+              </p>
+              <h5 id="quote-author"
+                class="text-[11px] font-bold text-theme-textSecondary mt-3 text-right tracking-tight">&mdash; Nelson
+                Mandela</h5>
+              <div class="flex justify-end mt-4">
+                <button onclick="generateNewQuote()"
+                  class="px-3.5 py-1.5 rounded-xl bg-theme-accentLight hover:bg-theme-accent border border-theme-border text-theme-accent hover:text-white text-[10px] font-extrabold uppercase tracking-wider transition flex items-center gap-1.5 shadow">
+                  <i class="fa-solid fa-rotate text-[9px]"></i> Quote Baru
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- Footer Section -->
+  <footer
+    class="bg-slate-950/80 border-t border-slate-900 py-8 text-center text-xs text-slate-500 mt-auto transition-all">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="flex items-center justify-center gap-2 mb-2.5">
+        <div
+          class="w-6 h-6 rounded bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center text-white font-black text-xs">
+          MW
+        </div>
+        <span class="font-extrabold text-slate-300 tracking-tight">Michael Wung</span>
+      </div>
+      <p class="mb-4">Portal Tugas Sekolah & Web Portofolio Personal. Dirancang Menggunakan HTML, CSS, JavaScript, dan
+        Tailwind CSS.</p>
+      <p class="text-[10px] text-slate-600">&copy; 2026 Michael Wung. Seluruh hak cipta dilindungi undang-undang.</p>
+    </div>
+  </footer>
+
+  <!-- DATA & LOGIC INTERAKTIVITAS (JAVASCRIPT) -->
+  <script>
+    // ==========================================
+    // 1. DATA DATABASE DOKUMEN & QUOTES
+    // ==========================================
+    const INSPIRATIONAL_QUOTES = [
+      { text: "Ilmu pengetahuan adalah senjata paling mematikan di dunia, karena dengan itu kamu bisa mengubah dunia.", author: "Nelson Mandela" },
+      { text: "Teknologi hanyalah alat. Dalam hal membuat anak-anak bekerja sama dan memotivasi mereka, guru adalah yang terpenting.", author: "Bill Gates" },
+      { text: "Lakukan apa yang harus kamu lakukan sampai kamu dapat melakukan apa yang ingin kamu lakukan.", author: "Oprah Winfrey" },
+      { text: "Hidup adalah sebuah pelajaran. Semakin banyak kamu belajar, semakin kamu memahami betapa sedikit yang kamu ketahui.", author: "Socrates" },
+      { text: "Pendidikan adalah tiket masa depan, hari esok dimiliki oleh orang-orang yang mempersiapkannya hari ini.", author: "Malcolm X" }
+    ];
+
+    // ==========================================
+    // 2. CORE NAVIGATION & THEME CONTROLLERS
+    // ==========================================
+    function updateThemeIcon() {
+      const isDark = document.documentElement.classList.contains('dark');
+      const icon = document.getElementById('theme-toggle-icon');
+      if (icon) {
+        if (isDark) {
+          icon.className = "fa-solid fa-sun text-sm animate-pulse";
+        } else {
+          icon.className = "fa-solid fa-moon text-sm animate-pulse";
+        }
+      }
+    }
+
+    function toggleDarkMode() {
+      const isDark = document.documentElement.classList.toggle('dark');
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+      updateThemeIcon();
+      showToast(`Tema diubah ke mode ${isDark ? 'Gelap' : 'Terang'}`);
+    }
+
+    function initApp() {
+      updateGreeting();
+      renderTodos();
+      updateThemeIcon();
+      initScheduleDay();
+    }
+
+    function toggleMobileMenu() {
+      const menu = document.getElementById('mobile-menu');
+      menu.classList.toggle('hidden');
+    }
+
+    // ==========================================
+    // 2.5 JADWAL PELAJARAN TAB CONTROLLERS
+    // ==========================================
+    function switchScheduleDay(day) {
+      // Hide all schedule contents
+      const contents = document.querySelectorAll('.schedule-content');
+      contents.forEach(content => {
+        content.classList.add('hidden');
+        content.classList.remove('opacity-100', 'translate-y-0');
+        content.classList.add('opacity-0', 'translate-y-2');
+      });
+
+      // Deactivate all tabs
+      const tabs = document.querySelectorAll('.schedule-tab');
+      tabs.forEach(tab => {
+        tab.className = "schedule-tab px-4 py-2 text-xs font-bold rounded-xl border bg-theme-darker text-theme-textSecondary border-theme-border hover:bg-theme-cardHover hover:text-theme-textPrimary transition-all duration-300";
+      });
+
+      // Show selected content
+      const activeContent = document.getElementById(`content-${day}`);
+      if (activeContent) {
+        activeContent.classList.remove('hidden');
+        // delay to allow browser to trigger CSS transition
+        setTimeout(() => {
+          activeContent.classList.remove('opacity-0', 'translate-y-2');
+          activeContent.classList.add('opacity-100', 'translate-y-0');
+        }, 30);
+      }
+
+      // Activate selected tab
+      const activeTab = document.getElementById(`tab-${day}`);
+      if (activeTab) {
+        activeTab.className = "schedule-tab px-4 py-2 text-xs font-bold rounded-xl border bg-theme-accent text-white border-theme-accent shadow-lg shadow-theme-accent/15 scale-105 transition-all duration-300";
+      }
+    }
+
+    function initScheduleDay() {
+      const days = ['minggu', 'senin', 'selasa', 'rabu', 'kamis', 'jumat', 'sabtu'];
+      const currentDayIndex = new Date().getDay(); // 0 is Sunday, 1 is Monday, etc.
+      let activeDay = days[currentDayIndex];
+
+      // If Sunday or Saturday, default to Monday (senin)
+      if (activeDay === 'minggu' || activeDay === 'sabtu') {
+        activeDay = 'senin';
+      }
+
+      switchScheduleDay(activeDay);
+    }
+
+    // ==========================================
+    // 3. WIDGETS LOGIC (QUOTE & TODOS)
+    // ==========================================
+    function updateGreeting() {
+      const hours = new Date().getHours();
+      let greeting = "Selamat Malam, Michael!";
+      if (hours >= 4 && hours < 11) {
+        greeting = "Selamat Pagi, Michael!";
+      } else if (hours >= 11 && hours < 15) {
+        greeting = "Selamat Siang, Michael!";
+      } else if (hours >= 15 && hours < 18) {
+        greeting = "Selamat Sore, Michael!";
+      }
+      const greetingEl = document.getElementById('dashboard-greeting');
+      if (greetingEl) greetingEl.innerText = greeting;
+
+      const dateEl = document.getElementById('dashboard-date');
+      if (dateEl) {
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        dateEl.innerText = new Date().toLocaleDateString('id-ID', options);
+      }
+    }
+
+    function generateNewQuote() {
+      const randomIndex = Math.floor(Math.random() * INSPIRATIONAL_QUOTES.length);
+      const quote = INSPIRATIONAL_QUOTES[randomIndex];
+      document.getElementById('quote-text').innerText = `"${quote.text}"`;
+      document.getElementById('quote-author').innerHTML = `&mdash; ${quote.author}`;
+    }
+
+    let todoItems = JSON.parse(localStorage.getItem('michael_wung_todos')) || [
+      { id: 1, text: "Buka halaman kuis Mandarin", completed: true },
+      { id: 2, text: "Ulas novel Laskar Pelangi", completed: true },
+      { id: 3, text: "Deploy website ke hosting gratisan", completed: false }
+    ];
+
+    function saveTodosToStorage() {
+      localStorage.setItem('michael_wung_todos', JSON.stringify(todoItems));
+    }
+
+    function renderTodos() {
+      const container = document.getElementById('todo-list');
+      if (!container) return;
+      container.innerHTML = "";
+
+      // Update progress bar
+      const total = todoItems.length;
+      const completed = todoItems.filter(item => item.completed).length;
+      const percent = total > 0 ? Math.round((completed / total) * 100) : 0;
+
+      const progressText = document.getElementById('todo-progress-text');
+      const progressBar = document.getElementById('todo-progress-bar');
+      if (progressText) progressText.innerText = `${percent}%`;
+      if (progressBar) progressBar.style.width = `${percent}%`;
+
+      if (todoItems.length === 0) {
+        container.innerHTML = `<div class="text-center py-6 text-theme-textSecondary/60 italic text-[11px]">Tidak ada target aktif. Tambahkan target baru di bawah!</div>`;
+        return;
+      }
+      todoItems.forEach(item => {
+        const itemEl = document.createElement('div');
+        itemEl.className = `flex items-center justify-between p-3 rounded-2xl bg-theme-darker/50 border ${item.completed ? 'border-theme-border/50 opacity-60' : 'border-theme-border'} hover:border-theme-accent/20 transition-all duration-300`;
+        itemEl.innerHTML = `
+          <div class="flex items-center gap-3 cursor-pointer flex-grow select-none" onclick="toggleTodo(${item.id})">
+            <span class="w-5 h-5 rounded-lg flex items-center justify-center border transition-all duration-200 ${item.completed ? 'bg-theme-accent border-theme-accent text-white' : 'border-theme-borderStrong bg-theme-darker text-transparent'} text-[10px]">
+              <i class="fa-solid fa-check"></i>
+            </span>
+            <span class="text-xs font-semibold text-theme-textPrimary ${item.completed ? 'line-through text-theme-textSecondary' : ''}">${item.text}</span>
+          </div>
+          <button onclick="deleteTodo(${item.id})" class="text-theme-textSecondary hover:text-rose-500 transition-all duration-200 p-1 hover:scale-105 shrink-0">
+            <i class="fa-solid fa-trash-can text-xs"></i>
+          </button>
+        `;
+        container.appendChild(itemEl);
+      });
+    }
+
+    function addTodo() {
+      const input = document.getElementById('todo-input');
+      if (!input.value.trim()) return;
+      todoItems.push({ id: Date.now(), text: input.value.trim(), completed: false });
+      saveTodosToStorage();
+      renderTodos();
+      input.value = "";
+    }
+
+    function toggleTodo(id) {
+      todoItems = todoItems.map(item => item.id === id ? { ...item, completed: !item.completed } : item);
+      saveTodosToStorage();
+      renderTodos();
+    }
+
+    function deleteTodo(id) {
+      todoItems = todoItems.filter(item => item.id !== id);
+      saveTodosToStorage();
+      renderTodos();
+    }
+
+    // ==========================================
+    // 4. UTILITIES (TOAST)
+    // ==========================================
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      document.getElementById('toast-message').innerText = message;
+      toast.classList.remove('translate-y-24', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+      setTimeout(() => {
+        toast.classList.remove('translate-y-0', 'opacity-100');
+        toast.classList.add('translate-y-24', 'opacity-0');
+      }, 3500);
+    }
+
+    // Initialize elements on load
+    window.addEventListener('DOMContentLoaded', () => {
+      initApp();
+    });
+  </script>
+  <!-- Core Utilities -->
+  <script src="assets/js/storage.js"></script>
+  <script src="assets/js/sounds.js"></script>
+  <script src="assets/js/theme.js"></script>
+  
+  <!-- SPA & Spotify Plugins -->
+  <script src="assets/js/router.js"></script>
+  <script src="assets/js/player.js"></script>
+
+</body>
+
+</html>

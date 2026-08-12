@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Michael Wung - Personal Profile & School Assignments</title>
+
+  <!-- SEO Meta Tags -->
+  <meta name="description"
+    content="Website portofolio Michael Wung, siswa kelas 11 SMA Cinta Kasih Tzu Chi. Menyajikan informasi profil, keahlian, dan kumpulan tugas sekolah Informatika dan Bahasa Indonesia.">
+  <meta name="author" content="Michael Wung">
+
+  <!-- Early Theme Detector -->
+  <script>
+    const savedTheme = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  </script>
+
+  <!-- Google Fonts: Plus Jakarta Sans & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link class="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Tailwind Configuration -->
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'Inter', 'sans-serif'],
+          },
+          colors: {
+            theme: {
+              dark: 'var(--bg-primary)',
+              card: 'var(--bg-card)',
+              cardHover: 'var(--bg-card-hover)',
+              accent: 'var(--accent)',
+              accentHover: 'var(--accent-hover)',
+              border: 'var(--border)',
+              borderStrong: 'var(--border-strong)',
+              accentLight: 'var(--bg-accent-light)',
+              darker: 'var(--bg-darker)',
+              textPrimary: 'var(--text-primary)',
+              textSecondary: 'var(--text-secondary)',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Custom CSS for Premium FX -->
+  <style>
+    :root {
+      /* Light Mode colors (Red & White) */
+      --bg-primary: #f8fafc;
+      --bg-card: #ffffff;
+      --bg-card-hover: #f1f5f9;
+      --accent: #dc2626;
+      /* Red 600 */
+      --accent-hover: #b91c1c;
+      /* Red 700 */
+      --border: rgba(220, 38, 38, 0.08);
+      --border-strong: rgba(220, 38, 38, 0.15);
+      --bg-accent-light: rgba(220, 38, 38, 0.04);
+      --bg-darker: #f1f5f9;
+      --text-primary: #0f172a;
+      /* slate 900 */
+      --text-secondary: #475569;
+      /* slate 600 */
+      --glass-bg-rgb: 255, 255, 255;
+      --nav-bg-rgb: 248, 250, 252;
+    }
+
+    .dark {
+      /* Dark Mode colors (Red & Black) */
+      --bg-primary: #09090b;
+      /* Blackish */
+      --bg-card: #121216;
+      /* Dark gray */
+      --bg-card-hover: #1c1c22;
+      --accent: #ef4444;
+      /* Red 500 */
+      --accent-hover: #f87171;
+      /* Red 400 */
+      --border: rgba(239, 68, 68, 0.08);
+      --border-strong: rgba(239, 68, 68, 0.18);
+      --bg-accent-light: rgba(239, 68, 68, 0.06);
+      --bg-darker: #040406;
+      --text-primary: #f8fafc;
+      /* slate 50 */
+      --text-secondary: #94a3b8;
+      /* slate 400 */
+      --glass-bg-rgb: 18, 18, 22;
+      --nav-bg-rgb: 10, 10, 12;
+    }
+
+    /* Global Transition for smooth theme switching */
+    body {
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .glass,
+    .glass-nav,
+    header,
+    footer,
+    card,
+    section,
+    button,
+    input,
+    textarea {
+      transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--bg-darker);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--border-strong);
+      border-radius: 9999px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--accent);
+    }
+
+    /* Glassmorphism utility */
+    .glass {
+      background: rgba(var(--glass-bg-rgb), 0.75);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--border);
+    }
+
+    .glass-nav {
+      background: rgba(var(--nav-bg-rgb), 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .glow-red {
+      box-shadow: 0 0 25px rgba(239, 68, 68, 0.08);
+    }
+
+    .glow-red-lg {
+      box-shadow: 0 0 50px rgba(239, 68, 68, 0.15);
+    }
+  </style>
+</head>
+
+<body class="bg-theme-dark text-theme-textPrimary font-sans min-h-screen flex flex-col relative overflow-x-hidden">
+
+  <!-- Background Decorative Glowing Blobs -->
+  <div
+    class="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-red-500/[0.03] dark:bg-red-950/[0.06] blur-[150px] -z-10 pointer-events-none">
+  </div>
+  <div
+    class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-red-500/[0.03] dark:bg-red-950/[0.06] blur-[150px] -z-10 pointer-events-none">
+  </div>
+
+  <!-- Header Navigation -->
+  <header class="sticky top-0 z-40 w-full glass-nav shadow-lg transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+
+        <!-- Logo / Brand -->
+        <a href="index.html" class="flex items-center gap-2 cursor-pointer group">
+          <div
+            class="w-8 h-8 rounded-lg bg-gradient-to-tr from-theme-accent to-red-700 dark:from-red-600 dark:to-red-500 flex items-center justify-center text-white font-extrabold shadow-md shadow-red-500/10 group-hover:scale-105 transition-all">
+            MW
+          </div>
+          <span
+            class="text-lg font-bold tracking-tight text-theme-textPrimary group-hover:text-theme-accent transition-colors">
+            Michael<span class="text-theme-accent font-extrabold">Wung</span>
+          </span>
+        </a>
+
+        <!-- Navigation Menu (Desktop) -->
+        <nav class="hidden md:flex space-x-1.5">
+          <a href="index.html" id="nav-dashboard"
+            class="nav-btn px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 flex items-center gap-2 text-theme-textSecondary hover:text-theme-textPrimary hover:bg-theme-cardHover">
+            <i class="fa-solid fa-chart-pie text-xs"></i> Dashboard
+          </a>
+          <a href="profile.html" id="nav-profile"
+            class="nav-btn px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 flex items-center gap-2 text-theme-textSecondary hover:text-theme-textPrimary hover:bg-theme-cardHover">
+            <i class="fa-solid fa-user text-xs"></i> Profil
+          </a>
+          <a href="informatika.html" id="nav-informatika"
+            class="nav-btn px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 flex items-center gap-2 text-theme-textSecondary hover:text-theme-textPrimary hover:bg-theme-cardHover">
+            <i class="fa-solid fa-code text-xs"></i> Informatika
+          </a>
+          <a href="bahasa-indonesia.html" id="nav-bahasa-indonesia"
+            class="nav-btn px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 flex items-center gap-2 bg-blue-600/10 text-blue-400 border border-blue-500/20 shadow-sm">
+            <i class="fa-solid fa-book-open text-xs"></i> Bahasa Indonesia
+          </a>
+          <a href="games.html" id="nav-games"
+            class="nav-btn px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 flex items-center gap-2 text-theme-textSecondary hover:text-theme-textPrimary hover:bg-purple-500/10 hover:text-purple-400 hover:border-purple-500/20 border border-transparent">
+            <i class="fa-solid fa-gamepad text-xs"></i> Mini Games
+          </a>
+          <a href="songs.html" id="nav-songs" class="nav-btn px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 flex items-center gap-2 text-theme-textSecondary hover:text-theme-textPrimary hover:bg-pink-500/10 hover:text-pink-400 border border-transparent">
+            <i class="fa-solid fa-music text-xs"></i> Songs
+          </a>
+        </nav>
+
+        <!-- Right Controls -->
+        <div class="flex items-center gap-3">
+          <!-- Dark Mode Toggle Button -->
+          <button id="theme-toggle" onclick="toggleDarkMode()"
+            class="p-2.5 rounded-xl bg-theme-accentLight border border-theme-border text-theme-accent hover:bg-theme-accent hover:text-white transition-all duration-300"
+            title="Ganti Tema">
+            <i id="theme-toggle-icon" class="fa-solid fa-moon text-sm animate-pulse"></i>
+          </button>
+
+          <!-- PETUNJUK WHATSAPP: Ganti nomor '6281234567890' di bawah dengan nomor WhatsApp Anda sendiri (gunakan kode negara, misal 62) -->
+          <a href="https://wa.me/qr/5PR5E4Z4VZIVH1." target="_blank"
+            class="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-emerald-500/10 hover:bg-emerald-500 border border-emerald-500/20 text-emerald-500 hover:text-white text-xs font-bold transition-all shadow-sm">
+            <i class="fa-brands fa-whatsapp text-sm"></i> Hubungi Saya
+          </a>
+          <button onclick="toggleMobileMenu()"
+            class="md:hidden p-2.5 rounded-xl bg-theme-cardHover border border-theme-border text-theme-textSecondary hover:text-theme-textPrimary transition-all">
+            <i class="fa-solid fa-bars text-sm"></i>
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Drawer Menu -->
+  <div id="mobile-menu"
+    class="hidden md:hidden fixed inset-0 z-50 bg-black/40 dark:bg-black/70 backdrop-blur-sm transition-opacity duration-300">
+    <div
+      class="fixed right-0 top-0 bottom-0 w-64 bg-theme-card border-l border-theme-border p-6 shadow-2xl flex flex-col justify-between">
+      <div>
+        <div class="flex items-center justify-between mb-8 pb-4 border-b border-theme-border">
+          <span class="font-extrabold text-sm tracking-wider text-theme-textSecondary">MENU</span>
+          <button onclick="toggleMobileMenu()"
+            class="p-1 rounded-lg hover:bg-theme-cardHover text-theme-textSecondary hover:text-theme-textPrimary">
+            <i class="fa-solid fa-xmark text-lg"></i>
+          </button>
+        </div>
+        <div class="flex flex-col gap-2">
+          <a href="index.html" id="mob-nav-dashboard"
+            class="w-full text-left px-4 py-3 rounded-xl text-sm font-semibold flex items-center gap-3 text-theme-textSecondary hover:bg-theme-cardHover hover:text-theme-textPrimary transition">
+            <i class="fa-solid fa-chart-pie w-5 text-center"></i> Dashboard
+          </a>
+          <a href="profile.html" id="mob-nav-profile"
+            class="w-full text-left px-4 py-3 rounded-xl text-sm font-semibold flex items-center gap-3 text-theme-textSecondary hover:bg-theme-cardHover hover:text-theme-textPrimary transition">
+            <i class="fa-solid fa-user w-5 text-center"></i> Profil
+          </a>
+          <a href="informatika.html" id="mob-nav-informatika"
+            class="w-full text-left px-4 py-3 rounded-xl text-sm font-semibold flex items-center gap-3 text-theme-textSecondary hover:bg-theme-cardHover hover:text-theme-textPrimary transition">
+            <i class="fa-solid fa-code w-5 text-center"></i> Informatika
+          </a>
+          <a href="bahasa-indonesia.html" id="mob-nav-bahasa-indonesia"
+            class="w-full text-left px-4 py-3 rounded-xl text-sm font-bold flex items-center gap-3 bg-blue-600/10 text-blue-400 border border-blue-500/10">
+            <i class="fa-solid fa-book-open w-5 text-center"></i> Bahasa Indonesia
+          </a>
+          <a href="games.html" id="mob-nav-games"
+            class="w-full text-left px-4 py-3 rounded-xl text-sm font-semibold flex items-center gap-3 text-theme-textSecondary hover:bg-purple-500/10 hover:text-purple-400 transition">
+            <i class="fa-solid fa-gamepad w-5 text-center"></i> Mini Games
+          </a>
+          <a href="songs.html" id="mob-nav-songs" class="w-full text-left px-4 py-3 rounded-xl text-sm font-semibold flex items-center gap-3 text-theme-textSecondary hover:bg-pink-500/10 hover:text-pink-400 transition">
+            <i class="fa-solid fa-music w-5 text-center"></i> Songs
+          </a>
+
+          <!-- PETUNJUK WHATSAPP MOBILE: Ganti nomor '6281234567890' di bawah dengan nomor WhatsApp Anda -->
+          <a href="https://wa.me/qr/5PR5E4Z4VZIVH1" target="_blank"
+            class="w-full mt-4 py-3 rounded-xl text-center text-xs font-bold flex items-center justify-center gap-2 bg-emerald-500/10 hover:bg-emerald-500 border border-emerald-500/20 text-emerald-500 hover:text-white transition-all shadow-sm">
+            <i class="fa-brands fa-whatsapp text-sm"></i> Hubungi Saya (WhatsApp)
+          </a>
+        </div>
+      </div>
+      <div class="text-[10px] text-theme-textSecondary/50 text-center font-medium mt-auto">
+        Michael Wung &bull; Portofolio v1.1
+      </div>
+    </div>
+  </div>
+
+  <!-- Notification Success Toast -->
+  <div id="toast"
+    class="fixed bottom-6 right-6 z-50 transform translate-y-24 transition-all duration-300 opacity-0 glass p-4 rounded-2xl shadow-2xl flex items-center gap-3 max-w-sm">
+    <div class="w-8 h-8 rounded-xl bg-theme-accentLight text-theme-accent flex items-center justify-center text-sm">
+      <i class="fa-solid fa-circle-check"></i>
+    </div>
+    <div>
+      <h5 class="text-xs font-bold text-theme-textPrimary">Sukses</h5>
+      <p id="toast-message" class="text-[10px] text-theme-textSecondary mt-0.5">Pesan dikirim!</p>
+    </div>
+  </div>
+
+  <!-- Main Container -->
+  <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+
+
+
+
+
+
+    <!-- ========================================== -->
+    <!-- TAB 4: BAHASA INDONESIA                    -->
+    <!-- ========================================== -->
+    <section id="tab-bahasa-indonesia" class="tab-content transition-all duration-300">
+
+      <div class="mb-8">
+        <h2 class="text-3xl font-extrabold text-white tracking-tight">Kumpulan Tugas Bahasa Indonesia (印尼语)</h2>
+        <p class="text-sm text-theme-textSecondary mt-1">Koleksi karya tulis ilmiah, esai kritis, teks negosiasi, dan
+          resensi buku sastra.</p>
+      </div>
+
+      <!-- Assignments Card Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+        <!-- Assignment Card 1 -->
+        <div
+          class="glass rounded-3xl p-6 sm:p-8 flex flex-col justify-between hover:border-blue-500/25 transition duration-300 group">
+          <div>
+            <div class="flex items-center justify-between gap-2 mb-6">
+              <span
+                class="px-2.5 py-0.5 rounded-lg bg-blue-500/10 border border-blue-500/10 text-blue-400 text-[9px] font-bold uppercase tracking-wider">Resensi
+                Sastra</span>
+              <span class="text-[10px] text-slate-500 font-semibold"><i class="fa-regular fa-clock mr-1"></i>
+                Selesai</span>
+            </div>
+            <h3 class="text-base font-bold text-white group-hover:text-blue-400 transition mb-2">Resensi Novel Laskar
+              Pelangi</h3>
+            <p class="text-xs text-theme-textSecondary leading-relaxed mb-6">
+              Tugas mengkaji secara kritis novel legendaris karya Andrea Hirata, mengulas struktur intrinsik (tema,
+              alur, tokoh), ekstrinsik, kelebihan, serta kelemahannya.
+            </p>
+          </div>
+          <button onclick="openDocumentReader('resensi-laskar-pelangi')"
+            class="w-full py-2.5 bg-blue-600/10 hover:bg-blue-600 border border-blue-500/20 text-blue-400 hover:text-white rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 shadow">
+            Baca Tugas <i class="fa-solid fa-book-open text-[10px]"></i>
+          </button>
+        </div>
+
+        <!-- Assignment Card 2 -->
+        <div
+          class="glass rounded-3xl p-6 sm:p-8 flex flex-col justify-between hover:border-blue-500/25 transition duration-300 group">
+          <div>
+            <div class="flex items-center justify-between gap-2 mb-6">
+              <span
+                class="px-2.5 py-0.5 rounded-lg bg-indigo-500/10 text-indigo-400 text-[9px] font-bold uppercase tracking-wider">Teks
+                Editorial / Opini</span>
+              <span class="text-[10px] text-slate-500 font-semibold"><i class="fa-regular fa-clock mr-1"></i>
+                Selesai</span>
+            </div>
+            <h3 class="text-base font-bold text-white group-hover:text-blue-400 transition mb-2">Teks Opini: Urgensi AI
+              dalam Pendidikan</h3>
+            <p class="text-xs text-theme-textSecondary leading-relaxed mb-6">
+              Artikel opini kritis yang menganalisis dampak positif-negatif kecerdasan buatan (AI) terhadap perkembangan
+              budi pekerti dan integritas karakter siswa.
+            </p>
+          </div>
+          <button onclick="openDocumentReader('tugas-ai-pendidikan')"
+            class="w-full py-2.5 bg-blue-600/10 hover:bg-blue-600 border border-blue-500/20 text-blue-400 hover:text-white rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 shadow">
+            Baca Tugas <i class="fa-solid fa-book-open text-[10px]"></i>
+          </button>
+        </div>
+
+        <!-- Assignment Card 3 -->
+        <div
+          class="glass rounded-3xl p-6 sm:p-8 flex flex-col justify-between hover:border-blue-500/25 transition duration-300 group">
+          <div>
+            <div class="flex items-center justify-between gap-2 mb-6">
+              <span
+                class="px-2.5 py-0.5 rounded-lg bg-indigo-500/10 text-indigo-400 text-[9px] font-bold uppercase tracking-wider">Teks
+                Negosiasi</span>
+              <span class="text-[10px] text-slate-500 font-semibold"><i class="fa-regular fa-clock mr-1"></i>
+                Selesai</span>
+            </div>
+            <h3 class="text-base font-bold text-white group-hover:text-blue-400 transition mb-2">Negosiasi: Pengadaan
+              Lab Komputer</h3>
+            <p class="text-xs text-theme-textSecondary leading-relaxed mb-6">
+              Dialog naskah teks negosiasi formal antara perwakilan OSIS SMA Cinta Kasih Tzu Chi dengan Kepala Sekolah
+              terkait pemenuhan komputer berspesifikasi memadai.
+            </p>
+          </div>
+          <button onclick="openDocumentReader('teks-negosiasi')"
+            class="w-full py-2.5 bg-blue-600/10 hover:bg-blue-600 border border-blue-500/20 text-blue-400 hover:text-white rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 shadow">
+            Baca Tugas <i class="fa-solid fa-book-open text-[10px]"></i>
+          </button>
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- Interactive Document Reader Overlay Panel -->
+  <div id="reader-overlay"
+    class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4">
+    <div
+      class="glass w-full max-w-3xl rounded-3xl h-[85vh] flex flex-col shadow-2xl overflow-hidden glow-blue-lg border-blue-500/20 relative">
+
+      <!-- Reader Header toolbar -->
+      <div class="flex justify-between items-center bg-slate-950 px-6 py-4.5 border-b border-slate-900">
+        <div>
+          <span id="reader-doc-type" class="text-[9px] font-extrabold text-blue-500 uppercase tracking-widest">RESENSI
+            NOVEL</span>
+          <h4 id="reader-doc-title" class="text-sm sm:text-base font-bold text-white mt-0.5">Judul Tugas Bahasa
+            Indonesia</h4>
+        </div>
+
+        <!-- Controls: Text resizing & Close button -->
+        <div class="flex items-center gap-3">
+          <div class="flex bg-slate-900 border border-slate-800 p-0.5 rounded-lg">
+            <button onclick="changeFontSize('small')"
+              class="p-1.5 text-[10px] font-bold text-slate-400 hover:text-white">A-</button>
+            <button onclick="changeFontSize('medium')"
+              class="p-1.5 text-[10px] font-bold text-slate-300 hover:text-white">Biasa</button>
+            <button onclick="changeFontSize('large')"
+              class="p-1.5 text-[10px] font-bold text-slate-200 hover:text-white">A+</button>
+          </div>
+          <button onclick="closeDocumentReader()"
+            class="p-1.5 rounded-xl hover:bg-slate-900 text-slate-400 hover:text-white transition">
+            <i class="fa-solid fa-xmark text-base"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Reader Body Text container -->
+      <div class="flex-grow p-6 sm:p-8 overflow-y-auto leading-relaxed text-slate-300">
+        <article id="reader-doc-body" class="max-w-2xl mx-auto space-y-4 text-sm">
+          <!-- Populated dynamically -->
+        </article>
+      </div>
+
+      <!-- Reader Footer status bar -->
+      <div
+        class="bg-slate-950 px-6 py-3 border-t border-slate-900 flex justify-between items-center text-[10px] text-slate-500 font-semibold">
+        <span>Pengarang: Michael Wung</span>
+        <span>SMA Cinta Kasih Tzu Chi &bull; Kelas 11</span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Footer Section -->
+  <footer
+    class="bg-slate-950/80 border-t border-slate-900 py-8 text-center text-xs text-slate-500 mt-auto transition-all">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="flex items-center justify-center gap-2 mb-2.5">
+        <div
+          class="w-6 h-6 rounded bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center text-white font-black text-xs">
+          MW
+        </div>
+        <span class="font-extrabold text-slate-300 tracking-tight">Michael Wung</span>
+      </div>
+      <p class="mb-4">Portal Tugas Sekolah & Web Portofolio Personal. Dirancang Menggunakan HTML, CSS, JavaScript, dan
+        Tailwind CSS.</p>
+      <p class="text-[10px] text-slate-600">&copy; 2026 Michael Wung. Seluruh hak cipta dilindungi undang-undang.</p>
+    </div>
+  </footer>
+
+  <!-- DATA & LOGIC INTERAKTIVITAS (JAVASCRIPT) -->
+  <script>
+    const DOCS_DB = {
+      'resensi-laskar-pelangi': {
+        type: 'RESENSI NOVEL SASTRA',
+        title: 'Resensi Novel: Laskar Pelangi (Laskar Kehidupan)',
+        content: `
+          <h2 class="text-base font-bold text-white mb-2">I. Identitas Novel</h2>
+          <ul class="list-disc pl-5 mb-4 space-y-1 text-slate-300">
+            <li><strong>Judul Buku:</strong> Laskar Pelangi</li>
+            <li><strong>Penulis:</strong> Andrea Hirata</li>
+            <li><strong>Penerbit:</strong> Bentang Pustaka</li>
+            <li><strong>Tahun Terbit:</strong> 2005</li>
+            <li><strong>Jumlah Halaman:</strong> 529 halaman</li>
+          </ul>
+
+          <h2 class="text-base font-bold text-white mb-2">II. Sinopsis Buku</h2>
+          <p class="mb-4">
+            Novel Laskar Pelangi mengisahkan kehidupan sepuluh anak di Pulau Belitong, Provinsi Bangka Belitung yang berasal dari keluarga miskin. Mereka bersekolah di SD Muhammadiyah Gantong yang kondisinya sangat memprihatinkan dan terancam ditutup oleh Dinas Pendidikan jika tidak mencapai kuota minimal 10 siswa. Pada detik-detik terakhir penutupan sekolah, Harun, seorang anak berkebutuhan khusus datang mendaftar dan menyelamatkan SD Muhammadiyah.
+          </p>
+          <p class="mb-4">
+            Di bawah asuhan Bu Muslimah yang penyabar dan Pak Harfan yang teguh memegang prinsip budi pekerti, sepuluh anak yang dijuluki "Laskar Pelangi" ini belajar bertahan hidup dan bermimpi. Karakter utama, Lintang, seorang anak nelayan super cerdas yang bersepeda puluhan kilometer setiap hari, dan Ikal, representasi Andrea Hirata sendiri, bersama kawan-kawan mereka membuktikan bahwa kemiskinan tidak membatasi impian yang besar.
+          </p>
+
+          <h2 class="text-base font-bold text-white mb-2">III. Analisis Unsur Intrinsik</h2>
+          <p class="mb-2"><strong>A. Tema:</strong> Perjuangan memperoleh pendidikan, nilai persahabatan sejati, dan keteguhan tekad dalam menghadapi kemiskinan.</p>
+          <p class="mb-2"><strong>B. Tokoh dan Penokohan:</strong></p>
+          <ul class="list-disc pl-5 mb-4 space-y-1">
+            <li><strong>Ikal:</strong> Pengamat yang peka, loyal, cerdas, berjiwa seni sastra tinggi.</li>
+            <li><strong>Lintang:</strong> Genius matematika, gigih, pekerja keras, sangat berbakti pada orang tua.</li>
+            <li><strong>Bu Muslimah:</strong> Guru berdedikasi tinggi, ikhlas mengajar walau tanpa digaji, keibuan.</li>
+            <li><strong>Mahar:</strong> Anak dengan imajinasi seni yang luar biasa, sedikit eksentrik tetapi cerdas.</li>
+          </ul>
+          <p class="mb-2"><strong>C. Latar (Setting):</strong> Pulau Belitong, Gantong, tahun 1970-an, bernuansa alam pedesaan pesisir pertambangan timah.</p>
+          <p class="mb-4"><strong>D. Amanat:</strong> Kita tidak boleh menyerah pada keadaan ekonomi. Pendidikan merupakan pintu utama untuk mengubah nasib keluarga. Keikhlasan guru dalam mengajar menghasilkan murid yang hebat.</p>
+
+          <h2 class="text-base font-bold text-white mb-2">IV. Kelebihan dan Kelemahan Novel</h2>
+          <p class="mb-2"><strong>Kelebihan:</strong> Gaya penulisan Andrea sangat puitis, penuh analogi sains, humoris, sekaligus mengharukan. Karakterisasi sangat kuat dan sarat akan kritik sosial yang membangun terhadap diskriminasi kesejahteraan di wilayah kaya timah.</p>
+          <p class="mb-4"><strong>Kelemahan:</strong> Terdapat beberapa diksi sains yang cukup berat yang mungkin membingungkan pembaca awam, serta penutup novel terasa tergesa-gesa dalam melompati nasib tokoh-tokoh utama saat dewasa.</p>
+        `
+      },
+      'tugas-ai-pendidikan': {
+        type: 'TEKS EDITORIAL / OPINI DOKUMEN',
+        title: 'Peran Kecerdasan Buatan (AI) dalam Pendidikan Karakter di Sekolah Menengah',
+        content: `
+          <h2 class="text-base font-bold text-white mb-2">I. Pernyataan Pendapat (Tesis)</h2>
+          <p class="mb-4">
+            Perkembangan pesat teknologi Kecerdasan Buatan (Artificial Intelligence) seperti ChatGPT telah merevolusi sektor pendidikan global. Sekolah tidak lagi bisa menutup mata terhadap keberadaan AI. Pertanyaan mendasar yang kini dihadapi pendidik bukan lagi bagaimana melarang AI, melainkan bagaimana menyelaraskan efisiensi AI dengan pilar utama pendidikan di SMA, yaitu pembentukan budi pekerti dan karakter siswa.
+          </p>
+
+          <h2 class="text-base font-bold text-white mb-2">II. Argumentasi</h2>
+          <p class="mb-4">
+            Di satu sisi, AI dapat membantu mempermudah pengenalan materi ajar dengan menyediakan penjelasan instan, modul kustom, dan tutor sains 24 jam. Namun, di sisi lain, ketergantungan berlebihan pada AI mengancam orisinalitas berpikir, kedisiplinan belajar, dan kejujuran akademis. 
+          </p>
+          <p class="mb-4">
+            Banyak siswa menggunakan AI sebagai "jalan pintas" instan untuk mengerjakan tugas tanpa benar-benar mencerna isi dari materi tersebut. Di sinilah letak krisis pembentukan karakter. Jika terus dibiarkan, pendidikan akan menghasilkan individu yang pintar secara teknis tapi miskin integritas dan daya juang (resiliensi).
+          </p>
+          <p class="mb-4">
+            Oleh sebab itu, SMA Cinta Kasih Tzu Chi, misalnya, menekankan pentingnya kurikulum yang humanis. Pendidik harus menggeser orientasi penilaian dari "produk akhir" (seperti naskah esai yang mudah ditiru AI) menjadi penilaian "proses belajar" (melalui presentasi lisan, eksperimen kelas, dan diskusi pemecahan masalah secara langsung).
+          </p>
+
+          <h2 class="text-base font-bold text-white mb-2">III. Penegasan Ulang Solusi (Reiterasi)</h2>
+          <p class="mb-4">
+            Kesimpulannya, kecerdasan buatan hanyalah alat, bukan pengganti guru maupun proses berpikir manusia. Integritas akademis seperti kejujuran, usaha keras, dan keaslian karya harus tetap diletakkan di atas kemudahan teknologi. Kehadiran AI harus dijadikan momentum untuk meningkatkan standar pengajaran yang melatih analisis tingkat tinggi, empati, dan kebijaksanaan hidup yang tidak dimiliki oleh algoritma kecerdasan buatan.
+          </p>
+        `
+      },
+      'teks-negosiasi': {
+        type: 'NASKA DIALOG NEGOSIASI FORMAL',
+        title: 'Teks Negosiasi: Pengadaan Unit Komputer Laboratorium Informatika',
+        content: `
+          <h2 class="text-base font-bold text-white mb-2">I. Latar Belakang Dialog</h2>
+          <p class="mb-4">
+            <strong>Partisipan:</strong> Michael Wung (Ketua OSIS / Perwakilan Siswa Kelas 11) dan Bapak Dr. Hartono, M.Pd. (Kepala Sekolah SMA Cinta Kasih Tzu Chi).<br>
+            <strong>Tujuan Negosiasi:</strong> Mengajukan permohonan pembaruan komputer lab sekolah agar mendukung praktik pemrograman modern (JavaScript/Node.js/Database) di mata pelajaran Informatika.
+          </p>
+
+          <h2 class="text-base font-bold text-white mb-2">II. Transkrip Negosiasi</h2>
+          <div class="space-y-3 bg-slate-950 p-4 rounded-2xl border border-slate-900 text-xs">
+            <p><strong>Michael:</strong> "Selamat pagi, Pak Hartono. Mohon maaf mengganggu waktu Bapak. Saya mewakili rekan-rekan OSIS dan siswa kelas 11 ingin berdiskusi singkat terkait kendala pembelajaran lab komputer kita."</p>
+            <p><strong>Kepala Sekolah:</strong> "Selamat pagi, Michael. Silakan duduk. Ada kendala apa dengan lab komputer kita?"</p>
+            <p><strong>Michael:</strong> "Begini Pak, saat mata pelajaran Informatika, komputer yang ada sering lambat saat menjalankan tools pemrograman modern seperti Visual Studio Code dan Node.js. Banyak siswa yang harus mengantre atau bergantian komputer karena beberapa PC sering hang."</p>
+            <p><strong>Kepala Sekolah:</strong> "Oh begitu ya. Namun, anggaran sekolah untuk kuartal ini sebenarnya sudah dialokasikan penuh untuk perbaikan fasilitas lapangan olahraga dan perpustakaan baru. Apakah perbaikan ini mendesak?"</p>
+            <p><strong>Michael:</strong> "Sangat mendesak Pak. Mengingat semester ini kami fokus pada ujian pembuatan proyek web, keandalan komputer lab sangat krusial. Jika komputer lambat, waktu mengajar guru habis hanya untuk menunggu booting PC."</p>
+            <p><strong>Kepala Sekolah:</strong> "Hmm, saya paham. Tapi sekolah tidak mungkin mengganti seluruh 40 unit komputer baru sekaligus dalam waktu dekat karena keterbatasan anggaran."</p>
+            <p><strong>Michael:</strong> "Kami memahami keterbatasan tersebut, Pak. Sebagai opsi solusi, kami mengusulkan untuk melakukan upgrade RAM dari 4GB menjadi 8GB dan mengganti penyimpanan HDD ke SSD pada 20 unit utama terlebih dahulu. Biayanya jauh lebih murah dibanding membeli PC baru, tapi performanya akan meningkat signifikan."</p>
+            <p><strong>Kepala Sekolah:</strong> "Ide yang menarik dan hemat biaya. Kira-kira berapa estimasi dana yang diperlukan untuk upgrade 20 unit tersebut?"</p>
+            <p><strong>Michael:</strong> "Kami sudah survei kecil-kecilan, Pak. Total biaya upgrade RAM dan SSD untuk 20 PC adalah sekitar Rp 8.000.000,00."</p>
+            <p><strong>Kepala Sekolah:</strong> "Baiklah, usulan yang sangat rasional. Saya akan setujui pengalihan sebagian dana cadangan operasional sebesar Rp 8.000.000,00 untuk peningkatan PC lab komputer minggu depan. Mohon pastikan OSIS ikut memantau perawatannya."</p>
+            <p><strong>Michael:</strong> "Luar biasa. Terima kasih banyak atas persetujuan Bapak. Kami berjanji akan menjaga fasilitas tersebut dengan sebaik-baiknya."</p>
+          </div>
+        `
+      }
+    };
+
+    function updateThemeIcon() {
+      const isDark = document.documentElement.classList.contains('dark');
+      const icon = document.getElementById('theme-toggle-icon');
+      if (icon) {
+        if (isDark) {
+          icon.className = "fa-solid fa-sun text-sm animate-pulse";
+        } else {
+          icon.className = "fa-solid fa-moon text-sm animate-pulse";
+        }
+      }
+    }
+
+    function toggleDarkMode() {
+      const isDark = document.documentElement.classList.toggle('dark');
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+      updateThemeIcon();
+      showToast(`Tema diubah ke mode ${isDark ? 'Gelap' : 'Terang'}`);
+    }
+
+    function toggleMobileMenu() {
+      const menu = document.getElementById('mobile-menu');
+      menu.classList.toggle('hidden');
+    }
+
+    function openDocumentReader(docId) {
+      const doc = DOCS_DB[docId];
+      if (!doc) return;
+
+      document.getElementById('reader-doc-type').innerText = doc.type;
+      document.getElementById('reader-doc-title').innerText = doc.title;
+      document.getElementById('reader-doc-body').innerHTML = doc.content;
+
+      changeFontSize('medium');
+
+      const overlay = document.getElementById('reader-overlay');
+      overlay.classList.remove('hidden');
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeDocumentReader() {
+      const overlay = document.getElementById('reader-overlay');
+      overlay.classList.add('hidden');
+      document.body.style.overflow = "";
+    }
+
+    function changeFontSize(size) {
+      const body = document.getElementById('reader-doc-body');
+      if (!body) return;
+
+      if (size === 'small') {
+        body.className = "max-w-2xl mx-auto space-y-4 text-xs text-slate-300 leading-relaxed";
+      } else if (size === 'large') {
+        body.className = "max-w-2xl mx-auto space-y-4 text-base text-slate-100 leading-relaxed";
+      } else {
+        body.className = "max-w-2xl mx-auto space-y-4 text-sm text-slate-200 leading-relaxed";
+      }
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      document.getElementById('toast-message').innerText = message;
+
+      toast.classList.remove('translate-y-24', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+
+      setTimeout(() => {
+        toast.classList.remove('translate-y-0', 'opacity-100');
+        toast.classList.add('translate-y-24', 'opacity-0');
+      }, 3500);
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      updateThemeIcon();
+    });
+  </script>
+
+  <!-- Core Utilities -->
+  <script src="assets/js/storage.js"></script>
+  <script src="assets/js/sounds.js"></script>
+  <script src="assets/js/theme.js"></script>
+
+  <!-- SPA & Spotify Plugins -->
+  <script src="assets/js/router.js"></script>
+  <script src="assets/js/player.js"></script>
+
+</body>
+
+</html>

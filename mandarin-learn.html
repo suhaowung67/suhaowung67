@@ -1,0 +1,2951 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>华语学习 – Belajar Mandarin HSK & TOCFL</title>
+  <meta name="description"
+    content="Platform belajar bahasa Mandarin interaktif dengan materi HSK 1-6 dan TOCFL A-C. Vocabulary, flashcard, dan kuis pinyin tersedia untuk setiap level." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Inter:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet" />
+  <style>
+    :root {
+      --bg-dark: #0d0f1a;
+      --bg-card: #151828;
+      --bg-card2: #1c2035;
+      --accent-red: #e84855;
+      --accent-gold: #f5a623;
+      --accent-teal: #38d9a9;
+      --accent-blue: #4dabf7;
+      --accent-purple: #9775fa;
+      --text-primary: #f0f4ff;
+      --text-secondary: #8892b0;
+      --text-muted: #4a5568;
+      --border: rgba(255, 255, 255, 0.08);
+      --border-hover: rgba(255, 255, 255, 0.18);
+      --glow-red: rgba(232, 72, 85, 0.3);
+      --glow-teal: rgba(56, 217, 169, 0.3);
+      --glow-gold: rgba(245, 166, 35, 0.3);
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--bg-dark);
+      color: var(--text-primary);
+      font-family: 'Inter', 'Noto Sans SC', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ---- SCROLLBAR ---- */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--bg-dark);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--accent-red);
+      border-radius: 3px;
+    }
+
+    /* ---- NAVBAR ---- */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      background: rgba(13, 15, 26, 0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-logo {
+      font-size: 1.4rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent-red), var(--accent-gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .nav-logo span {
+      font-size: 1.6rem;
+    }
+
+    .nav-menu {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .nav-btn {
+      background: none;
+      border: none;
+      color: var(--text-secondary);
+      font-family: inherit;
+      font-size: 0.9rem;
+      font-weight: 500;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: var(--transition);
+      position: relative;
+    }
+
+    .nav-btn:hover,
+    .nav-btn.active {
+      color: var(--text-primary);
+      background: var(--border);
+    }
+
+    .nav-dropdown {
+      position: relative;
+    }
+
+    .dropdown-menu {
+      position: absolute;
+      top: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--bg-card2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 0.5rem;
+      min-width: 160px;
+      display: none;
+      flex-direction: column;
+      gap: 2px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+      z-index: 999;
+    }
+
+    .nav-dropdown:hover .dropdown-menu {
+      display: flex;
+    }
+
+    .dropdown-item {
+      background: none;
+      border: none;
+      color: var(--text-secondary);
+      font-family: inherit;
+      font-size: 0.85rem;
+      font-weight: 500;
+      padding: 0.6rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      text-align: left;
+      transition: var(--transition);
+      width: 100%;
+    }
+
+    .dropdown-item:hover {
+      background: var(--border);
+      color: var(--text-primary);
+    }
+
+    .nav-chevron {
+      font-size: 0.7rem;
+      margin-left: 4px;
+    }
+
+    /* ---- HERO ---- */
+    #page-home {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 20% 50%, rgba(232, 72, 85, 0.12) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 20%, rgba(245, 166, 35, 0.1) 0%, transparent 60%),
+        radial-gradient(ellipse at 60% 80%, rgba(56, 217, 169, 0.08) 0%, transparent 60%);
+    }
+
+    .hero-hanzi {
+      position: absolute;
+      font-size: 30vw;
+      font-weight: 700;
+      line-height: 1;
+      color: rgba(255, 255, 255, 0.02);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      font-family: 'Noto Sans SC', sans-serif;
+      animation: floatHanzi 8s ease-in-out infinite;
+    }
+
+    @keyframes floatHanzi {
+
+      0%,
+      100% {
+        transform: translate(-50%, -50%) rotate(-3deg);
+      }
+
+      50% {
+        transform: translate(-50%, -53%) rotate(3deg);
+      }
+    }
+
+    .hero-content {
+      position: relative;
+      text-align: center;
+      max-width: 800px;
+      padding: 2rem;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(232, 72, 85, 0.15);
+      border: 1px solid rgba(232, 72, 85, 0.3);
+      border-radius: 50px;
+      padding: 0.4rem 1rem;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--accent-red);
+      margin-bottom: 1.5rem;
+      animation: fadeDown 0.8s ease;
+    }
+
+    .hero-title {
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 1rem;
+      animation: fadeUp 0.8s ease 0.1s both;
+    }
+
+    .hero-title .hanzi-title {
+      font-family: 'Noto Sans SC', sans-serif;
+      background: linear-gradient(135deg, var(--accent-red), var(--accent-gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: block;
+    }
+
+    .hero-sub {
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      margin-bottom: 2.5rem;
+      animation: fadeUp 0.8s ease 0.2s both;
+    }
+
+    .hero-btns {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      animation: fadeUp 0.8s ease 0.3s both;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent-red), #c0392b);
+      color: white;
+      border: none;
+      padding: 0.85rem 2rem;
+      border-radius: 50px;
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      box-shadow: 0 8px 30px var(--glow-red);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 40px var(--glow-red);
+    }
+
+    .btn-secondary {
+      background: var(--border);
+      color: var(--text-primary);
+      border: 1px solid var(--border-hover);
+      padding: 0.85rem 2rem;
+      border-radius: 50px;
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .btn-secondary:hover {
+      background: var(--border-hover);
+      transform: translateY(-2px);
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 3rem;
+      justify-content: center;
+      margin-top: 4rem;
+      animation: fadeUp 0.8s ease 0.4s both;
+    }
+
+    .stat {
+      text-align: center;
+    }
+
+    .stat-num {
+      font-size: 2rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent-teal), var(--accent-blue));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .stat-label {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeDown {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ---- CONTENT PAGES ---- */
+    .page {
+      display: none;
+      padding: 80px 0 0;
+      min-height: 100vh;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    .page-header {
+      padding: 3rem 2rem 2rem;
+      background: linear-gradient(180deg, rgba(232, 72, 85, 0.06) 0%, transparent 100%);
+      border-bottom: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .page-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .page-desc {
+      color: var(--text-secondary);
+      font-size: 1rem;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    /* ---- LEVEL SELECTOR ---- */
+    .level-tabs {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .level-tab {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      padding: 0.6rem 1.5rem;
+      border-radius: 50px;
+      font-family: inherit;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .level-tab:hover {
+      border-color: var(--accent-red);
+      color: var(--text-primary);
+    }
+
+    .level-tab.active {
+      background: linear-gradient(135deg, var(--accent-red), #c0392b);
+      border-color: transparent;
+      color: white;
+      box-shadow: 0 4px 20px var(--glow-red);
+    }
+
+    /* ---- CONTENT TABS ---- */
+    .content-tabs {
+      display: flex;
+      gap: 0.5rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 2rem;
+    }
+
+    .content-tab {
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      color: var(--text-secondary);
+      font-family: inherit;
+      font-size: 0.95rem;
+      font-weight: 500;
+      padding: 0.75rem 1.5rem;
+      cursor: pointer;
+      transition: var(--transition);
+      margin-bottom: -1px;
+    }
+
+    .content-tab:hover {
+      color: var(--text-primary);
+    }
+
+    .content-tab.active {
+      color: var(--accent-red);
+      border-bottom-color: var(--accent-red);
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    /* ---- VOCABULARY TABLE ---- */
+    .vocab-controls {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .search-input {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--text-primary);
+      font-family: inherit;
+      font-size: 0.9rem;
+      padding: 0.6rem 1.2rem;
+      border-radius: 50px;
+      outline: none;
+      transition: var(--transition);
+      min-width: 240px;
+    }
+
+    .search-input:focus {
+      border-color: var(--accent-red);
+      box-shadow: 0 0 0 3px var(--glow-red);
+    }
+
+    .search-input::placeholder {
+      color: var(--text-muted);
+    }
+
+    .vocab-count {
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+      margin-left: auto;
+    }
+
+    .vocab-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .vocab-table th {
+      text-align: left;
+      padding: 0.75rem 1rem;
+      color: var(--text-secondary);
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg-card2);
+    }
+
+    .vocab-table th:first-child {
+      border-radius: 8px 0 0 0;
+    }
+
+    .vocab-table th:last-child {
+      border-radius: 0 8px 0 0;
+    }
+
+    .vocab-table td {
+      padding: 0.9rem 1rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      vertical-align: middle;
+      font-size: 0.95rem;
+    }
+
+    .vocab-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .vocab-table tr:hover td {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .hanzi-cell {
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .pinyin-cell {
+      color: var(--accent-red);
+      font-size: 0.95rem;
+    }
+
+    .meaning-cell {
+      color: var(--text-secondary);
+    }
+
+    .type-badge {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 50px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .type-n {
+      background: rgba(77, 171, 247, 0.15);
+      color: var(--accent-blue);
+    }
+
+    .type-v {
+      background: rgba(56, 217, 169, 0.15);
+      color: var(--accent-teal);
+    }
+
+    .type-adj {
+      background: rgba(245, 166, 35, 0.15);
+      color: var(--accent-gold);
+    }
+
+    .type-adv {
+      background: rgba(151, 117, 250, 0.15);
+      color: var(--accent-purple);
+    }
+
+    .type-pron {
+      background: rgba(232, 72, 85, 0.15);
+      color: var(--accent-red);
+    }
+
+    .type-num {
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--text-secondary);
+    }
+
+    .type-mw {
+      background: rgba(255, 200, 100, 0.1);
+      color: #ffcc44;
+    }
+
+    .type-part {
+      background: rgba(200, 200, 255, 0.1);
+      color: #b0b0ff;
+    }
+
+    .type-prep {
+      background: rgba(100, 220, 100, 0.1);
+      color: #66dd66;
+    }
+
+    .type-conj {
+      background: rgba(220, 100, 220, 0.1);
+      color: #dd66dd;
+    }
+
+    .type-int {
+      background: rgba(100, 200, 220, 0.1);
+      color: #66ccdd;
+    }
+
+    /* ---- FLASHCARD ---- */
+    .flashcard-area {
+      max-width: 500px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .flashcard-progress {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      justify-content: center;
+    }
+
+    .progress-bar-wrap {
+      flex: 1;
+      max-width: 300px;
+      background: var(--border);
+      border-radius: 50px;
+      height: 6px;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent-red), var(--accent-gold));
+      border-radius: 50px;
+      transition: width 0.4s ease;
+    }
+
+    .progress-text {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+
+    .card-wrapper {
+      perspective: 1200px;
+      width: 100%;
+      height: 320px;
+      cursor: pointer;
+      margin-bottom: 2rem;
+    }
+
+    .card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .card-inner.flipped {
+      transform: rotateY(180deg);
+    }
+
+    .card-face,
+    .card-back {
+      position: absolute;
+      inset: 0;
+      background: var(--bg-card2);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      padding: 2rem;
+      backface-visibility: hidden;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    }
+
+    .card-face {
+      background: linear-gradient(135deg, var(--bg-card2), rgba(232, 72, 85, 0.05));
+    }
+
+    .card-back {
+      background: linear-gradient(135deg, var(--bg-card2), rgba(56, 217, 169, 0.05));
+      transform: rotateY(180deg);
+    }
+
+    .card-hanzi {
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: 5rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #fff, rgba(255, 255, 255, 0.7));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .card-hint {
+      color: var(--text-muted);
+      font-size: 0.8rem;
+    }
+
+    .card-pinyin {
+      font-size: 1.8rem;
+      color: var(--accent-red);
+      font-weight: 500;
+    }
+
+    .card-meaning {
+      font-size: 1.2rem;
+      color: var(--text-secondary);
+    }
+
+    .card-type-badge {}
+
+    .flashcard-controls {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+    }
+
+    .fc-btn {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--text-primary);
+      font-family: inherit;
+      font-size: 0.9rem;
+      font-weight: 500;
+      padding: 0.75rem 1.5rem;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .fc-btn:hover {
+      border-color: var(--accent-red);
+      background: var(--bg-card2);
+    }
+
+    .fc-btn.flip-btn {
+      background: linear-gradient(135deg, var(--accent-red), #c0392b);
+      border-color: transparent;
+      color: white;
+      box-shadow: 0 4px 20px var(--glow-red);
+    }
+
+    .fc-btn.flip-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .fc-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .shuffle-info {
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      margin-top: 1rem;
+    }
+
+    /* ---- QUIZ ---- */
+    .quiz-area {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .quiz-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 2rem;
+    }
+
+    .quiz-score-wrap {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .score-badge {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      padding: 0.4rem 1rem;
+      border-radius: 50px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .score-badge.correct {
+      border-color: rgba(56, 217, 169, 0.4);
+      color: var(--accent-teal);
+    }
+
+    .score-badge.wrong {
+      border-color: rgba(232, 72, 85, 0.4);
+      color: var(--accent-red);
+    }
+
+    .quiz-mode-select {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--text-primary);
+      font-family: inherit;
+      font-size: 0.85rem;
+      padding: 0.4rem 1rem;
+      border-radius: 50px;
+      cursor: pointer;
+      outline: none;
+    }
+
+    .quiz-card {
+      background: var(--bg-card2);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 2.5rem;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+
+    .quiz-question-label {
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .quiz-hanzi {
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: 4.5rem;
+      font-weight: 700;
+      margin: 0.5rem 0;
+      line-height: 1;
+    }
+
+    .quiz-meaning {
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+      margin-top: 0.5rem;
+    }
+
+    .quiz-options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .quiz-option {
+      background: var(--bg-card);
+      border: 2px solid var(--border);
+      color: var(--text-primary);
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 500;
+      padding: 1rem;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: var(--transition);
+      text-align: center;
+    }
+
+    .quiz-option:hover:not(:disabled) {
+      border-color: var(--accent-red);
+      background: var(--bg-card2);
+    }
+
+    .quiz-option.correct {
+      border-color: var(--accent-teal);
+      background: rgba(56, 217, 169, 0.1);
+      color: var(--accent-teal);
+    }
+
+    .quiz-option.wrong {
+      border-color: var(--accent-red);
+      background: rgba(232, 72, 85, 0.1);
+      color: var(--accent-red);
+    }
+
+    .quiz-option:disabled {
+      cursor: not-allowed;
+    }
+
+    .quiz-input-wrap {
+      display: flex;
+      gap: 0.75rem;
+    }
+
+    .quiz-input {
+      flex: 1;
+      background: var(--bg-card);
+      border: 2px solid var(--border);
+      color: var(--text-primary);
+      font-family: inherit;
+      font-size: 1.1rem;
+      padding: 0.75rem 1.2rem;
+      border-radius: 12px;
+      outline: none;
+      transition: var(--transition);
+    }
+
+    .quiz-input:focus {
+      border-color: var(--accent-red);
+      box-shadow: 0 0 0 3px var(--glow-red);
+    }
+
+    .quiz-input.correct {
+      border-color: var(--accent-teal);
+      background: rgba(56, 217, 169, 0.05);
+    }
+
+    .quiz-input.wrong {
+      border-color: var(--accent-red);
+      background: rgba(232, 72, 85, 0.05);
+    }
+
+    .quiz-submit {
+      background: linear-gradient(135deg, var(--accent-red), #c0392b);
+      border: none;
+      color: white;
+      font-family: inherit;
+      font-size: 0.95rem;
+      font-weight: 600;
+      padding: 0.75rem 1.5rem;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .quiz-submit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px var(--glow-red);
+    }
+
+    .quiz-feedback {
+      padding: 1rem 1.5rem;
+      border-radius: 12px;
+      text-align: center;
+      font-weight: 500;
+      margin-bottom: 1rem;
+      display: none;
+    }
+
+    .quiz-feedback.correct {
+      background: rgba(56, 217, 169, 0.1);
+      border: 1px solid rgba(56, 217, 169, 0.3);
+      color: var(--accent-teal);
+    }
+
+    .quiz-feedback.wrong {
+      background: rgba(232, 72, 85, 0.1);
+      border: 1px solid rgba(232, 72, 85, 0.3);
+      color: var(--accent-red);
+    }
+
+    .quiz-next {
+      display: none;
+      width: 100%;
+      background: var(--bg-card);
+      border: 1px solid var(--border-hover);
+      color: var(--text-primary);
+      font-family: inherit;
+      font-size: 0.95rem;
+      font-weight: 600;
+      padding: 0.85rem;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .quiz-next:hover {
+      background: var(--bg-card2);
+    }
+
+    .quiz-result {
+      text-align: center;
+      padding: 3rem 2rem;
+      background: var(--bg-card2);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      display: none;
+    }
+
+    .quiz-result.show {
+      display: block;
+    }
+
+    .result-icon {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+    }
+
+    .result-score {
+      font-size: 3rem;
+      font-weight: 700;
+    }
+
+    .result-score.excellent {
+      background: linear-gradient(135deg, var(--accent-teal), var(--accent-blue));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .result-score.good {
+      background: linear-gradient(135deg, var(--accent-gold), var(--accent-red));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .result-score.needs-work {
+      color: var(--accent-red);
+    }
+
+    .result-label {
+      color: var(--text-secondary);
+      margin-bottom: 2rem;
+    }
+
+    .restart-btn {
+      background: linear-gradient(135deg, var(--accent-red), #c0392b);
+      border: none;
+      color: white;
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 600;
+      padding: 0.85rem 2.5rem;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: var(--transition);
+      box-shadow: 0 8px 30px var(--glow-red);
+    }
+
+    .restart-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    /* ---- LEVEL INFO CARDS ---- */
+    .level-info {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .info-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .info-card-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .info-card-value {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .info-card-sub {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .nav-menu {
+        gap: 0;
+      }
+
+      .nav-btn {
+        padding: 0.5rem 0.6rem;
+        font-size: 0.8rem;
+      }
+
+      .quiz-options {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-stats {
+        gap: 1.5rem;
+      }
+
+      .container {
+        padding: 1rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- NAVBAR -->
+  <nav>
+    <a class="nav-logo" onclick="showPage('home')" href="#">
+      <span>🇨🇳</span> 华语学习
+    </a>
+    <div class="nav-menu">
+      <button class="nav-btn" id="nav-home" onclick="showPage('home')">Beranda</button>
+      <div class="nav-dropdown">
+        <button class="nav-btn" id="nav-hsk">HSK <span class="nav-chevron">▾</span></button>
+        <div class="dropdown-menu" id="hsk-dropdown">
+          <button class="dropdown-item" onclick="showLevel('hsk','1')">HSK 1 – Pemula</button>
+          <button class="dropdown-item" onclick="showLevel('hsk','2')">HSK 2 – Dasar</button>
+          <button class="dropdown-item" onclick="showLevel('hsk','3')">HSK 3 – Menengah Awal</button>
+          <button class="dropdown-item" onclick="showLevel('hsk','4')">HSK 4 – Menengah</button>
+          <button class="dropdown-item" onclick="showLevel('hsk','5')">HSK 5 – Lanjut</button>
+          <button class="dropdown-item" onclick="showLevel('hsk','6')">HSK 6 – Mahir</button>
+        </div>
+      </div>
+      <div class="nav-dropdown">
+        <button class="nav-btn" id="nav-tocfl">TOCFL <span class="nav-chevron">▾</span></button>
+        <div class="dropdown-menu" id="tocfl-dropdown">
+          <button class="dropdown-item" onclick="showLevel('tocfl','A1')">Band A – Level 1 (A1)</button>
+          <button class="dropdown-item" onclick="showLevel('tocfl','A2')">Band A – Level 2 (A2)</button>
+          <button class="dropdown-item" onclick="showLevel('tocfl','B1')">Band B – Level 3 (B1)</button>
+          <button class="dropdown-item" onclick="showLevel('tocfl','B2')">Band B – Level 4 (B2)</button>
+          <button class="dropdown-item" onclick="showLevel('tocfl','C1')">Band C – Level 5 (C1)</button>
+          <button class="dropdown-item" onclick="showLevel('tocfl','C2')">Band C – Level 6 (C2)</button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HOME PAGE -->
+  <div id="page-home" class="active">
+    <div class="hero-bg"></div>
+    <div class="hero-hanzi">学</div>
+    <div class="hero-content">
+      <div class="hero-badge">🎓 Platform Belajar Mandarin Interaktif</div>
+      <h1 class="hero-title">
+        Kuasai Bahasa
+        <span class="hanzi-title">中文</span>
+      </h1>
+      <p class="hero-sub">Belajar Mandarin dengan metode HSK & TOCFL — vocabulary, flashcard, dan kuis interaktif untuk
+        setiap level dari pemula hingga mahir.</p>
+      <div class="hero-btns">
+        <button class="btn-primary" onclick="showLevel('hsk','1')">🚀 Mulai HSK 1</button>
+        <button class="btn-secondary" onclick="showLevel('tocfl','A1')">📖 Coba TOCFL A1</button>
+      </div>
+      <div class="hero-stats">
+        <div class="stat">
+          <div class="stat-num">500+</div>
+          <div class="stat-label">Kosakata HSK</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">12</div>
+          <div class="stat-label">Level Tersedia</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">3</div>
+          <div class="stat-label">Mode Belajar</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HSK PAGE -->
+  <div id="page-hsk" class="page">
+    <div class="page-header">
+      <h1 class="page-title">HSK – <span id="hsk-level-title">Level 1</span></h1>
+      <p class="page-desc" id="hsk-level-desc">Hanyu Shuiping Kaoshi – Ujian Kemampuan Bahasa Mandarin</p>
+    </div>
+    <div class="container">
+      <div class="level-tabs" id="hsk-level-tabs">
+        <button class="level-tab active" onclick="switchHSK('1')">HSK 1</button>
+        <button class="level-tab" onclick="switchHSK('2')">HSK 2</button>
+        <button class="level-tab" onclick="switchHSK('3')">HSK 3</button>
+        <button class="level-tab" onclick="switchHSK('4')">HSK 4</button>
+        <button class="level-tab" onclick="switchHSK('5')">HSK 5</button>
+        <button class="level-tab" onclick="switchHSK('6')">HSK 6</button>
+      </div>
+      <div id="hsk-info" class="level-info"></div>
+      <div class="content-tabs">
+        <button class="content-tab active" onclick="switchContentTab('hsk','vocab')">📚 Vocabulary</button>
+        <button class="content-tab" onclick="switchContentTab('hsk','flashcard')">🃏 Flashcard</button>
+        <button class="content-tab" onclick="switchContentTab('hsk','quiz')">✍️ Kuis Pinyin</button>
+      </div>
+      <div id="hsk-vocab-tab" class="tab-content active">
+        <div class="vocab-controls">
+          <input type="text" class="search-input" id="hsk-search" placeholder="🔍 Cari kata..."
+            oninput="filterVocab('hsk')" />
+          <span class="vocab-count" id="hsk-vocab-count"></span>
+        </div>
+        <div style="overflow-x:auto;">
+          <table class="vocab-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Hanzi</th>
+                <th>Pinyin</th>
+                <th>Arti</th>
+                <th>Jenis</th>
+              </tr>
+            </thead>
+            <tbody id="hsk-vocab-body"></tbody>
+          </table>
+        </div>
+      </div>
+      <div id="hsk-flashcard-tab" class="tab-content">
+        <div class="flashcard-area">
+          <div class="flashcard-progress">
+            <span class="progress-text" id="hsk-fc-progress">1 / 1</span>
+            <div class="progress-bar-wrap">
+              <div class="progress-bar" id="hsk-fc-bar" style="width:0%"></div>
+            </div>
+            <span class="progress-text" id="hsk-fc-pct">0%</span>
+          </div>
+          <div class="card-wrapper" onclick="flipCard('hsk')">
+            <div class="card-inner" id="hsk-card-inner">
+              <div class="card-face">
+                <div class="card-hanzi" id="hsk-card-hanzi">加油</div>
+                <div class="card-hint">Klik untuk lihat jawaban 👆</div>
+              </div>
+              <div class="card-back">
+                <div class="card-pinyin" id="hsk-card-pinyin">jiā yóu</div>
+                <div class="card-meaning" id="hsk-card-meaning">Semangat!</div>
+                <div id="hsk-card-type"></div>
+              </div>
+            </div>
+          </div>
+          <div class="flashcard-controls">
+            <button class="fc-btn" onclick="prevCard('hsk')" id="hsk-prev-btn">← Sebelumnya</button>
+            <button class="fc-btn flip-btn" onclick="flipCard('hsk')">🔄 Balik</button>
+            <button class="fc-btn" onclick="nextCard('hsk')" id="hsk-next-btn">Berikutnya →</button>
+          </div>
+          <button class="fc-btn" onclick="shuffleCards('hsk')" style="margin-top:1rem;width:100%;">🔀 Acak
+            Kartu</button>
+          <div class="shuffle-info">Klik kartu untuk membalik | Gunakan tombol panah untuk navigasi</div>
+        </div>
+      </div>
+      <div id="hsk-quiz-tab" class="tab-content">
+        <div class="quiz-area">
+          <div class="quiz-header">
+            <div class="quiz-score-wrap">
+              <div class="score-badge correct">✅ <span id="hsk-correct-count">0</span></div>
+              <div class="score-badge wrong">❌ <span id="hsk-wrong-count">0</span></div>
+            </div>
+            <select class="quiz-mode-select" id="hsk-quiz-mode" onchange="startQuiz('hsk')">
+              <option value="pilihan">Pilihan Ganda</option>
+              <option value="ketik">Ketik Pinyin</option>
+              <option value="arti">Pilih Arti</option>
+            </select>
+          </div>
+          <div id="hsk-quiz-content"></div>
+          <div class="quiz-result" id="hsk-quiz-result">
+            <div class="result-icon" id="hsk-result-icon">🏆</div>
+            <div class="result-score" id="hsk-result-score"></div>
+            <div class="result-label" id="hsk-result-label"></div>
+            <button class="restart-btn" onclick="startQuiz('hsk')">🔁 Coba Lagi</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOCFL PAGE -->
+  <div id="page-tocfl" class="page">
+    <div class="page-header">
+      <h1 class="page-title">TOCFL – <span id="tocfl-level-title">Band A Level 1</span></h1>
+      <p class="page-desc" id="tocfl-level-desc">Test of Chinese as a Foreign Language – Taiwan</p>
+    </div>
+    <div class="container">
+      <div class="level-tabs" id="tocfl-level-tabs">
+        <button class="level-tab active" onclick="switchTOCFL('A1')">A1</button>
+        <button class="level-tab" onclick="switchTOCFL('A2')">A2</button>
+        <button class="level-tab" onclick="switchTOCFL('B1')">B1</button>
+        <button class="level-tab" onclick="switchTOCFL('B2')">B2</button>
+        <button class="level-tab" onclick="switchTOCFL('C1')">C1</button>
+        <button class="level-tab" onclick="switchTOCFL('C2')">C2</button>
+      </div>
+      <div id="tocfl-info" class="level-info"></div>
+      <div class="content-tabs">
+        <button class="content-tab active" onclick="switchContentTab('tocfl','vocab')">📚 Vocabulary</button>
+        <button class="content-tab" onclick="switchContentTab('tocfl','flashcard')">🃏 Flashcard</button>
+        <button class="content-tab" onclick="switchContentTab('tocfl','quiz')">✍️ Kuis Pinyin</button>
+      </div>
+      <div id="tocfl-vocab-tab" class="tab-content active">
+        <div class="vocab-controls">
+          <input type="text" class="search-input" id="tocfl-search" placeholder="🔍 Cari kata..."
+            oninput="filterVocab('tocfl')" />
+          <span class="vocab-count" id="tocfl-vocab-count"></span>
+        </div>
+        <div style="overflow-x:auto;">
+          <table class="vocab-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Hanzi</th>
+                <th>Pinyin</th>
+                <th>Arti</th>
+                <th>Jenis</th>
+              </tr>
+            </thead>
+            <tbody id="tocfl-vocab-body"></tbody>
+          </table>
+        </div>
+      </div>
+      <div id="tocfl-flashcard-tab" class="tab-content">
+        <div class="flashcard-area">
+          <div class="flashcard-progress">
+            <span class="progress-text" id="tocfl-fc-progress">1 / 1</span>
+            <div class="progress-bar-wrap">
+              <div class="progress-bar" id="tocfl-fc-bar" style="width:0%"></div>
+            </div>
+            <span class="progress-text" id="tocfl-fc-pct">0%</span>
+          </div>
+          <div class="card-wrapper" onclick="flipCard('tocfl')">
+            <div class="card-inner" id="tocfl-card-inner">
+              <div class="card-face">
+                <div class="card-hanzi" id="tocfl-card-hanzi">你好</div>
+                <div class="card-hint">Klik untuk lihat jawaban 👆</div>
+              </div>
+              <div class="card-back">
+                <div class="card-pinyin" id="tocfl-card-pinyin">nǐ hǎo</div>
+                <div class="card-meaning" id="tocfl-card-meaning">Halo</div>
+                <div id="tocfl-card-type"></div>
+              </div>
+            </div>
+          </div>
+          <div class="flashcard-controls">
+            <button class="fc-btn" onclick="prevCard('tocfl')" id="tocfl-prev-btn">← Sebelumnya</button>
+            <button class="fc-btn flip-btn" onclick="flipCard('tocfl')">🔄 Balik</button>
+            <button class="fc-btn" onclick="nextCard('tocfl')" id="tocfl-next-btn">Berikutnya →</button>
+          </div>
+          <button class="fc-btn" onclick="shuffleCards('tocfl')" style="margin-top:1rem;width:100%;">🔀 Acak
+            Kartu</button>
+          <div class="shuffle-info">Klik kartu untuk membalik | Gunakan tombol panah untuk navigasi</div>
+        </div>
+      </div>
+      <div id="tocfl-quiz-tab" class="tab-content">
+        <div class="quiz-area">
+          <div class="quiz-header">
+            <div class="quiz-score-wrap">
+              <div class="score-badge correct">✅ <span id="tocfl-correct-count">0</span></div>
+              <div class="score-badge wrong">❌ <span id="tocfl-wrong-count">0</span></div>
+            </div>
+            <select class="quiz-mode-select" id="tocfl-quiz-mode" onchange="startQuiz('tocfl')">
+              <option value="pilihan">Pilihan Ganda</option>
+              <option value="ketik">Ketik Pinyin</option>
+              <option value="arti">Pilih Arti</option>
+            </select>
+          </div>
+          <div id="tocfl-quiz-content"></div>
+          <div class="quiz-result" id="tocfl-quiz-result">
+            <div class="result-icon" id="tocfl-result-icon">🏆</div>
+            <div class="result-score" id="tocfl-result-score"></div>
+            <div class="result-label" id="tocfl-result-label"></div>
+            <button class="restart-btn" onclick="startQuiz('tocfl')">🔁 Coba Lagi</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // =============================================
+    // DATA – HSK VOCABULARY (2.0 Standard)
+    // =============================================
+    const HSK_DATA = {
+      '1': {
+        title: 'HSK 1 – Pemula', desc: 'Kosakata dasar untuk komunikasi sehari-hari sederhana',
+        words: [
+          // Pronouns
+          { h: '我', p: 'wǒ', m: 'Saya / Aku', t: 'pron' },
+          { h: '你', p: 'nǐ', m: 'Kamu / Anda', t: 'pron' },
+          { h: '他', p: 'tā', m: 'Dia (laki-laki)', t: 'pron' },
+          { h: '她', p: 'tā', m: 'Dia (perempuan)', t: 'pron' },
+          { h: '我们', p: 'wǒmen', m: 'Kita / Kami', t: 'pron' },
+          { h: '你们', p: 'nǐmen', m: 'Kalian', t: 'pron' },
+          { h: '他们', p: 'tāmen', m: 'Mereka (lk)', t: 'pron' },
+          { h: '她们', p: 'tāmen', m: 'Mereka (pr)', t: 'pron' },
+          { h: '这', p: 'zhè', m: 'Ini', t: 'pron' },
+          { h: '那', p: 'nà', m: 'Itu', t: 'pron' },
+          { h: '谁', p: 'shéi', m: 'Siapa', t: 'pron' },
+          { h: '什么', p: 'shénme', m: 'Apa', t: 'pron' },
+          { h: '多少', p: 'duōshǎo', m: 'Berapa banyak', t: 'pron' },
+          { h: '几', p: 'jǐ', m: 'Berapa (sedikit)', t: 'pron' },
+          { h: '怎么', p: 'zěnme', m: 'Bagaimana', t: 'pron' },
+          { h: '哪', p: 'nǎ', m: 'Yang mana', t: 'pron' },
+          // Numbers
+          { h: '零', p: 'líng', m: 'Nol (0)', t: 'num' },
+          { h: '一', p: 'yī', m: 'Satu (1)', t: 'num' },
+          { h: '二', p: 'èr', m: 'Dua (2)', t: 'num' },
+          { h: '三', p: 'sān', m: 'Tiga (3)', t: 'num' },
+          { h: '四', p: 'sì', m: 'Empat (4)', t: 'num' },
+          { h: '五', p: 'wǔ', m: 'Lima (5)', t: 'num' },
+          { h: '六', p: 'liù', m: 'Enam (6)', t: 'num' },
+          { h: '七', p: 'qī', m: 'Tujuh (7)', t: 'num' },
+          { h: '八', p: 'bā', m: 'Delapan (8)', t: 'num' },
+          { h: '九', p: 'jiǔ', m: 'Sembilan (9)', t: 'num' },
+          { h: '十', p: 'shí', m: 'Sepuluh (10)', t: 'num' },
+          { h: '百', p: 'bǎi', m: 'Seratus', t: 'num' },
+          // Measure words
+          { h: '个', p: 'gè', m: 'Kata penggolong umum', t: 'mw' },
+          { h: '岁', p: 'suì', m: 'Tahun (usia)', t: 'mw' },
+          { h: '本', p: 'běn', m: 'Kata penggolong buku', t: 'mw' },
+          { h: '块', p: 'kuài', m: 'Keping / Yuan', t: 'mw' },
+          { h: '些', p: 'xiē', m: 'Beberapa', t: 'mw' },
+          // Verbs
+          { h: '是', p: 'shì', m: 'Adalah / Iya', t: 'v' },
+          { h: '有', p: 'yǒu', m: 'Ada / Memiliki', t: 'v' },
+          { h: '吃', p: 'chī', m: 'Makan', t: 'v' },
+          { h: '喝', p: 'hē', m: 'Minum', t: 'v' },
+          { h: '去', p: 'qù', m: 'Pergi', t: 'v' },
+          { h: '来', p: 'lái', m: 'Datang', t: 'v' },
+          { h: '喜欢', p: 'xǐhuān', m: 'Suka / Menyukai', t: 'v' },
+          { h: '想', p: 'xiǎng', m: 'Ingin / Berpikir', t: 'v' },
+          { h: '会', p: 'huì', m: 'Bisa / Akan', t: 'v' },
+          { h: '看', p: 'kàn', m: 'Melihat / Membaca', t: 'v' },
+          { h: '听', p: 'tīng', m: 'Mendengar', t: 'v' },
+          { h: '读', p: 'dú', m: 'Membaca', t: 'v' },
+          { h: '写', p: 'xiě', m: 'Menulis', t: 'v' },
+          { h: '说', p: 'shuō', m: 'Berbicara / Berkata', t: 'v' },
+          { h: '做', p: 'zuò', m: 'Melakukan / Membuat', t: 'v' },
+          { h: '坐', p: 'zuò', m: 'Duduk / Naik (kendaraan)', t: 'v' },
+          { h: '叫', p: 'jiào', m: 'Dipanggil / Memanggil', t: 'v' },
+          { h: '打电话', p: 'dǎ diànhuà', m: 'Menelepon', t: 'v' },
+          { h: '住', p: 'zhù', m: 'Tinggal', t: 'v' },
+          { h: '工作', p: 'gōngzuò', m: 'Bekerja / Pekerjaan', t: 'v' },
+          { h: '学习', p: 'xuéxí', m: 'Belajar', t: 'v' },
+          { h: '买', p: 'mǎi', m: 'Membeli', t: 'v' },
+          { h: '开', p: 'kāi', m: 'Membuka / Mengemudi', t: 'v' },
+          { h: '睡觉', p: 'shuìjiào', m: 'Tidur', t: 'v' },
+          { h: '起来', p: 'qǐlái', m: 'Bangun / Bangkit', t: 'v' },
+          { h: '认识', p: 'rènshí', m: 'Mengenal', t: 'v' },
+          // Nouns - People
+          { h: '人', p: 'rén', m: 'Orang / Manusia', t: 'n' },
+          { h: '爸爸', p: 'bàba', m: 'Ayah', t: 'n' },
+          { h: '妈妈', p: 'māma', m: 'Ibu', t: 'n' },
+          { h: '老师', p: 'lǎoshī', m: 'Guru', t: 'n' },
+          { h: '学生', p: 'xuéshēng', m: 'Murid / Pelajar', t: 'n' },
+          { h: '同学', p: 'tóngxué', m: 'Teman sekelas', t: 'n' },
+          { h: '朋友', p: 'péngyǒu', m: 'Teman', t: 'n' },
+          { h: '医生', p: 'yīshēng', m: 'Dokter', t: 'n' },
+          { h: '女儿', p: 'nǚér', m: 'Putri / Anak perempuan', t: 'n' },
+          { h: '儿子', p: 'érzi', m: 'Putra / Anak laki-laki', t: 'n' },
+          // Nouns - Places
+          { h: '家', p: 'jiā', m: 'Rumah / Keluarga', t: 'n' },
+          { h: '学校', p: 'xuéxiào', m: 'Sekolah', t: 'n' },
+          { h: '中国', p: 'Zhōngguó', m: 'China', t: 'n' },
+          { h: '北京', p: 'Běijīng', m: 'Beijing', t: 'n' },
+          { h: '饭店', p: 'fàndiàn', m: 'Restoran / Hotel', t: 'n' },
+          { h: '商店', p: 'shāngdiàn', m: 'Toko', t: 'n' },
+          { h: '医院', p: 'yīyuàn', m: 'Rumah sakit', t: 'n' },
+          // Nouns - Time
+          { h: '今天', p: 'jīntiān', m: 'Hari ini', t: 'n' },
+          { h: '明天', p: 'míngtiān', m: 'Besok', t: 'n' },
+          { h: '昨天', p: 'zuótiān', m: 'Kemarin', t: 'n' },
+          { h: '现在', p: 'xiànzài', m: 'Sekarang', t: 'n' },
+          { h: '年', p: 'nián', m: 'Tahun', t: 'n' },
+          { h: '月', p: 'yuè', m: 'Bulan', t: 'n' },
+          { h: '日', p: 'rì', m: 'Hari / Tanggal', t: 'n' },
+          { h: '时候', p: 'shíhòu', m: 'Waktu / Ketika', t: 'n' },
+          { h: '上午', p: 'shàngwǔ', m: 'Pagi (sebelum siang)', t: 'n' },
+          { h: '中午', p: 'zhōngwǔ', m: 'Siang hari', t: 'n' },
+          { h: '下午', p: 'xiàwǔ', m: 'Sore hari', t: 'n' },
+          { h: '点', p: 'diǎn', m: 'Jam / Poin', t: 'mw' },
+          // Nouns - Food/Things
+          { h: '水', p: 'shuǐ', m: 'Air', t: 'n' },
+          { h: '饭', p: 'fàn', m: 'Nasi / Makanan', t: 'n' },
+          { h: '菜', p: 'cài', m: 'Sayuran / Hidangan', t: 'n' },
+          { h: '鱼', p: 'yú', m: 'Ikan', t: 'n' },
+          { h: '肉', p: 'ròu', m: 'Daging', t: 'n' },
+          { h: '茶', p: 'chá', m: 'Teh', t: 'n' },
+          { h: '牛奶', p: 'niúnǎi', m: 'Susu sapi', t: 'n' },
+          { h: '水果', p: 'shuǐguǒ', m: 'Buah-buahan', t: 'n' },
+          { h: '苹果', p: 'píngguǒ', m: 'Apel', t: 'n' },
+          { h: '书', p: 'shū', m: 'Buku', t: 'n' },
+          { h: '电影', p: 'diànyǐng', m: 'Film', t: 'n' },
+          { h: '电视', p: 'diànshì', m: 'Televisi', t: 'n' },
+          { h: '电话', p: 'diànhuà', m: 'Telepon', t: 'n' },
+          { h: '钱', p: 'qián', m: 'Uang', t: 'n' },
+          { h: '桌子', p: 'zhuōzi', m: 'Meja', t: 'n' },
+          { h: '椅子', p: 'yǐzi', m: 'Kursi', t: 'n' },
+          // Adjectives
+          { h: '大', p: 'dà', m: 'Besar', t: 'adj' },
+          { h: '小', p: 'xiǎo', m: 'Kecil', t: 'adj' },
+          { h: '好', p: 'hǎo', m: 'Baik / Bagus', t: 'adj' },
+          { h: '多', p: 'duō', m: 'Banyak', t: 'adj' },
+          { h: '少', p: 'shǎo', m: 'Sedikit', t: 'adj' },
+          { h: '高兴', p: 'gāoxìng', m: 'Senang / Gembira', t: 'adj' },
+          { h: '漂亮', p: 'piàoliang', m: 'Cantik / Indah', t: 'adj' },
+          { h: '冷', p: 'lěng', m: 'Dingin', t: 'adj' },
+          { h: '热', p: 'rè', m: 'Panas', t: 'adj' },
+          { h: '贵', p: 'guì', m: 'Mahal', t: 'adj' },
+          // Adverbs / Particles
+          { h: '不', p: 'bù', m: 'Tidak / Bukan', t: 'adv' },
+          { h: '很', p: 'hěn', m: 'Sangat', t: 'adv' },
+          { h: '太', p: 'tài', m: 'Terlalu', t: 'adv' },
+          { h: '都', p: 'dōu', m: 'Semua / Keduanya', t: 'adv' },
+          { h: '也', p: 'yě', m: 'Juga', t: 'adv' },
+          { h: '没有', p: 'méiyǒu', m: 'Tidak ada / Tidak punya', t: 'adv' },
+          { h: '的', p: 'de', m: 'Partikel kepemilikan', t: 'part' },
+          { h: '吗', p: 'ma', m: 'Partikel pertanyaan', t: 'part' },
+          { h: '了', p: 'le', m: 'Penanda aspek selesai', t: 'part' },
+          { h: '呢', p: 'ne', m: 'Partikel pertanyaan lunak', t: 'part' },
+          { h: '和', p: 'hé', m: 'Dan', t: 'conj' },
+          { h: '在', p: 'zài', m: 'Di / Sedang', t: 'prep' },
+        ]
+      },
+      '2': {
+        title: 'HSK 2 – Dasar', desc: 'Mampu berkomunikasi dalam topik sehari-hari yang familiar',
+        words: [
+          { h: '把', p: 'bǎ', m: 'Mengambil / partikel tujuan', t: 'prep' },
+          { h: '被', p: 'bèi', m: 'Oleh (kalimat pasif)', t: 'prep' },
+          { h: '比', p: 'bǐ', m: 'Dibandingkan dengan', t: 'prep' },
+          { h: '除了', p: 'chúle', m: 'Selain / Kecuali', t: 'prep' },
+          { h: '从', p: 'cóng', m: 'Dari', t: 'prep' },
+          { h: '对', p: 'duì', m: 'Terhadap / Benar', t: 'prep' },
+          { h: '关于', p: 'guānyú', m: 'Mengenai / Tentang', t: 'prep' },
+          { h: '给', p: 'gěi', m: 'Kepada / Memberikan', t: 'prep' },
+          { h: '跟', p: 'gēn', m: 'Dengan / Ikut', t: 'prep' },
+          { h: '离', p: 'lí', m: 'Dari / Jauh dari', t: 'prep' },
+          { h: '为了', p: 'wèile', m: 'Demi / Untuk', t: 'prep' },
+          { h: '向', p: 'xiàng', m: 'Ke arah / Menuju', t: 'prep' },
+          { h: '以', p: 'yǐ', m: 'Dengan / Menggunakan', t: 'prep' },
+          { h: '用', p: 'yòng', m: 'Menggunakan / Memakai', t: 'v' },
+          { h: '于', p: 'yú', m: 'Di / Pada (formal)', t: 'prep' },
+          { h: '帮助', p: 'bāngzhù', m: 'Membantu', t: 'v' },
+          { h: '出发', p: 'chūfā', m: 'Berangkat', t: 'v' },
+          { h: '出现', p: 'chūxiàn', m: 'Muncul / Timbul', t: 'v' },
+          { h: '打', p: 'dǎ', m: 'Memukul / Bermain', t: 'v' },
+          { h: '带', p: 'dài', m: 'Membawa / Memakai', t: 'v' },
+          { h: '等', p: 'děng', m: 'Menunggu / Dan lain-lain', t: 'v' },
+          { h: '放', p: 'fàng', m: 'Meletakkan / Melepaskan', t: 'v' },
+          { h: '告诉', p: 'gàosu', m: 'Memberitahu', t: 'v' },
+          { h: '关', p: 'guān', m: 'Menutup / Mematikan', t: 'v' },
+          { h: '回答', p: 'huídá', m: 'Menjawab', t: 'v' },
+          { h: '进', p: 'jìn', m: 'Masuk', t: 'v' },
+          { h: '介绍', p: 'jièshào', m: 'Memperkenalkan', t: 'v' },
+          { h: '借', p: 'jiè', m: 'Meminjam', t: 'v' },
+          { h: '觉得', p: 'juéde', m: 'Merasa / Berpendapat', t: 'v' },
+          { h: '离开', p: 'líkāi', m: 'Meninggalkan / Pergi', t: 'v' },
+          { h: '了解', p: 'liǎojiě', m: 'Memahami / Mengetahui', t: 'v' },
+          { h: '满意', p: 'mǎnyì', m: 'Puas / Memuaskan', t: 'adj' },
+          { h: '拿', p: 'ná', m: 'Mengambil / Memegang', t: 'v' },
+          { h: '努力', p: 'nǔlì', m: 'Berusaha / Giat', t: 'v' },
+          { h: '爬山', p: 'pá shān', m: 'Mendaki gunung', t: 'v' },
+          { h: '跑', p: 'pǎo', m: 'Berlari', t: 'v' },
+          { h: '请', p: 'qǐng', m: 'Mohon / Mengundang', t: 'v' },
+          { h: '取', p: 'qǔ', m: 'Mengambil', t: 'v' },
+          { h: '让', p: 'ràng', m: 'Membiarkan / Menyuruh', t: 'v' },
+          { h: '认为', p: 'rènwéi', m: 'Berpendapat / Menganggap', t: 'v' },
+          { h: '上', p: 'shàng', m: 'Naik / Di atas', t: 'v' },
+          { h: '送', p: 'sòng', m: 'Mengantar / Memberi', t: 'v' },
+          { h: '踢', p: 'tī', m: 'Menendang', t: 'v' },
+          { h: '提高', p: 'tígāo', m: 'Meningkatkan', t: 'v' },
+          { h: '停', p: 'tíng', m: 'Berhenti', t: 'v' },
+          { h: '完成', p: 'wánchéng', m: 'Menyelesaikan', t: 'v' },
+          { h: '往', p: 'wǎng', m: 'Menuju / Ke', t: 'prep' },
+          { h: '问', p: 'wèn', m: 'Bertanya', t: 'v' },
+          { h: '下', p: 'xià', m: 'Turun / Di bawah', t: 'v' },
+          { h: '选择', p: 'xuǎnzé', m: 'Memilih / Pilihan', t: 'v' },
+          { h: '需要', p: 'xūyào', m: 'Membutuhkan / Perlu', t: 'v' },
+          { h: '要', p: 'yào', m: 'Ingin / Harus', t: 'v' },
+          { h: '移动', p: 'yídòng', m: 'Bergerak / Memindahkan', t: 'v' },
+          { h: '遇到', p: 'yùdào', m: 'Bertemu / Menghadapi', t: 'v' },
+          { h: '增加', p: 'zēngjiā', m: 'Meningkatkan / Menambah', t: 'v' },
+          { h: '找', p: 'zhǎo', m: 'Mencari', t: 'v' },
+          { h: '注意', p: 'zhùyì', m: 'Memperhatikan / Hati-hati', t: 'v' },
+          { h: '走', p: 'zǒu', m: 'Berjalan / Pergi', t: 'v' },
+          // Nouns
+          { h: '班', p: 'bān', m: 'Kelas', t: 'n' },
+          { h: '办法', p: 'bànfǎ', m: 'Cara / Metode', t: 'n' },
+          { h: '报纸', p: 'bàozhǐ', m: 'Koran', t: 'n' },
+          { h: '宾馆', p: 'bīnguǎn', m: 'Hotel', t: 'n' },
+          { h: '成绩', p: 'chéngjì', m: 'Prestasi / Nilai', t: 'n' },
+          { h: '地方', p: 'dìfāng', m: 'Tempat', t: 'n' },
+          { h: '地铁', p: 'dìtiě', m: 'MRT / Kereta bawah tanah', t: 'n' },
+          { h: '电脑', p: 'diànnǎo', m: 'Komputer', t: 'n' },
+          { h: '东西', p: 'dōngxi', m: 'Barang / Sesuatu', t: 'n' },
+          { h: '房间', p: 'fángjiān', m: 'Kamar', t: 'n' },
+          { h: '感冒', p: 'gǎnmào', m: 'Pilek / Flu', t: 'n' },
+          { h: '公共汽车', p: 'gōnggòng qìchē', m: 'Bus umum', t: 'n' },
+          { h: '故事', p: 'gùshi', m: 'Cerita / Kisah', t: 'n' },
+          { h: '欢迎', p: 'huānyíng', m: 'Selamat datang', t: 'n' },
+          { h: '火车', p: 'huǒchē', m: 'Kereta api', t: 'n' },
+          { h: '机场', p: 'jīchǎng', m: 'Bandara', t: 'n' },
+          { h: '节目', p: 'jiémù', m: 'Program / Acara', t: 'n' },
+          { h: '进步', p: 'jìnbù', m: 'Kemajuan', t: 'n' },
+          { h: '考试', p: 'kǎoshì', m: 'Ujian / Tes', t: 'n' },
+          { h: '可能', p: 'kěnéng', m: 'Mungkin', t: 'adv' },
+          { h: '空调', p: 'kōngtiáo', m: 'AC / Pendingin udara', t: 'n' },
+          { h: '旅游', p: 'lǚyóu', m: 'Perjalanan wisata', t: 'n' },
+          { h: '马', p: 'mǎ', m: 'Kuda', t: 'n' },
+          { h: '猫', p: 'māo', m: 'Kucing', t: 'n' },
+          { h: '面包', p: 'miànbāo', m: 'Roti', t: 'n' },
+          { h: '名字', p: 'míngzi', m: 'Nama', t: 'n' },
+          { h: '奶奶', p: 'nǎinai', m: 'Nenek (pihak ayah)', t: 'n' },
+          { h: '鸟', p: 'niǎo', m: 'Burung', t: 'n' },
+          { h: '努力', p: 'nǔlì', m: 'Upaya keras / Rajin', t: 'adj' },
+          { h: '啤酒', p: 'píjiǔ', m: 'Bir', t: 'n' },
+          { h: '普通话', p: 'pǔtōnghuà', m: 'Bahasa Mandarin baku', t: 'n' },
+          { h: '身体', p: 'shēntǐ', m: 'Tubuh / Kesehatan', t: 'n' },
+          { h: '生病', p: 'shēng bìng', m: 'Sakit / Jatuh sakit', t: 'v' },
+          { h: '时间', p: 'shíjiān', m: 'Waktu', t: 'n' },
+          { h: '事情', p: 'shìqíng', m: 'Hal / Urusan', t: 'n' },
+          { h: '手机', p: 'shǒujī', m: 'Handphone', t: 'n' },
+          { h: '树', p: 'shù', m: 'Pohon', t: 'n' },
+          { h: '双', p: 'shuāng', m: 'Sepasang / Kata penggolong', t: 'mw' },
+          { h: '司机', p: 'sījī', m: 'Pengemudi / Sopir', t: 'n' },
+          { h: '题', p: 'tí', m: 'Soal / Topik', t: 'n' },
+          { h: '天气', p: 'tiānqì', m: 'Cuaca', t: 'n' },
+          { h: '图书馆', p: 'túshūguǎn', m: 'Perpustakaan', t: 'n' },
+          { h: '外', p: 'wài', m: 'Luar', t: 'n' },
+          { h: '问题', p: 'wèntí', m: 'Pertanyaan / Masalah', t: 'n' },
+          { h: '西瓜', p: 'xīguā', m: 'Semangka', t: 'n' },
+          { h: '笑', p: 'xiào', m: 'Tertawa / Tersenyum', t: 'v' },
+          { h: '新闻', p: 'xīnwén', m: 'Berita', t: 'n' },
+          { h: '姓', p: 'xìng', m: 'Marga / Bernama', t: 'n' },
+          { h: '兴趣', p: 'xìngqù', m: 'Minat / Hobi', t: 'n' },
+          { h: '休息', p: 'xiūxi', m: 'Istirahat', t: 'v' },
+          { h: '颜色', p: 'yánsè', m: 'Warna', t: 'n' },
+          { h: '眼睛', p: 'yǎnjing', m: 'Mata', t: 'n' },
+          { h: '爷爷', p: 'yéye', m: 'Kakek (pihak ayah)', t: 'n' },
+          { h: '以后', p: 'yǐhòu', m: 'Setelah ini / Nanti', t: 'n' },
+          { h: '以前', p: 'yǐqián', m: 'Sebelumnya / Dahulu', t: 'n' },
+          { h: '音乐', p: 'yīnyuè', m: 'Musik', t: 'n' },
+          { h: '影响', p: 'yǐngxiǎng', m: 'Pengaruh / Mempengaruhi', t: 'v' },
+          { h: '游泳', p: 'yóuyǒng', m: 'Berenang', t: 'v' },
+          { h: '月', p: 'yuè', m: 'Bulan', t: 'n' },
+          { h: '运动', p: 'yùndòng', m: 'Olahraga', t: 'n' },
+          { h: '月', p: 'yuè', m: 'Bulan (periode)', t: 'n' },
+          { h: '站', p: 'zhàn', m: 'Berdiri / Stasiun', t: 'v' },
+          { h: '照片', p: 'zhàopiàn', m: 'Foto', t: 'n' },
+          { h: '知道', p: 'zhīdào', m: 'Mengetahui / Tahu', t: 'v' },
+          { h: '中间', p: 'zhōngjiān', m: 'Di tengah / Antara', t: 'n' },
+          { h: '足球', p: 'zúqiú', m: 'Sepak bola', t: 'n' },
+        ]
+      },
+      '3': {
+        title: 'HSK 3 – Menengah Awal', desc: 'Mampu berkomunikasi dalam kehidupan, belajar, dan pekerjaan',
+        words: [
+          { h: '安静', p: 'ānjìng', m: 'Tenang / Diam', t: 'adj' },
+          { h: '爱好', p: 'àihào', m: 'Hobi / Kegemaran', t: 'n' },
+          { h: '矮', p: 'ǎi', m: 'Pendek (tinggi)', t: 'adj' },
+          { h: '按时', p: 'àn shí', m: 'Tepat waktu', t: 'adv' },
+          { h: '百货商店', p: 'bǎihuò shāngdiàn', m: 'Pusat perbelanjaan', t: 'n' },
+          { h: '搬', p: 'bān', m: 'Memindahkan / Pindah', t: 'v' },
+          { h: '保证', p: 'bǎozhèng', m: 'Menjamin / Memastikan', t: 'v' },
+          { h: '变化', p: 'biànhuà', m: 'Perubahan / Berubah', t: 'n' },
+          { h: '表演', p: 'biǎoyǎn', m: 'Pertunjukan / Tampil', t: 'v' },
+          { h: '病', p: 'bìng', m: 'Penyakit / Sakit', t: 'n' },
+          { h: '参加', p: 'cānjiā', m: 'Ikut serta / Berpartisipasi', t: 'v' },
+          { h: '草', p: 'cǎo', m: 'Rumput', t: 'n' },
+          { h: '层', p: 'céng', m: 'Lantai / Lapisan', t: 'mw' },
+          { h: '常常', p: 'chángcháng', m: 'Sering kali', t: 'adv' },
+          { h: '衬衫', p: 'chènshān', m: 'Kemeja', t: 'n' },
+          { h: '城市', p: 'chéngshì', m: 'Kota', t: 'n' },
+          { h: '春', p: 'chūn', m: 'Musim semi', t: 'n' },
+          { h: '词语', p: 'cíyǔ', m: 'Kata / Istilah', t: 'n' },
+          { h: '聪明', p: 'cōngmíng', m: 'Cerdas / Pintar', t: 'adj' },
+          { h: '打算', p: 'dǎsuàn', m: 'Berencana / Rencana', t: 'v' },
+          { h: '担心', p: 'dānxīn', m: 'Khawatir / Cemas', t: 'v' },
+          { h: '当然', p: 'dāngrán', m: 'Tentu saja', t: 'adv' },
+          { h: '地图', p: 'dìtú', m: 'Peta', t: 'n' },
+          { h: '丢', p: 'diū', m: 'Kehilangan / Membuang', t: 'v' },
+          { h: '动物', p: 'dòngwù', m: 'Hewan', t: 'n' },
+          { h: '方便', p: 'fāngbiàn', m: 'Mudah / Nyaman', t: 'adj' },
+          { h: '附近', p: 'fùjìn', m: 'Di dekat / Sekitar', t: 'n' },
+          { h: '复习', p: 'fùxí', m: 'Mengulang pelajaran', t: 'v' },
+          { h: '刚才', p: 'gāngcái', m: 'Baru saja / Tadi', t: 'adv' },
+          { h: '各', p: 'gè', m: 'Masing-masing / Setiap', t: 'pron' },
+          { h: '公里', p: 'gōnglǐ', m: 'Kilometer', t: 'mw' },
+          { h: '河', p: 'hé', m: 'Sungai', t: 'n' },
+          { h: '黑板', p: 'hēibǎn', m: 'Papan tulis', t: 'n' },
+          { h: '后来', p: 'hòulái', m: 'Kemudian / Setelah itu', t: 'adv' },
+          { h: '花', p: 'huā', m: 'Bunga / Menghabiskan', t: 'n' },
+          { h: '坏', p: 'huài', m: 'Buruk / Rusak', t: 'adj' },
+          { h: '回', p: 'huí', m: 'Kembali / Balik', t: 'v' },
+          { h: '积极', p: 'jījí', m: 'Aktif / Positif', t: 'adj' },
+          { h: '季节', p: 'jìjié', m: 'Musim', t: 'n' },
+          { h: '继续', p: 'jìxù', m: 'Melanjutkan', t: 'v' },
+          { h: '记', p: 'jì', m: 'Mengingat / Mencatat', t: 'v' },
+          { h: '检查', p: 'jiǎnchá', m: 'Memeriksa', t: 'v' },
+          { h: '结束', p: 'jiéshù', m: 'Berakhir / Selesai', t: 'v' },
+          { h: '解决', p: 'jiějué', m: 'Memecahkan / Menyelesaikan', t: 'v' },
+          { h: '刻', p: 'kè', m: 'Seperempat jam', t: 'mw' },
+          { h: '客人', p: 'kèrén', m: 'Tamu', t: 'n' },
+          { h: '课', p: 'kè', m: 'Pelajaran / Kelas', t: 'n' },
+          { h: '空气', p: 'kōngqì', m: 'Udara', t: 'n' },
+          { h: '哭', p: 'kū', m: 'Menangis', t: 'v' },
+          { h: '礼物', p: 'lǐwù', m: 'Hadiah / Kado', t: 'n' },
+          { h: '历史', p: 'lìshǐ', m: 'Sejarah', t: 'n' },
+          { h: '练习', p: 'liànxí', m: 'Berlatih / Latihan', t: 'v' },
+          { h: '楼', p: 'lóu', m: 'Gedung / Lantai', t: 'n' },
+          { h: '路', p: 'lù', m: 'Jalan', t: 'n' },
+          { h: '旅行', p: 'lǚxíng', m: 'Perjalanan / Bepergian', t: 'v' },
+          { h: '帽子', p: 'màozi', m: 'Topi', t: 'n' },
+          { h: '马上', p: 'mǎshàng', m: 'Segera / Sebentar lagi', t: 'adv' },
+          { h: '明白', p: 'míngbái', m: 'Mengerti / Memahami', t: 'v' },
+          { h: '难', p: 'nán', m: 'Sulit / Susah', t: 'adj' },
+          { h: '年级', p: 'niánjí', m: 'Tingkat kelas / Angkatan', t: 'n' },
+          { h: '啪', p: 'pā', m: 'Suara benturan', t: 'int' },
+          { h: '胖', p: 'pàng', m: 'Gemuk', t: 'adj' },
+          { h: '跑步', p: 'pǎobù', m: 'Berlari / Jogging', t: 'v' },
+          { h: '皮肤', p: 'pífū', m: 'Kulit', t: 'n' },
+          { h: '票', p: 'piào', m: 'Tiket / Karcis', t: 'n' },
+          { h: '瓶子', p: 'píngzi', m: 'Botol', t: 'n' },
+          { h: '奇怪', p: 'qíguài', m: 'Aneh / Ganjil', t: 'adj' },
+          { h: '其实', p: 'qíshí', m: 'Sebenarnya', t: 'adv' },
+          { h: '其他', p: 'qítā', m: 'Lainnya / Yang lain', t: 'pron' },
+          { h: '然后', p: 'ránhòu', m: 'Kemudian / Lalu', t: 'conj' },
+          { h: '热情', p: 'rèqíng', m: 'Bersemangat / Antusias', t: 'adj' },
+          { h: '同意', p: 'tóngyì', m: 'Setuju / Menyetujui', t: 'v' },
+          { h: '关心', p: 'guānxīn', m: 'Peduli / Perhatian', t: 'v' },
+          { h: '声音', p: 'shēngyīn', m: 'Suara / Bunyi', t: 'n' },
+          { h: '水平', p: 'shuǐpíng', m: 'Level / Tingkat', t: 'n' },
+          { h: '思考', p: 'sīkǎo', m: 'Berpikir / Merenungkan', t: 'v' },
+          { h: '虽然', p: 'suīrán', m: 'Meskipun', t: 'conj' },
+          { h: '所以', p: 'suǒyǐ', m: 'Oleh karena itu / Jadi', t: 'conj' },
+          { h: '抬', p: 'tái', m: 'Mengangkat', t: 'v' },
+          { h: '同', p: 'tóng', m: 'Sama / Bersama', t: 'adj' },
+          { h: '图', p: 'tú', m: 'Gambar / Peta', t: 'n' },
+          { h: '网', p: 'wǎng', m: 'Jaringan / Internet', t: 'n' },
+          { h: '位', p: 'wèi', m: 'Penggolong (orang hormat)', t: 'mw' },
+          { h: '温度', p: 'wēndù', m: 'Temperatur / Suhu', t: 'n' },
+          { h: '午饭', p: 'wǔfàn', m: 'Makan siang', t: 'n' },
+          { h: '笑话', p: 'xiàohuà', m: 'Lelucon / Humor', t: 'n' },
+          { h: '信', p: 'xìn', m: 'Surat / Percaya', t: 'n' },
+          { h: '行', p: 'xíng', m: 'Bisa / Boleh', t: 'adj' },
+          { h: '行李箱', p: 'xínglixiāng', m: 'Koper', t: 'n' },
+          { h: '要求', p: 'yāoqiú', m: 'Permintaan / Persyaratan', t: 'n' },
+          { h: '一定', p: 'yīdìng', m: 'Pasti / Tentu', t: 'adv' },
+          { h: '已经', p: 'yǐjīng', m: 'Sudah / Telah', t: 'adv' },
+          { h: '一般', p: 'yībān', m: 'Umumnya / Biasanya', t: 'adv' },
+          { h: '一共', p: 'yīgòng', m: 'Seluruhnya / Total', t: 'adv' },
+          { h: '一会儿', p: 'yīhuìr', m: 'Sebentar', t: 'adv' },
+          { h: '应该', p: 'yīnggāi', m: 'Seharusnya / Harus', t: 'v' },
+          { h: '游戏', p: 'yóuxì', m: 'Permainan / Game', t: 'n' },
+          { h: '有意思', p: 'yǒu yìsi', m: 'Menarik / Seru', t: 'adj' },
+          { h: '自己', p: 'zìjǐ', m: 'Sendiri / Diri sendiri', t: 'pron' },
+          { h: '总是', p: 'zǒngshì', m: 'Selalu', t: 'adv' },
+        ]
+      },
+      '4': {
+        title: 'HSK 4 – Menengah', desc: 'Dapat berdiskusi topik umum dengan cakupan luas',
+        words: [
+          { h: '爱情', p: 'àiqíng', m: 'Cinta / Kasih sayang', t: 'n' },
+          { h: '安排', p: 'ānpái', m: 'Mengatur / Jadwal', t: 'v' },
+          { h: '把握', p: 'bǎwò', m: 'Yakin / Kepastian', t: 'n' },
+          { h: '辩论', p: 'biànlùn', m: 'Berdebat / Debat', t: 'v' },
+          { h: '抱歉', p: 'bàoqiàn', m: 'Minta maaf / Menyesal', t: 'v' },
+          { h: '本来', p: 'běnlái', m: 'Aslinya / Sebenarnya', t: 'adv' },
+          { h: '必须', p: 'bìxū', m: 'Harus / Wajib', t: 'adv' },
+          { h: '毕业', p: 'bìyè', m: 'Lulus / Wisuda', t: 'v' },
+          { h: '部分', p: 'bùfen', m: 'Bagian / Sebagian', t: 'n' },
+          { h: '参观', p: 'cānguān', m: 'Mengunjungi / Melihat-lihat', t: 'v' },
+          { h: '差不多', p: 'chà bù duō', m: 'Hampir / Kira-kira', t: 'adv' },
+          { h: '成功', p: 'chénggōng', m: 'Berhasil / Sukses', t: 'v' },
+          { h: '诚实', p: 'chéngshí', m: 'Jujur / Kejujuran', t: 'adj' },
+          { h: '乘', p: 'chéng', m: 'Naik (kendaraan)', t: 'v' },
+          { h: '迟到', p: 'chídào', m: 'Terlambat', t: 'v' },
+          { h: '出发', p: 'chūfā', m: 'Berangkat', t: 'v' },
+          { h: '传统', p: 'chuántǒng', m: 'Tradisi / Tradisional', t: 'n' },
+          { h: '词典', p: 'cídiǎn', m: 'Kamus', t: 'n' },
+          { h: '聪明', p: 'cōngmíng', m: 'Cerdas', t: 'adj' },
+          { h: '大概', p: 'dàgài', m: 'Kira-kira / Sekitar', t: 'adv' },
+          { h: '代表', p: 'dàibiǎo', m: 'Mewakili / Perwakilan', t: 'v' },
+          { h: '道歉', p: 'dào qiàn', m: 'Meminta maaf', t: 'v' },
+          { h: '得到', p: 'dédào', m: 'Mendapatkan / Memperoleh', t: 'v' },
+          { h: '典型', p: 'diǎnxíng', m: 'Tipikal / Khas', t: 'adj' },
+          { h: '丰富', p: 'fēngfù', m: 'Kaya / Berlimpah', t: 'adj' },
+          { h: '否则', p: 'fǒuzé', m: 'Jika tidak / Kalau tidak', t: 'conj' },
+          { h: '负责', p: 'fùzé', m: 'Bertanggung jawab', t: 'v' },
+          { h: '感觉', p: 'gǎnjué', m: 'Perasaan / Merasa', t: 'v' },
+          { h: '感情', p: 'gǎnqíng', m: 'Perasaan / Emosi', t: 'n' },
+          { h: '个子', p: 'gèzi', m: 'Tinggi badan / Postur', t: 'n' },
+          { h: '功能', p: 'gōngnéng', m: 'Fungsi / Kemampuan', t: 'n' },
+          { h: '共同', p: 'gòngtóng', m: 'Bersama / Umum', t: 'adj' },
+          { h: '规定', p: 'guīdìng', m: 'Peraturan / Ketentuan', t: 'n' },
+          { h: '合适', p: 'héshì', m: 'Cocok / Sesuai', t: 'adj' },
+          { h: '互相', p: 'hùxiāng', m: 'Saling / Timbal balik', t: 'adv' },
+          { h: '环境', p: 'huánjìng', m: 'Lingkungan', t: 'n' },
+          { h: '活动', p: 'huódòng', m: 'Kegiatan / Aktif', t: 'n' },
+          { h: '活泼', p: 'huópō', m: 'Aktif / Lincah', t: 'adj' },
+          { h: '机会', p: 'jīhuì', m: 'Kesempatan / Peluang', t: 'n' },
+          { h: '积极', p: 'jījí', m: 'Aktif / Antusias', t: 'adj' },
+          { h: '计划', p: 'jìhuà', m: 'Rencana / Merencanakan', t: 'n' },
+          { h: '简单', p: 'jiǎndān', m: 'Sederhana / Mudah', t: 'adj' },
+          { h: '建议', p: 'jiànyì', m: 'Saran / Menyarankan', t: 'n' },
+          { h: '交流', p: 'jiāoliú', m: 'Komunikasi / Pertukaran', t: 'v' },
+          { h: '经济', p: 'jīngjì', m: 'Ekonomi', t: 'n' },
+          { h: '经验', p: 'jīngyàn', m: 'Pengalaman', t: 'n' },
+          { h: '精神', p: 'jīngshén', m: 'Semangat / Mental', t: 'n' },
+          { h: '究竟', p: 'jiūjìng', m: 'Sebenarnya / Setelah semua', t: 'adv' },
+          { h: '举行', p: 'jǔxíng', m: 'Mengadakan / Menyelenggarakan', t: 'v' },
+          { h: '开始', p: 'kāishǐ', m: 'Mulai / Awal', t: 'v' },
+          { h: '客观', p: 'kèguān', m: 'Objektif / Faktual', t: 'adj' },
+          { h: '空间', p: 'kōngjiān', m: 'Ruang / Angkasa', t: 'n' },
+          { h: '科技', p: 'kējì', m: 'Ilmu & teknologi', t: 'n' },
+          { h: '困难', p: 'kùnnán', m: 'Kesulitan / Sulit', t: 'n' },
+          { h: '力量', p: 'lìliàng', m: 'Kekuatan / Tenaga', t: 'n' },
+          { h: '联系', p: 'liánxì', m: 'Hubungan / Kontak', t: 'v' },
+          { h: '了解', p: 'liǎojiě', m: 'Memahami', t: 'v' },
+          { h: '留', p: 'liú', m: 'Tinggal / Meninggalkan', t: 'v' },
+          { h: '礼貌', p: 'lǐmào', m: 'Sopan santun', t: 'n' },
+          { h: '目的', p: 'mùdì', m: 'Tujuan', t: 'n' },
+          { h: '难道', p: 'nándào', m: 'Tidak mungkin? / Apakah', t: 'adv' },
+          { h: '内容', p: 'nèiróng', m: 'Isi / Konten', t: 'n' },
+          { h: '培养', p: 'péiyǎng', m: 'Memupuk / Melatih', t: 'v' },
+          { h: '批评', p: 'pīpíng', m: 'Mengkritik / Kritik', t: 'v' },
+          { h: '平时', p: 'píngshí', m: 'Biasanya / Keseharian', t: 'adv' },
+          { h: '其中', p: 'qízhōng', m: 'Di antaranya', t: 'adv' },
+          { h: '千', p: 'qiān', m: 'Seribu', t: 'num' },
+          { h: '签证', p: 'qiānzhèng', m: 'Visa', t: 'n' },
+          { h: '情况', p: 'qíngkuàng', m: 'Situasi / Kondisi', t: 'n' },
+          { h: '取消', p: 'qǔxiāo', m: 'Membatalkan', t: 'v' },
+          { h: '认真', p: 'rènzhēn', m: 'Serius / Sungguh-sungguh', t: 'adj' },
+          { h: '入口', p: 'rùkǒu', m: 'Pintu masuk', t: 'n' },
+          { h: '社会', p: 'shèhuì', m: 'Masyarakat / Sosial', t: 'n' },
+          { h: '生活', p: 'shēnghuó', m: 'Kehidupan / Hidup', t: 'n' },
+          { h: '实际', p: 'shíjì', m: 'Nyata / Praktis', t: 'adj' },
+          { h: '事实', p: 'shìshí', m: 'Fakta / Kenyataan', t: 'n' },
+          { h: '适合', p: 'shìhé', m: 'Cocok / Sesuai', t: 'v' },
+          { h: '收入', p: 'shōurù', m: 'Pendapatan', t: 'n' },
+          { h: '首先', p: 'shǒuxiān', m: 'Pertama-tama', t: 'adv' },
+          { h: '随', p: 'suí', m: 'Mengikuti / Mengikut', t: 'v' },
+          { h: '态度', p: 'tàidu', m: 'Sikap', t: 'n' },
+          { h: '特别', p: 'tèbié', m: 'Khusus / Terutama', t: 'adv' },
+          { h: '条件', p: 'tiáojiàn', m: 'Kondisi / Syarat', t: 'n' },
+          { h: '通过', p: 'tōngguò', m: 'Melalui / Lulus', t: 'v' },
+          { h: '突然', p: 'tūrán', m: 'Tiba-tiba', t: 'adv' },
+          { h: '往往', p: 'wǎngwǎng', m: 'Kerap kali', t: 'adv' },
+          { h: '文化', p: 'wénhuà', m: 'Budaya', t: 'n' },
+          { h: '相同', p: 'xiāngtóng', m: 'Sama / Identik', t: 'adj' },
+          { h: '消息', p: 'xiāoxi', m: 'Berita / Kabar', t: 'n' },
+          { h: '严格', p: 'yángé', m: 'Ketat / Disiplin', t: 'adj' },
+          { h: '研究', p: 'yánjiū', m: 'Meneliti / Penelitian', t: 'v' },
+          { h: '有些', p: 'yǒuxiē', m: 'Ada beberapa / Agak', t: 'pron' },
+          { h: '支持', p: 'zhīchí', m: 'Mendukung / Dukungan', t: 'v' },
+          { h: '知识', p: 'zhīshi', m: 'Pengetahuan', t: 'n' },
+          { h: '直接', p: 'zhíjiē', m: 'Langsung / Langsung', t: 'adj' },
+          { h: '质量', p: 'zhìliàng', m: 'Kualitas / Mutu', t: 'n' },
+          { h: '重要', p: 'zhòngào', m: 'Penting', t: 'adj' },
+          { h: '主要', p: 'zhǔyào', m: 'Utama / Terutama', t: 'adj' },
+          { h: '注意', p: 'zhùyì', m: 'Memperhatikan / Hati-hati', t: 'v' },
+        ]
+      },
+      '5': {
+        title: 'HSK 5 – Lanjut', desc: 'Dapat membaca koran, menonton film, dan berbicara dengan penutur asli',
+        words: [
+          { h: '阿姨', p: 'āyí', m: 'Bibi / Tante', t: 'n' },
+          { h: '爱护', p: 'àihù', m: 'Merawat / Menjaga', t: 'v' },
+          { h: '矮', p: 'ǎi', m: 'Pendek', t: 'adj' },
+          { h: '安慰', p: 'ānwèi', m: 'Menghibur / Menenangkan', t: 'v' },
+          { h: '暗', p: 'àn', m: 'Gelap', t: 'adj' },
+          { h: '办理', p: 'bànlǐ', m: 'Mengurus / Memproses', t: 'v' },
+          { h: '包括', p: 'bāokuò', m: 'Termasuk / Mencakup', t: 'v' },
+          { h: '保存', p: 'bǎocún', m: 'Menyimpan', t: 'v' },
+          { h: '保护', p: 'bǎohù', m: 'Melindungi', t: 'v' },
+          { h: '抱', p: 'bào', m: 'Memeluk', t: 'v' },
+          { h: '悲观', p: 'bēiguān', m: 'Pesimis', t: 'adj' },
+          { h: '背景', p: 'bèijǐng', m: 'Latar belakang', t: 'n' },
+          { h: '本质', p: 'běnzhì', m: 'Esensi / Sifat dasar', t: 'n' },
+          { h: '笔记', p: 'bǐjì', m: 'Catatan', t: 'n' },
+          { h: '标准', p: 'biāozhǔn', m: 'Standar', t: 'n' },
+          { h: '表达', p: 'biǎodá', m: 'Mengungkapkan', t: 'v' },
+          { h: '表明', p: 'biǎomíng', m: 'Menyatakan / Menunjukkan', t: 'v' },
+          { h: '并且', p: 'bìngqiě', m: 'Dan juga / Serta', t: 'conj' },
+          { h: '不得不', p: 'bùdébù', m: 'Terpaksa harus', t: 'adv' },
+          { h: '不断', p: 'bùduàn', m: 'Terus-menerus', t: 'adv' },
+          { h: '布置', p: 'bùzhì', m: 'Mendekorasi / Menugaskan', t: 'v' },
+          { h: '财富', p: 'cáifù', m: 'Kekayaan / Harta', t: 'n' },
+          { h: '采取', p: 'cǎiqǔ', m: 'Mengambil tindakan', t: 'v' },
+          { h: '参考', p: 'cānkǎo', m: 'Referensi / Mengacu', t: 'v' },
+          { h: '曾经', p: 'céngjīng', m: 'Pernah (lampau)', t: 'adv' },
+          { h: '长期', p: 'chángqī', m: 'Jangka panjang', t: 'adj' },
+          { h: '超过', p: 'chāoguò', m: 'Melebihi', t: 'v' },
+          { h: '承认', p: 'chéngrèn', m: 'Mengakui', t: 'v' },
+          { h: '冲突', p: 'chōngtū', m: 'Konflik / Bentrok', t: 'n' },
+          { h: '重视', p: 'zhòngshì', m: 'Mengutamakan', t: 'v' },
+          { h: '创造', p: 'chuàngzào', m: 'Menciptakan', t: 'v' },
+          { h: '促进', p: 'cùjìn', m: 'Mendorong / Mempromosikan', t: 'v' },
+          { h: '存在', p: 'cúnzài', m: 'Eksistensi / Ada', t: 'v' },
+          { h: '错误', p: 'cuòwù', m: 'Kesalahan', t: 'n' },
+          { h: '达到', p: 'dádào', m: 'Mencapai', t: 'v' },
+          { h: '打扰', p: 'dǎrǎo', m: 'Mengganggu', t: 'v' },
+          { h: '大量', p: 'dàliàng', m: 'Sejumlah besar', t: 'adj' },
+          { h: '大型', p: 'dàxíng', m: 'Besar / Skala besar', t: 'adj' },
+          { h: '当地', p: 'dāngdì', m: 'Setempat / Lokal', t: 'adj' },
+          { h: '当时', p: 'dāngshí', m: 'Pada saat itu', t: 'adv' },
+          { h: '道路', p: 'dàolù', m: 'Jalan / Rute', t: 'n' },
+          { h: '等等', p: 'děngděng', m: 'Dan lain-lain / Dsb.', t: 'conj' },
+          { h: '地位', p: 'dìwèi', m: 'Status / Kedudukan', t: 'n' },
+          { h: '典礼', p: 'diǎnlǐ', m: 'Upacara', t: 'n' },
+          { h: '独立', p: 'dúlì', m: 'Mandiri / Independen', t: 'adj' },
+          { h: '发展', p: 'fāzhǎn', m: 'Berkembang / Pembangunan', t: 'v' },
+          { h: '方向', p: 'fāngxiàng', m: 'Arah', t: 'n' },
+          { h: '非常', p: 'fēicháng', m: 'Sangat / Luar biasa', t: 'adv' },
+          { h: '分析', p: 'fēnxī', m: 'Menganalisis', t: 'v' },
+          { h: '复杂', p: 'fùzá', m: 'Rumit / Kompleks', t: 'adj' },
+          { h: '负担', p: 'fùdān', m: 'Beban', t: 'n' },
+          { h: '干燥', p: 'gānzào', m: 'Kering', t: 'adj' },
+          { h: '个人', p: 'gèrén', m: 'Pribadi / Individual', t: 'n' },
+          { h: '给予', p: 'gěiyǔ', m: 'Memberikan', t: 'v' },
+          { h: '工程', p: 'gōngchéng', m: 'Proyek / Rekayasa', t: 'n' },
+          { h: '观察', p: 'guānchá', m: 'Mengamati', t: 'v' },
+          { h: '广泛', p: 'guǎngfàn', m: 'Luas / Meluas', t: 'adj' },
+          { h: '国际', p: 'guójì', m: 'Internasional', t: 'adj' },
+          { h: '过程', p: 'guòchéng', m: 'Proses', t: 'n' },
+          { h: '合作', p: 'hézuò', m: 'Kerjasama', t: 'v' },
+          { h: '后果', p: 'hòuguǒ', m: 'Akibat / Konsekuensi', t: 'n' },
+          { h: '互联网', p: 'hùliánwǎng', m: 'Internet', t: 'n' },
+          { h: '花费', p: 'huāfèi', m: 'Pengeluaran / Menghabiskan', t: 'v' },
+          { h: '换', p: 'huàn', m: 'Menukar / Mengganti', t: 'v' },
+          { h: '技术', p: 'jìshù', m: 'Teknologi / Teknik', t: 'n' },
+          { h: '坚持', p: 'jiānchí', m: 'Bertahan / Konsisten', t: 'v' },
+          { h: '减少', p: 'jiǎnshǎo', m: 'Mengurangi', t: 'v' },
+          { h: '建立', p: 'jiànlì', m: 'Mendirikan / Membangun', t: 'v' },
+          { h: '结合', p: 'jiéhé', m: 'Menggabungkan', t: 'v' },
+          { h: '借口', p: 'jièkǒu', m: 'Alasan / Dalih', t: 'n' },
+          { h: '进行', p: 'jìnxíng', m: 'Melakukan / Berlangsung', t: 'v' },
+          { h: '精确', p: 'jīngquè', m: 'Tepat / Akurat', t: 'adj' },
+          { h: '竟然', p: 'jìngrán', m: 'Ternyata / Sungguh', t: 'adv' },
+          { h: '矛盾', p: 'máodùn', m: 'Kontradiksi', t: 'n' },
+          { h: '满足', p: 'mǎnzú', m: 'Memuaskan / Puas', t: 'v' },
+          { h: '面临', p: 'miànlín', m: 'Menghadapi', t: 'v' },
+          { h: '明显', p: 'míngxiǎn', m: 'Jelas / Obvious', t: 'adj' },
+          { h: '能力', p: 'nénglì', m: 'Kemampuan', t: 'n' },
+          { h: '起到', p: 'qǐdào', m: 'Memainkan peran', t: 'v' },
+          { h: '确保', p: 'quèbǎo', m: 'Memastikan', t: 'v' },
+          { h: '人口', p: 'rénkǒu', m: 'Populasi / Penduduk', t: 'n' },
+          { h: '认识到', p: 'rènshídào', m: 'Menyadari', t: 'v' },
+          { h: '善于', p: 'shànyú', m: 'Pandai dalam', t: 'v' },
+          { h: '伤心', p: 'shāngxīn', m: 'Sedih', t: 'adj' },
+          { h: '设计', p: 'shèjì', m: 'Merancang / Desain', t: 'v' },
+          { h: '涉及', p: 'shèjí', m: 'Menyentuh / Melibatkan', t: 'v' },
+          { h: '生产', p: 'shēngchǎn', m: 'Produksi / Memproduksi', t: 'v' },
+          { h: '实现', p: 'shíxiàn', m: 'Mewujudkan / Mencapai', t: 'v' },
+          { h: '手段', p: 'shǒuduàn', m: 'Cara / Metode', t: 'n' },
+          { h: '速度', p: 'sùdù', m: 'Kecepatan', t: 'n' },
+          { h: '体现', p: 'tǐxiàn', m: 'Mewujudkan / Mencerminkan', t: 'v' },
+          { h: '同样', p: 'tóngyàng', m: 'Sama / Demikian pula', t: 'adj' },
+          { h: '完全', p: 'wánquán', m: 'Sepenuhnya / Sama sekali', t: 'adv' },
+          { h: '维护', p: 'wéihù', m: 'Memelihara / Menjaga', t: 'v' },
+          { h: '相互', p: 'xiānghù', m: 'Saling / Timbal balik', t: 'adv' },
+          { h: '效果', p: 'xiàoguǒ', m: 'Efek / Hasil', t: 'n' },
+          { h: '形成', p: 'xíngchéng', m: 'Membentuk', t: 'v' },
+          { h: '有效', p: 'yǒuxiào', m: 'Efektif', t: 'adj' },
+          { h: '由于', p: 'yóuyú', m: 'Karena / Disebabkan oleh', t: 'prep' },
+        ]
+      },
+      '6': {
+        title: 'HSK 6 – Mahir', desc: 'Fasih berbahasa Mandarin untuk segala kebutuhan',
+        words: [
+          { h: '哀悼', p: 'āidào', m: 'Berdukacita', t: 'v' },
+          { h: '爱戴', p: 'àidài', m: 'Menghormati dan mencintai', t: 'v' },
+          { h: '遏制', p: 'èzhì', m: 'Membendung / Menahan', t: 'v' },
+          { h: '傲慢', p: 'àomàn', m: 'Sombong / Arogan', t: 'adj' },
+          { h: '把握', p: 'bǎwò', m: 'Keyakinan / Memastikan', t: 'n' },
+          { h: '崩溃', p: 'bēngkuì', m: 'Runtuh / Kolaps', t: 'v' },
+          { h: '辩证', p: 'biànzhèng', m: 'Dialektis', t: 'adj' },
+          { h: '辩护', p: 'biànhù', m: 'Membela / Pembelaan', t: 'v' },
+          { h: '博览', p: 'bólǎn', m: 'Membaca luas', t: 'v' },
+          { h: '层次', p: 'céngcì', m: 'Tingkatan / Lapisan', t: 'n' },
+          { h: '传播', p: 'chuánbō', m: 'Menyebarkan', t: 'v' },
+          { h: '大局', p: 'dàjú', m: 'Gambaran besar', t: 'n' },
+          { h: '道德', p: 'dàodé', m: 'Moralitas / Etika', t: 'n' },
+          { h: '颠覆', p: 'diānfù', m: 'Menumbangkan / Subversif', t: 'v' },
+          { h: '多元化', p: 'duōyuánhuà', m: 'Diversifikasi', t: 'v' },
+          { h: '发挥', p: 'fāhuī', m: 'Mengembangkan / Menggunakan', t: 'v' },
+          { h: '繁荣', p: 'fánróng', m: 'Kemakmuran / Makmur', t: 'adj' },
+          { h: '奋斗', p: 'fèndòu', m: 'Berjuang keras', t: 'v' },
+          { h: '风险', p: 'fēngxiǎn', m: 'Risiko', t: 'n' },
+          { h: '格局', p: 'géjú', m: 'Struktur / Pola', t: 'n' },
+          { h: '贡献', p: 'gòngxiàn', m: 'Kontribusi / Berkontribusi', t: 'n' },
+          { h: '鼓励', p: 'gǔlì', m: 'Mendorong / Mendukung', t: 'v' },
+          { h: '管理', p: 'guǎnlǐ', m: 'Manajemen / Mengelola', t: 'v' },
+          { h: '规模', p: 'guīmó', m: 'Skala / Ruang lingkup', t: 'n' },
+          { h: '核心', p: 'héxīn', m: 'Inti / Inti dari', t: 'n' },
+          { h: '弘扬', p: 'hóngyáng', m: 'Menjunjung / Mempromosikan', t: 'v' },
+          { h: '积累', p: 'jīlěi', m: 'Akumulasi', t: 'v' },
+          { h: '激励', p: 'jīlì', m: 'Memotivasi', t: 'v' },
+          { h: '监督', p: 'jiāndū', m: 'Mengawasi', t: 'v' },
+          { h: '精华', p: 'jīnghuá', m: 'Esensi / Terbaik', t: 'n' },
+          { h: '精神文明', p: 'jīngshén wénmíng', m: 'Peradaban spiritual', t: 'n' },
+          { h: '克服', p: 'kèfú', m: 'Mengatasi', t: 'v' },
+          { h: '宽容', p: 'kuānróng', m: 'Toleran / Lapang dada', t: 'adj' },
+          { h: '利益', p: 'lìyì', m: 'Kepentingan / Manfaat', t: 'n' },
+          { h: '逻辑', p: 'luójí', m: 'Logika', t: 'n' },
+          { h: '落实', p: 'luòshí', m: 'Mengimplementasikan', t: 'v' },
+          { h: '蔓延', p: 'mànyán', m: 'Menyebar / Meluaskan', t: 'v' },
+          { h: '民主', p: 'mínzhǔ', m: 'Demokrasi', t: 'n' },
+          { h: '明确', p: 'míngquè', m: 'Jelas / Tegas', t: 'adj' },
+          { h: '内涵', p: 'nèihán', m: 'Konotasi / Makna dalam', t: 'n' },
+          { h: '平衡', p: 'pínghéng', m: 'Keseimbangan / Seimbang', t: 'n' },
+          { h: '批判', p: 'pīpàn', m: 'Mengkritik secara kritis', t: 'v' },
+          { h: '权利', p: 'quánlì', m: 'Hak', t: 'n' },
+          { h: '热烈', p: 'rèliè', m: 'Hangat / Antusias', t: 'adj' },
+          { h: '融合', p: 'rónghé', m: 'Integrasi / Penyatuan', t: 'v' },
+          { h: '如何', p: 'rúhé', m: 'Bagaimana', t: 'adv' },
+          { h: '深刻', p: 'shēnkè', m: 'Mendalam / Profound', t: 'adj' },
+          { h: '生态', p: 'shēngtài', m: 'Ekologi / Lingkungan hidup', t: 'n' },
+          { h: '实质', p: 'shízhì', m: 'Substansi', t: 'n' },
+          { h: '维权', p: 'wéiquán', m: 'Mempertahankan hak', t: 'v' },
+          { h: '文明', p: 'wénmíng', m: 'Peradaban / Beradab', t: 'n' },
+          { h: '现代', p: 'xiàndài', m: 'Modern', t: 'adj' },
+          { h: '消费', p: 'xiāofèi', m: 'Konsumsi', t: 'v' },
+          { h: '协调', p: 'xiétiáo', m: 'Koordinasi', t: 'v' },
+          { h: '行为', p: 'xíngwéi', m: 'Perilaku', t: 'n' },
+          { h: '宣传', p: 'xuānchuán', m: 'Propaganda / Mempromosikan', t: 'v' },
+          { h: '压力', p: 'yālì', m: 'Tekanan / Stres', t: 'n' },
+          { h: '言论', p: 'yánlùn', m: 'Pernyataan / Ucapan', t: 'n' },
+          { h: '意识', p: 'yìshí', m: 'Kesadaran', t: 'n' },
+          { h: '影响力', p: 'yǐngxiǎng lì', m: 'Pengaruh', t: 'n' },
+          { h: '优化', p: 'yōuhuà', m: 'Mengoptimalkan', t: 'v' },
+          { h: '有力', p: 'yǒulì', m: 'Kuat / Bertenaga', t: 'adj' },
+          { h: '与此同时', p: 'yǔcǐ tóngshí', m: 'Pada saat yang sama', t: 'conj' },
+          { h: '整体', p: 'zhěngtǐ', m: 'Keseluruhan', t: 'n' },
+          { h: '正义', p: 'zhèngyì', m: 'Keadilan', t: 'n' },
+          { h: '支撑', p: 'zhīchēng', m: 'Menopang / Mendukung', t: 'v' },
+          { h: '指导', p: 'zhǐdǎo', m: 'Membimbing', t: 'v' },
+          { h: '自觉', p: 'zìjué', m: 'Sadar diri', t: 'adj' },
+          { h: '自由', p: 'zìyóu', m: 'Kebebasan', t: 'n' },
+          { h: '综合', p: 'zōnghé', m: 'Komprehensif', t: 'adj' },
+          { h: '遵守', p: 'zūnshǒu', m: 'Mematuhi', t: 'v' },
+        ]
+      }
+    };
+
+    // =============================================
+    // DATA – TOCFL VOCABULARY
+    // =============================================
+    const TOCFL_DATA = {
+      'A1': {
+        title: 'Band A – Level 1 (A1)', desc: 'Tingkat masuk – mampu berinteraksi dalam situasi paling dasar',
+        words: [
+          { h: '你好', p: 'nǐ hǎo', m: 'Halo / Selamat', t: 'int' },
+          { h: '謝謝', p: 'xiè xiè', m: 'Terima kasih', t: 'int' },
+          { h: '對不起', p: 'duì bù qǐ', m: 'Maaf / Permisi', t: 'int' },
+          { h: '再見', p: 'zài jiàn', m: 'Selamat tinggal', t: 'int' },
+          { h: '請問', p: 'qǐng wèn', m: 'Permisi / Boleh tanya', t: 'int' },
+          { h: '不客氣', p: 'bù kèqi', m: 'Sama-sama', t: 'int' },
+          { h: '我', p: 'wǒ', m: 'Saya', t: 'pron' },
+          { h: '你', p: 'nǐ', m: 'Kamu', t: 'pron' },
+          { h: '他', p: 'tā', m: 'Dia (laki-laki)', t: 'pron' },
+          { h: '她', p: 'tā', m: 'Dia (perempuan)', t: 'pron' },
+          { h: '我們', p: 'wǒmen', m: 'Kami / Kita', t: 'pron' },
+          { h: '你們', p: 'nǐmen', m: 'Kalian', t: 'pron' },
+          { h: '他們', p: 'tāmen', m: 'Mereka', t: 'pron' },
+          { h: '這', p: 'zhè', m: 'Ini', t: 'pron' },
+          { h: '那', p: 'nà', m: 'Itu', t: 'pron' },
+          { h: '什麼', p: 'shénme', m: 'Apa', t: 'pron' },
+          { h: '誰', p: 'shéi', m: 'Siapa', t: 'pron' },
+          { h: '哪', p: 'nǎ', m: 'Yang mana', t: 'pron' },
+          { h: '哪裡', p: 'nǎlǐ', m: 'Di mana', t: 'pron' },
+          { h: '為什麼', p: 'wèishénme', m: 'Mengapa', t: 'pron' },
+          { h: '怎麼', p: 'zěnme', m: 'Bagaimana', t: 'pron' },
+          { h: '多少', p: 'duōshǎo', m: 'Berapa', t: 'pron' },
+          // Numbers
+          { h: '一', p: 'yī', m: 'Satu', t: 'num' },
+          { h: '二', p: 'èr', m: 'Dua', t: 'num' },
+          { h: '三', p: 'sān', m: 'Tiga', t: 'num' },
+          { h: '四', p: 'sì', m: 'Empat', t: 'num' },
+          { h: '五', p: 'wǔ', m: 'Lima', t: 'num' },
+          { h: '六', p: 'liù', m: 'Enam', t: 'num' },
+          { h: '七', p: 'qī', m: 'Tujuh', t: 'num' },
+          { h: '八', p: 'bā', m: 'Delapan', t: 'num' },
+          { h: '九', p: 'jiǔ', m: 'Sembilan', t: 'num' },
+          { h: '十', p: 'shí', m: 'Sepuluh', t: 'num' },
+          { h: '百', p: 'bǎi', m: 'Seratus', t: 'num' },
+          { h: '千', p: 'qiān', m: 'Seribu', t: 'num' },
+          // Basic verbs
+          { h: '是', p: 'shì', m: 'Adalah', t: 'v' },
+          { h: '有', p: 'yǒu', m: 'Memiliki / Ada', t: 'v' },
+          { h: '吃', p: 'chī', m: 'Makan', t: 'v' },
+          { h: '喝', p: 'hē', m: 'Minum', t: 'v' },
+          { h: '去', p: 'qù', m: 'Pergi', t: 'v' },
+          { h: '來', p: 'lái', m: 'Datang', t: 'v' },
+          { h: '說', p: 'shuō', m: 'Berkata', t: 'v' },
+          { h: '看', p: 'kàn', m: 'Melihat', t: 'v' },
+          { h: '聽', p: 'tīng', m: 'Mendengar', t: 'v' },
+          { h: '買', p: 'mǎi', m: 'Membeli', t: 'v' },
+          { h: '賣', p: 'mài', m: 'Menjual', t: 'v' },
+          { h: '叫', p: 'jiào', m: 'Dipanggil', t: 'v' },
+          { h: '認識', p: 'rènshí', m: 'Mengenal', t: 'v' },
+          { h: '喜歡', p: 'xǐhuān', m: 'Menyukai', t: 'v' },
+          { h: '想', p: 'xiǎng', m: 'Ingin / Berpikir', t: 'v' },
+          { h: '要', p: 'yào', m: 'Ingin / Perlu', t: 'v' },
+          { h: '住', p: 'zhù', m: 'Tinggal', t: 'v' },
+          { h: '睡覺', p: 'shuìjiào', m: 'Tidur', t: 'v' },
+          { h: '工作', p: 'gōngzuò', m: 'Bekerja', t: 'v' },
+          { h: '學習', p: 'xuéxí', m: 'Belajar', t: 'v' },
+          // Family
+          { h: '爸爸', p: 'bàba', m: 'Ayah', t: 'n' },
+          { h: '媽媽', p: 'māma', m: 'Ibu', t: 'n' },
+          { h: '哥哥', p: 'gēge', m: 'Kakak laki-laki', t: 'n' },
+          { h: '姐姐', p: 'jiějie', m: 'Kakak perempuan', t: 'n' },
+          { h: '弟弟', p: 'dìdi', m: 'Adik laki-laki', t: 'n' },
+          { h: '妹妹', p: 'mèimei', m: 'Adik perempuan', t: 'n' },
+          { h: '朋友', p: 'péngyǒu', m: 'Teman', t: 'n' },
+          { h: '同學', p: 'tóngxué', m: 'Teman sekelas', t: 'n' },
+          { h: '老師', p: 'lǎoshī', m: 'Guru', t: 'n' },
+          { h: '學生', p: 'xuéshēng', m: 'Pelajar', t: 'n' },
+          // Places
+          { h: '學校', p: 'xuéxiào', m: 'Sekolah', t: 'n' },
+          { h: '家', p: 'jiā', m: 'Rumah', t: 'n' },
+          { h: '公司', p: 'gōngsī', m: 'Perusahaan', t: 'n' },
+          { h: '醫院', p: 'yīyuàn', m: 'Rumah sakit', t: 'n' },
+          { h: '銀行', p: 'yínháng', m: 'Bank', t: 'n' },
+          { h: '餐廳', p: 'cāntīng', m: 'Restoran', t: 'n' },
+          // Things
+          { h: '書', p: 'shū', m: 'Buku', t: 'n' },
+          { h: '電腦', p: 'diànnǎo', m: 'Komputer', t: 'n' },
+          { h: '手機', p: 'shǒujī', m: 'Ponsel', t: 'n' },
+          { h: '水', p: 'shuǐ', m: 'Air', t: 'n' },
+          { h: '飯', p: 'fàn', m: 'Nasi', t: 'n' },
+          { h: '茶', p: 'chá', m: 'Teh', t: 'n' },
+          { h: '咖啡', p: 'kāfēi', m: 'Kopi', t: 'n' },
+          { h: '錢', p: 'qián', m: 'Uang', t: 'n' },
+          // Adj
+          { h: '好', p: 'hǎo', m: 'Baik / Bagus', t: 'adj' },
+          { h: '大', p: 'dà', m: 'Besar', t: 'adj' },
+          { h: '小', p: 'xiǎo', m: 'Kecil', t: 'adj' },
+          { h: '多', p: 'duō', m: 'Banyak', t: 'adj' },
+          { h: '少', p: 'shǎo', m: 'Sedikit', t: 'adj' },
+          { h: '貴', p: 'guì', m: 'Mahal', t: 'adj' },
+          { h: '便宜', p: 'piányí', m: 'Murah', t: 'adj' },
+          { h: '漂亮', p: 'piàoliang', m: 'Cantik', t: 'adj' },
+          { h: '高興', p: 'gāoxìng', m: 'Senang', t: 'adj' },
+          { h: '忙', p: 'máng', m: 'Sibuk', t: 'adj' },
+          // Time
+          { h: '今天', p: 'jīntiān', m: 'Hari ini', t: 'n' },
+          { h: '明天', p: 'míngtiān', m: 'Besok', t: 'n' },
+          { h: '昨天', p: 'zuótiān', m: 'Kemarin', t: 'n' },
+          { h: '現在', p: 'xiànzài', m: 'Sekarang', t: 'n' },
+          { h: '早上', p: 'zǎoshang', m: 'Pagi hari', t: 'n' },
+          { h: '下午', p: 'xiàwǔ', m: 'Sore hari', t: 'n' },
+          { h: '晚上', p: 'wǎnshang', m: 'Malam hari', t: 'n' },
+          // Particles
+          { h: '不', p: 'bù', m: 'Tidak', t: 'adv' },
+          { h: '很', p: 'hěn', m: 'Sangat', t: 'adv' },
+          { h: '也', p: 'yě', m: 'Juga', t: 'adv' },
+          { h: '都', p: 'dōu', m: 'Semua', t: 'adv' },
+          { h: '的', p: 'de', m: 'Partikel kepemilikan', t: 'part' },
+          { h: '嗎', p: 'ma', m: 'Partikel tanya', t: 'part' },
+          { h: '和', p: 'hé', m: 'Dan', t: 'conj' },
+        ]
+      },
+      'A2': {
+        title: 'Band A – Level 2 (A2)', desc: 'Tingkat dasar – mampu berkomunikasi dalam situasi sehari-hari',
+        words: [
+          { h: '辦法', p: 'bànfǎ', m: 'Cara / Solusi', t: 'n' },
+          { h: '比較', p: 'bǐjiào', m: 'Membandingkan / Relatif', t: 'adv' },
+          { h: '必須', p: 'bìxū', m: 'Harus', t: 'adv' },
+          { h: '表示', p: 'biǎoshì', m: 'Menunjukkan / Menyatakan', t: 'v' },
+          { h: '部分', p: 'bùfen', m: 'Bagian', t: 'n' },
+          { h: '不過', p: 'búguò', m: 'Tetapi / Hanya saja', t: 'conj' },
+          { h: '不管', p: 'bùguǎn', m: 'Tidak peduli', t: 'conj' },
+          { h: '才', p: 'cái', m: 'Baru saja / Hanya', t: 'adv' },
+          { h: '常常', p: 'chángcháng', m: 'Sering', t: 'adv' },
+          { h: '超過', p: 'chāoguò', m: 'Melebihi', t: 'v' },
+          { h: '打電話', p: 'dǎ diànhuà', m: 'Menelepon', t: 'v' },
+          { h: '擔心', p: 'dānxīn', m: 'Khawatir', t: 'v' },
+          { h: '到', p: 'dào', m: 'Tiba / Sampai', t: 'v' },
+          { h: '等', p: 'děng', m: 'Menunggu', t: 'v' },
+          { h: '地鐵', p: 'dìtiě', m: 'MRT', t: 'n' },
+          { h: '電影', p: 'diànyǐng', m: 'Film', t: 'n' },
+          { h: '電視', p: 'diànshì', m: 'Televisi', t: 'n' },
+          { h: '帶', p: 'dài', m: 'Membawa', t: 'v' },
+          { h: '方法', p: 'fāngfǎ', m: 'Metode', t: 'n' },
+          { h: '放', p: 'fàng', m: 'Meletakkan', t: 'v' },
+          { h: '告訴', p: 'gàosu', m: 'Memberitahu', t: 'v' },
+          { h: '感覺', p: 'gǎnjué', m: 'Perasaan', t: 'n' },
+          { h: '高興', p: 'gāoxìng', m: 'Senang', t: 'adj' },
+          { h: '公斤', p: 'gōngjīn', m: 'Kilogram', t: 'mw' },
+          { h: '公里', p: 'gōnglǐ', m: 'Kilometer', t: 'mw' },
+          { h: '關係', p: 'guānxì', m: 'Hubungan', t: 'n' },
+          { h: '回', p: 'huí', m: 'Kembali', t: 'v' },
+          { h: '回答', p: 'huídá', m: 'Menjawab', t: 'v' },
+          { h: '火車', p: 'huǒchē', m: 'Kereta api', t: 'n' },
+          { h: '結束', p: 'jiéshù', m: 'Selesai', t: 'v' },
+          { h: '機場', p: 'jīchǎng', m: 'Bandara', t: 'n' },
+          { h: '覺得', p: 'juéde', m: 'Merasa', t: 'v' },
+          { h: '考試', p: 'kǎoshì', m: 'Ujian', t: 'n' },
+          { h: '開始', p: 'kāishǐ', m: 'Mulai', t: 'v' },
+          { h: '可能', p: 'kěnéng', m: 'Mungkin', t: 'adv' },
+          { h: '空調', p: 'kōngtiáo', m: 'AC', t: 'n' },
+          { h: '離開', p: 'líkāi', m: 'Meninggalkan', t: 'v' },
+          { h: '了解', p: 'liǎojiě', m: 'Memahami', t: 'v' },
+          { h: '旅遊', p: 'lǚyóu', m: 'Wisata', t: 'n' },
+          { h: '馬上', p: 'mǎshàng', m: 'Segera', t: 'adv' },
+          { h: '明白', p: 'míngbái', m: 'Mengerti', t: 'v' },
+          { h: '名字', p: 'míngzi', m: 'Nama', t: 'n' },
+          { h: '目的', p: 'mùdì', m: 'Tujuan', t: 'n' },
+          { h: '拿', p: 'ná', m: 'Mengambil', t: 'v' },
+          { h: '難', p: 'nán', m: 'Sulit', t: 'adj' },
+          { h: '年紀', p: 'niánjì', m: 'Usia / Umur', t: 'n' },
+          { h: '努力', p: 'nǔlì', m: 'Berusaha keras', t: 'v' },
+          { h: '其實', p: 'qíshí', m: 'Sebenarnya', t: 'adv' },
+          { h: '然後', p: 'ránhòu', m: 'Kemudian', t: 'conj' },
+          { h: '認為', p: 'rènwéi', m: 'Berpendapat', t: 'v' },
+          { h: '容易', p: 'róngyì', m: 'Mudah', t: 'adj' },
+          { h: '商量', p: 'shāngliang', m: 'Berdiskusi', t: 'v' },
+          { h: '身體', p: 'shēntǐ', m: 'Tubuh', t: 'n' },
+          { h: '時間', p: 'shíjiān', m: 'Waktu', t: 'n' },
+          { h: '事情', p: 'shìqíng', m: 'Urusan', t: 'n' },
+          { h: '舒服', p: 'shūfu', m: 'Nyaman', t: 'adj' },
+          { h: '雖然', p: 'suīrán', m: 'Meskipun', t: 'conj' },
+          { h: '所以', p: 'suǒyǐ', m: 'Oleh karena itu', t: 'conj' },
+          { h: '突然', p: 'tūrán', m: 'Tiba-tiba', t: 'adv' },
+          { h: '問題', p: 'wèntí', m: 'Pertanyaan / Masalah', t: 'n' },
+          { h: '習慣', p: 'xíguàn', m: 'Kebiasaan', t: 'n' },
+          { h: '希望', p: 'xīwàng', m: 'Berharap', t: 'v' },
+          { h: '需要', p: 'xūyào', m: 'Membutuhkan', t: 'v' },
+          { h: '選擇', p: 'xuǎnzé', m: 'Memilih', t: 'v' },
+          { h: '一定', p: 'yīdìng', m: 'Pasti', t: 'adv' },
+          { h: '已經', p: 'yǐjīng', m: 'Sudah', t: 'adv' },
+          { h: '應該', p: 'yīnggāi', m: 'Seharusnya', t: 'v' },
+          { h: '影響', p: 'yǐngxiǎng', m: 'Pengaruh', t: 'n' },
+          { h: '因為', p: 'yīnwèi', m: 'Karena', t: 'conj' },
+          { h: '一起', p: 'yīqǐ', m: 'Bersama', t: 'adv' },
+          { h: '月', p: 'yuè', m: 'Bulan', t: 'n' },
+          { h: '知道', p: 'zhīdào', m: 'Tahu', t: 'v' },
+          { h: '重要', p: 'zhòngyào', m: 'Penting', t: 'adj' },
+          { h: '注意', p: 'zhùyì', m: 'Memperhatikan', t: 'v' },
+          { h: '準備', p: 'zhǔnbèi', m: 'Mempersiapkan', t: 'v' },
+          { h: '自己', p: 'zìjǐ', m: 'Sendiri', t: 'pron' },
+          { h: '總是', p: 'zǒngshì', m: 'Selalu', t: 'adv' },
+        ]
+      },
+      'B1': {
+        title: 'Band B – Level 3 (B1)', desc: 'Tingkat menengah awal – mampu memahami topik yang lebih beragam',
+        words: [
+          { h: '安全', p: 'ānquán', m: 'Aman / Keamanan', t: 'adj' },
+          { h: '案例', p: 'ànlì', m: 'Kasus / Contoh', t: 'n' },
+          { h: '包括', p: 'bāokuò', m: 'Termasuk', t: 'v' },
+          { h: '保持', p: 'bǎochí', m: 'Mempertahankan', t: 'v' },
+          { h: '本來', p: 'běnlái', m: 'Aslinya', t: 'adv' },
+          { h: '便', p: 'biàn', m: 'Nyaman / Maka', t: 'adv' },
+          { h: '並', p: 'bìng', m: 'Dan / Serta', t: 'conj' },
+          { h: '採用', p: 'cǎiyòng', m: 'Mengadopsi', t: 'v' },
+          { h: '測試', p: 'cèshì', m: 'Tes / Menguji', t: 'v' },
+          { h: '成本', p: 'chéngběn', m: 'Biaya / Ongkos', t: 'n' },
+          { h: '成功', p: 'chénggōng', m: 'Berhasil / Sukses', t: 'v' },
+          { h: '程度', p: 'chéngdù', m: 'Tingkat / Derajat', t: 'n' },
+          { h: '充分', p: 'chōngfèn', m: 'Penuh / Cukup', t: 'adj' },
+          { h: '此外', p: 'cǐwài', m: 'Selain itu', t: 'conj' },
+          { h: '從而', p: 'cóng ér', m: 'Dengan demikian', t: 'conj' },
+          { h: '達到', p: 'dádào', m: 'Mencapai', t: 'v' },
+          { h: '當然', p: 'dāngrán', m: 'Tentu saja', t: 'adv' },
+          { h: '導致', p: 'dǎozhì', m: 'Menyebabkan', t: 'v' },
+          { h: '得到', p: 'dédào', m: 'Mendapatkan', t: 'v' },
+          { h: '地方', p: 'dìfāng', m: 'Tempat', t: 'n' },
+          { h: '地點', p: 'dìdiǎn', m: 'Lokasi', t: 'n' },
+          { h: '調查', p: 'diàochá', m: 'Menyelidiki', t: 'v' },
+          { h: '方案', p: 'fāngàn', m: 'Rencana / Solusi', t: 'n' },
+          { h: '方面', p: 'fāngmiàn', m: 'Aspek / Sisi', t: 'n' },
+          { h: '發現', p: 'fāxiàn', m: 'Menemukan', t: 'v' },
+          { h: '發展', p: 'fāzhǎn', m: 'Berkembang', t: 'v' },
+          { h: '豐富', p: 'fēngfù', m: 'Kaya / Berlimpah', t: 'adj' },
+          { h: '否則', p: 'fǒuzé', m: 'Kalau tidak', t: 'conj' },
+          { h: '複雜', p: 'fùzá', m: 'Rumit', t: 'adj' },
+          { h: '根據', p: 'gēnjù', m: 'Berdasarkan', t: 'prep' },
+          { h: '工程師', p: 'gōngchéngshī', m: 'Insinyur', t: 'n' },
+          { h: '估計', p: 'gūjì', m: 'Memperkirakan', t: 'v' },
+          { h: '規定', p: 'guīdìng', m: 'Peraturan', t: 'n' },
+          { h: '合理', p: 'hélǐ', m: 'Wajar / Masuk akal', t: 'adj' },
+          { h: '互相', p: 'hùxiāng', m: 'Saling', t: 'adv' },
+          { h: '環境', p: 'huánjìng', m: 'Lingkungan', t: 'n' },
+          { h: '機會', p: 'jīhuì', m: 'Kesempatan', t: 'n' },
+          { h: '積極', p: 'jījí', m: 'Positif / Aktif', t: 'adj' },
+          { h: '技術', p: 'jìshù', m: 'Teknologi', t: 'n' },
+          { h: '堅持', p: 'jiānchí', m: 'Bersikukuh', t: 'v' },
+          { h: '建立', p: 'jiànlì', m: 'Membangun', t: 'v' },
+          { h: '建議', p: 'jiànyì', m: 'Saran', t: 'n' },
+          { h: '交流', p: 'jiāoliú', m: 'Komunikasi', t: 'v' },
+          { h: '結果', p: 'jiéguǒ', m: 'Hasil', t: 'n' },
+          { h: '解決', p: 'jiějué', m: 'Menyelesaikan', t: 'v' },
+          { h: '經濟', p: 'jīngjì', m: 'Ekonomi', t: 'n' },
+          { h: '經驗', p: 'jīngyàn', m: 'Pengalaman', t: 'n' },
+          { h: '利用', p: 'lìyòng', m: 'Memanfaatkan', t: 'v' },
+          { h: '聯繫', p: 'liánxì', m: 'Menghubungi', t: 'v' },
+          { h: '面對', p: 'miànduì', m: 'Menghadapi', t: 'v' },
+          { h: '明顯', p: 'míngxiǎn', m: 'Jelas', t: 'adj' },
+          { h: '目標', p: 'mùbiāo', m: 'Target / Tujuan', t: 'n' },
+          { h: '能力', p: 'nénglì', m: 'Kemampuan', t: 'n' },
+          { h: '培養', p: 'péiyǎng', m: 'Memupuk', t: 'v' },
+          { h: '評估', p: 'pínggū', m: 'Menilai', t: 'v' },
+          { h: '全面', p: 'quánmiàn', m: 'Komprehensif', t: 'adj' },
+          { h: '確認', p: 'quèrèn', m: 'Mengkonfirmasi', t: 'v' },
+          { h: '認真', p: 'rènzhēn', m: 'Serius', t: 'adj' },
+          { h: '社會', p: 'shèhuì', m: 'Masyarakat', t: 'n' },
+          { h: '設計', p: 'shèjì', m: 'Desain', t: 'n' },
+          { h: '生活', p: 'shēnghuó', m: 'Kehidupan', t: 'n' },
+          { h: '實際', p: 'shíjì', m: 'Nyata', t: 'adj' },
+          { h: '實現', p: 'shíxiàn', m: 'Mewujudkan', t: 'v' },
+          { h: '提供', p: 'tígōng', m: 'Menyediakan', t: 'v' },
+          { h: '提高', p: 'tígāo', m: 'Meningkatkan', t: 'v' },
+          { h: '通過', p: 'tōngguò', m: 'Melalui', t: 'v' },
+          { h: '完成', p: 'wánchéng', m: 'Menyelesaikan', t: 'v' },
+          { h: '系統', p: 'xìtǒng', m: 'Sistem', t: 'n' },
+          { h: '效果', p: 'xiàoguǒ', m: 'Efek', t: 'n' },
+          { h: '需求', p: 'xūqiú', m: 'Kebutuhan', t: 'n' },
+          { h: '研究', p: 'yánjiū', m: 'Penelitian', t: 'v' },
+          { h: '應用', p: 'yìngyòng', m: 'Aplikasi / Menerapkan', t: 'v' },
+          { h: '影響', p: 'yǐngxiǎng', m: 'Pengaruh', t: 'n' },
+          { h: '優化', p: 'yōuhuà', m: 'Mengoptimalkan', t: 'v' },
+          { h: '有效', p: 'yǒuxiào', m: 'Efektif', t: 'adj' },
+          { h: '原因', p: 'yuányīn', m: 'Alasan / Penyebab', t: 'n' },
+          { h: '增加', p: 'zēngjiā', m: 'Menambah', t: 'v' },
+          { h: '支持', p: 'zhīchí', m: 'Mendukung', t: 'v' },
+          { h: '整體', p: 'zhěngtǐ', m: 'Keseluruhan', t: 'n' },
+        ]
+      },
+      'B2': {
+        title: 'Band B – Level 4 (B2)', desc: 'Tingkat menengah – fasih berinteraksi dalam berbagai topik',
+        words: [
+          { h: '阿諛', p: 'āyú', m: 'Menjilat / Mengambil hati', t: 'v' },
+          { h: '矮化', p: 'ǎihuà', m: 'Merendahkan', t: 'v' },
+          { h: '霸道', p: 'bàdào', m: 'Dominan / Sewenang-wenang', t: 'adj' },
+          { h: '本質', p: 'běnzhì', m: 'Esensi', t: 'n' },
+          { h: '背景', p: 'bèijǐng', m: 'Latar belakang', t: 'n' },
+          { h: '辯論', p: 'biànlùn', m: 'Debat', t: 'v' },
+          { h: '並非', p: 'bìng fēi', m: 'Bukanlah', t: 'adv' },
+          { h: '布局', p: 'bùjú', m: 'Tata letak / Susunan', t: 'n' },
+          { h: '長期', p: 'chángqī', m: 'Jangka panjang', t: 'adj' },
+          { h: '超越', p: 'chāoyuè', m: 'Melampaui', t: 'v' },
+          { h: '承擔', p: 'chéngdān', m: 'Menanggung', t: 'v' },
+          { h: '衝突', p: 'chōngtū', m: 'Konflik', t: 'n' },
+          { h: '傳播', p: 'chuánbō', m: 'Menyebarkan', t: 'v' },
+          { h: '創新', p: 'chuàngxīn', m: 'Inovasi', t: 'n' },
+          { h: '存在', p: 'cúnzài', m: 'Ada / Eksistensi', t: 'v' },
+          { h: '錯誤', p: 'cuòwù', m: 'Kesalahan', t: 'n' },
+          { h: '大幅', p: 'dàfú', m: 'Besar-besaran', t: 'adj' },
+          { h: '道德', p: 'dàodé', m: 'Moralitas', t: 'n' },
+          { h: '低調', p: 'dīdiào', m: 'Rendah hati / Low profile', t: 'adj' },
+          { h: '典型', p: 'diǎnxíng', m: 'Tipikal', t: 'adj' },
+          { h: '獨立', p: 'dúlì', m: 'Mandiri', t: 'adj' },
+          { h: '分析', p: 'fēnxī', m: 'Menganalisis', t: 'v' },
+          { h: '奮鬥', p: 'fèndòu', m: 'Berjuang keras', t: 'v' },
+          { h: '風險', p: 'fēngxiǎn', m: 'Risiko', t: 'n' },
+          { h: '高度', p: 'gāodù', m: 'Ketinggian / Sangat', t: 'adj' },
+          { h: '個人', p: 'gèrén', m: 'Individual / Pribadi', t: 'n' },
+          { h: '公平', p: 'gōngpíng', m: 'Adil', t: 'adj' },
+          { h: '觀點', p: 'guāndiǎn', m: 'Sudut pandang', t: 'n' },
+          { h: '廣泛', p: 'guǎngfàn', m: 'Luas', t: 'adj' },
+          { h: '國際', p: 'guójì', m: 'Internasional', t: 'adj' },
+          { h: '過程', p: 'guòchéng', m: 'Proses', t: 'n' },
+          { h: '合理', p: 'hélǐ', m: 'Wajar', t: 'adj' },
+          { h: '核心', p: 'héxīn', m: 'Inti', t: 'n' },
+          { h: '加強', p: 'jiāqiáng', m: 'Memperkuat', t: 'v' },
+          { h: '激烈', p: 'jīliè', m: 'Intens / Sengit', t: 'adj' },
+          { h: '集中', p: 'jízhōng', m: 'Terpusat / Memusatkan', t: 'v' },
+          { h: '精確', p: 'jīngquè', m: 'Tepat', t: 'adj' },
+          { h: '競爭', p: 'jìngzhēng', m: 'Persaingan', t: 'v' },
+          { h: '克服', p: 'kèfú', m: 'Mengatasi', t: 'v' },
+          { h: '跨越', p: 'kuàyuè', m: 'Melintasi', t: 'v' },
+          { h: '框架', p: 'kuàngjià', m: 'Kerangka', t: 'n' },
+          { h: '理論', p: 'lǐlùn', m: 'Teori', t: 'n' },
+          { h: '力量', p: 'lìliàng', m: 'Kekuatan', t: 'n' },
+          { h: '立場', p: 'lìchǎng', m: 'Posisi / Sikap', t: 'n' },
+          { h: '邏輯', p: 'luójí', m: 'Logika', t: 'n' },
+          { h: '面臨', p: 'miànlín', m: 'Menghadapi', t: 'v' },
+          { h: '民主', p: 'mínzhǔ', m: 'Demokrasi', t: 'n' },
+          { h: '明確', p: 'míngquè', m: 'Tegas / Jelas', t: 'adj' },
+          { h: '內涵', p: 'nèihán', m: 'Makna dalam', t: 'n' },
+          { h: '批判', p: 'pīpàn', m: 'Mengkritik', t: 'v' },
+          { h: '評價', p: 'píngjià', m: 'Penilaian', t: 'n' },
+          { h: '平衡', p: 'pínghéng', m: 'Keseimbangan', t: 'n' },
+          { h: '確保', p: 'quèbǎo', m: 'Memastikan', t: 'v' },
+          { h: '人口', p: 'rénkǒu', m: 'Populasi', t: 'n' },
+          { h: '認識', p: 'rènshí', m: 'Mengenal / Menyadari', t: 'v' },
+          { h: '深入', p: 'shēnrù', m: 'Mendalam', t: 'adj' },
+          { h: '實踐', p: 'shíjiàn', m: 'Praktik', t: 'n' },
+          { h: '思考', p: 'sīkǎo', m: 'Berpikir', t: 'v' },
+          { h: '探索', p: 'tànsuǒ', m: 'Mengeksplorasi', t: 'v' },
+          { h: '統計', p: 'tǒngjì', m: 'Statistik', t: 'n' },
+          { h: '推動', p: 'tuīdòng', m: 'Mendorong maju', t: 'v' },
+          { h: '文明', p: 'wénmíng', m: 'Peradaban', t: 'n' },
+          { h: '相互', p: 'xiānghù', m: 'Saling', t: 'adv' },
+          { h: '協調', p: 'xiétiáo', m: 'Koordinasi', t: 'v' },
+          { h: '形成', p: 'xíngchéng', m: 'Membentuk', t: 'v' },
+          { h: '行為', p: 'xíngwéi', m: 'Perilaku', t: 'n' },
+          { h: '意識', p: 'yìshí', m: 'Kesadaran', t: 'n' },
+          { h: '意義', p: 'yìyì', m: 'Makna / Arti', t: 'n' },
+          { h: '主導', p: 'zhǔdǎo', m: 'Memimpin', t: 'v' },
+          { h: '主觀', p: 'zhǔguān', m: 'Subjektif', t: 'adj' },
+        ]
+      },
+      'C1': {
+        title: 'Band C – Level 5 (C1)', desc: 'Tingkat lanjut – mampu memahami teks kompleks dan abstrak',
+        words: [
+          { h: '哀怨', p: 'āiyuàn', m: 'Meratap sedih', t: 'adj' },
+          { h: '暗示', p: 'ànshì', m: 'Petunjuk tersirat', t: 'v' },
+          { h: '悖論', p: 'bèilùn', m: 'Paradoks', t: 'n' },
+          { h: '辯證法', p: 'biànzhèngfǎ', m: 'Dialektika', t: 'n' },
+          { h: '博大', p: 'bódà', m: 'Luas / Agung', t: 'adj' },
+          { h: '超然', p: 'chāorán', m: 'Melampaui duniawi', t: 'adj' },
+          { h: '沉澱', p: 'chéndiàn', m: 'Mengendap / Berlelah diri', t: 'v' },
+          { h: '傳承', p: 'chuánchéng', m: 'Mewarisi tradisi', t: 'v' },
+          { h: '闡述', p: 'chǎnshù', m: 'Menjelaskan secara rinci', t: 'v' },
+          { h: '超前', p: 'chāoqián', m: 'Maju ke depan / Inovatif', t: 'adj' },
+          { h: '抵制', p: 'dǐzhì', m: 'Memboikot / Melawan', t: 'v' },
+          { h: '顛覆', p: 'diānfù', m: 'Menumbangkan', t: 'v' },
+          { h: '典範', p: 'diǎnfàn', m: 'Model / Contoh teladan', t: 'n' },
+          { h: '多元', p: 'duōyuán', m: 'Plural / Beragam', t: 'adj' },
+          { h: '厄運', p: 'èyùn', m: 'Nasib buruk', t: 'n' },
+          { h: '反思', p: 'fǎnsī', m: 'Refleksi / Introspeksi', t: 'v' },
+          { h: '繁榮', p: 'fánróng', m: 'Kemakmuran', t: 'adj' },
+          { h: '非凡', p: 'fēifán', m: 'Luar biasa', t: 'adj' },
+          { h: '分歧', p: 'fēnqí', m: 'Perbedaan pendapat', t: 'n' },
+          { h: '格局', p: 'géjú', m: 'Pola pikir / Struktur', t: 'n' },
+          { h: '根基', p: 'gēnjī', m: 'Pondasi / Dasar', t: 'n' },
+          { h: '貢獻', p: 'gòngxiàn', m: 'Kontribusi', t: 'n' },
+          { h: '貫穿', p: 'guànchuān', m: 'Menembus / Melintasi', t: 'v' },
+          { h: '規律', p: 'guīlǜ', m: 'Hukum / Pola', t: 'n' },
+          { h: '和諧', p: 'héxié', m: 'Harmoni', t: 'adj' },
+          { h: '弘揚', p: 'hóngyáng', m: 'Mengagungkan', t: 'v' },
+          { h: '互補', p: 'hùbǔ', m: 'Saling melengkapi', t: 'v' },
+          { h: '回顧', p: 'huígù', m: 'Meninjau kembali', t: 'v' },
+          { h: '積累', p: 'jīlěi', m: 'Akumulasi', t: 'v' },
+          { h: '際遇', p: 'jìyù', m: 'Kesempatan langka', t: 'n' },
+          { h: '激勵', p: 'jīlì', m: 'Memotivasi', t: 'v' },
+          { h: '超越', p: 'chāoyuè', m: 'Melampaui', t: 'v' },
+          { h: '境界', p: 'jìngjiè', m: 'Tingkat pencapaian', t: 'n' },
+          { h: '洞察', p: 'dòngchá', m: 'Wawasan mendalam', t: 'v' },
+          { h: '理念', p: 'lǐniàn', m: 'Konsep / Nilai', t: 'n' },
+          { h: '流傳', p: 'liúchuán', m: 'Diturunkan', t: 'v' },
+          { h: '倫理', p: 'lúnlǐ', m: 'Etika', t: 'n' },
+          { h: '脈絡', p: 'màiluò', m: 'Konteks / Garis besar', t: 'n' },
+          { h: '萌發', p: 'méngfā', m: 'Muncul / Tumbuh', t: 'v' },
+          { h: '凝聚', p: 'níngjù', m: 'Menghimpun / Menyatukan', t: 'v' },
+          { h: '平衡', p: 'pínghéng', m: 'Keseimbangan', t: 'n' },
+          { h: '潛力', p: 'qiánlì', m: 'Potensi', t: 'n' },
+          { h: '取捨', p: 'qǔshě', m: 'Pilih-pilih / Kompromi', t: 'v' },
+          { h: '人文', p: 'rénwén', m: 'Humaniora', t: 'n' },
+          { h: '深化', p: 'shēnhuà', m: 'Memperdalam', t: 'v' },
+          { h: '昇華', p: 'shēnghuá', m: 'Sublimasi / Meningkat', t: 'v' },
+          { h: '省思', p: 'xǐngsī', m: 'Refleksi diri', t: 'v' },
+          { h: '使命', p: 'shǐmìng', m: 'Misi', t: 'n' },
+          { h: '視野', p: 'shìyě', m: 'Wawasan / Pandangan', t: 'n' },
+          { h: '思維', p: 'sīwéi', m: 'Pemikiran / Pola pikir', t: 'n' },
+          { h: '特質', p: 'tèzhì', m: 'Karakteristik', t: 'n' },
+          { h: '體系', p: 'tǐxì', m: 'Sistem / Kerangka', t: 'n' },
+          { h: '透過', p: 'tòuguò', m: 'Melalui', t: 'prep' },
+          { h: '突破', p: 'tūpò', m: 'Terobosan', t: 'v' },
+          { h: '文化底蘊', p: 'wénhuà dǐyùn', m: 'Warisan budaya', t: 'n' },
+          { h: '先進', p: 'xiānjìn', m: 'Maju / Canggih', t: 'adj' },
+          { h: '形態', p: 'xíngtài', m: 'Bentuk / Morfologi', t: 'n' },
+          { h: '信念', p: 'xìnniàn', m: 'Keyakinan', t: 'n' },
+          { h: '演變', p: 'yǎnbiàn', m: 'Evolusi / Berkembang', t: 'v' },
+          { h: '揚棄', p: 'yángqì', m: 'Melampaui dan membuang', t: 'v' },
+          { h: '意境', p: 'yìjìng', m: 'Atmosfer artistik', t: 'n' },
+          { h: '意涵', p: 'yìhán', m: 'Makna mendalam', t: 'n' },
+          { h: '引領', p: 'yǐnlǐng', m: 'Memimpin', t: 'v' },
+          { h: '永恆', p: 'yǒnghéng', m: 'Abadi', t: 'adj' },
+          { h: '宇宙觀', p: 'yǔzhòu guān', m: 'Pandangan semesta', t: 'n' },
+          { h: '源自', p: 'yuánzì', m: 'Berasal dari', t: 'v' },
+        ]
+      },
+      'C2': {
+        title: 'Band C – Level 6 (C2)', desc: 'Tingkat mahir – kemampuan setara penutur asli',
+        words: [
+          { h: '哲思', p: 'zhéxī', m: 'Pemikiran filosofis', t: 'n' },
+          { h: '辯證', p: 'biànzhèng', m: 'Dialektis', t: 'adj' },
+          { h: '博弈', p: 'bóyì', m: 'Permainan strategi / tarik ulur', t: 'n' },
+          { h: '超脫', p: 'chāotuō', m: 'Melepaskan diri', t: 'v' },
+          { h: '闡釋', p: 'chǎnshì', m: 'Menafsirkan', t: 'v' },
+          { h: '成效', p: 'chéngxiào', m: 'Efektivitas', t: 'n' },
+          { h: '傳世', p: 'chuánshì', m: 'Diwariskan ke generasi', t: 'v' },
+          { h: '創見', p: 'chuàngjiàn', m: 'Pandangan orisinal', t: 'n' },
+          { h: '淬鍊', p: 'cuìliàn', m: 'Tempa diri', t: 'v' },
+          { h: '大智若愚', p: 'dàzhì ruòyú', m: 'Bijak namun tampak bodoh', t: 'int' },
+          { h: '當下', p: 'dāngxià', m: 'Saat ini / Masa kini', t: 'n' },
+          { h: '洞見', p: 'dòngjiàn', m: 'Wawasan tajam', t: 'n' },
+          { h: '多維', p: 'duōwéi', m: 'Multidimensi', t: 'adj' },
+          { h: '發人深省', p: 'fā rén shēnxǐng', m: 'Membuat orang termenung', t: 'int' },
+          { h: '凡塵', p: 'fánchén', m: 'Dunia fana', t: 'n' },
+          { h: '範式', p: 'fànshì', m: 'Paradigma', t: 'n' },
+          { h: '廢墟', p: 'fèixū', m: 'Reruntuhan', t: 'n' },
+          { h: '分歧', p: 'fēnqí', m: 'Perbedaan pendapat', t: 'n' },
+          { h: '複合', p: 'fùhé', m: 'Majemuk / Gabungan', t: 'adj' },
+          { h: '顧全大局', p: 'gù quán dàjú', m: 'Menjaga kepentingan besar', t: 'int' },
+          { h: '貫通', p: 'guàntōng', m: 'Menembus / Menguasai', t: 'v' },
+          { h: '恆久', p: 'héngjiǔ', m: 'Abadi / Terus-menerus', t: 'adj' },
+          { h: '弘揚', p: 'hóngyáng', m: 'Mengagungkan', t: 'v' },
+          { h: '後現代', p: 'hòu xiàndài', m: 'Postmodern', t: 'adj' },
+          { h: '回望', p: 'huíwàng', m: 'Melihat ke belakang', t: 'v' },
+          { h: '匯聚', p: 'huìjù', m: 'Berkumpul / Bersatu', t: 'v' },
+          { h: '基因', p: 'jīyīn', m: 'Gen', t: 'n' },
+          { h: '際遇', p: 'jìyù', m: 'Nasib / Kesempatan', t: 'n' },
+          { h: '開拓', p: 'kāituò', m: 'Membuka lahan baru', t: 'v' },
+          { h: '烙印', p: 'làoyìn', m: 'Cap / Bekas mendalam', t: 'n' },
+          { h: '里程碑', p: 'lǐchéngbēi', m: 'Tonggak sejarah', t: 'n' },
+          { h: '靈魂', p: 'línghún', m: 'Jiwa / Roh', t: 'n' },
+          { h: '流芳', p: 'liúfāng', m: 'Meninggalkan nama harum', t: 'v' },
+          { h: '落地', p: 'luòdì', m: 'Mendarat / Terwujud', t: 'v' },
+          { h: '脈動', p: 'màidòng', m: 'Denyutan / Dinamika', t: 'n' },
+          { h: '迷思', p: 'mísī', m: 'Mitos / Kesalahan pikir', t: 'n' },
+          { h: '滅絕', p: 'mièjué', m: 'Kepunahan', t: 'v' },
+          { h: '磨礪', p: 'mólì', m: 'Menggembleng diri', t: 'v' },
+          { h: '凝固', p: 'nínggù', m: 'Membeku / Mengeras', t: 'v' },
+          { h: '啟示', p: 'qǐshì', m: 'Ilham / Wahyu', t: 'n' },
+          { h: '千古', p: 'qiāngǔ', m: 'Sepanjang masa', t: 'adv' },
+          { h: '潛移默化', p: 'qián yí mòhuà', m: 'Pengaruh tak terasa', t: 'int' },
+          { h: '泉源', p: 'quányuán', m: 'Sumber mata air', t: 'n' },
+          { h: '融入', p: 'róngrù', m: 'Melebur masuk', t: 'v' },
+          { h: '生生不息', p: 'shēngshēng bùxī', m: 'Terus hidup tanpa henti', t: 'int' },
+          { h: '昇騰', p: 'shēngténg', m: 'Naik ke atas', t: 'v' },
+          { h: '時代精神', p: 'shídài jīngshén', m: 'Semangat zaman', t: 'n' },
+          { h: '淑世', p: 'shúshì', m: 'Memperbaiki dunia', t: 'v' },
+          { h: '思辨', p: 'sībiàn', m: 'Berpikir kritis', t: 'v' },
+          { h: '探尋', p: 'tànxún', m: 'Mencari / Menjelajahi', t: 'v' },
+          { h: '天人合一', p: 'tiānrén héyī', m: 'Manusia & alam menyatu', t: 'int' },
+          { h: '蛻變', p: 'tuìbiàn', m: 'Transformasi / Metamorfosis', t: 'v' },
+          { h: '萬古長青', p: 'wàngǔ cháng qīng', m: 'Abadi sepanjang masa', t: 'int' },
+          { h: '文明互鑒', p: 'wénmíng hùjiàn', m: 'Dialog antar peradaban', t: 'n' },
+          { h: '無為', p: 'wúwéi', m: 'Non-aksi (Taoisme)', t: 'n' },
+          { h: '心境', p: 'xīnjìng', m: 'Kondisi batin', t: 'n' },
+          { h: '興衰', p: 'xīngshuāi', m: 'Naik turun / Kejayaan', t: 'n' },
+          { h: '象徵', p: 'xiàngzhēng', m: 'Simbol', t: 'n' },
+          { h: '哲學', p: 'zhéxué', m: 'Filsafat', t: 'n' },
+          { h: '真諦', p: 'zhēndì', m: 'Kebenaran sejati', t: 'n' },
+          { h: '震撼', p: 'zhènhàn', m: 'Mengguncang', t: 'v' },
+          { h: '自然', p: 'zìrán', m: 'Alam / Alami', t: 'n' },
+          { h: '卓越', p: 'zhuóyuè', m: 'Unggul / Cemerlang', t: 'adj' },
+        ]
+      }
+    };
+
+    // =============================================
+    // APP STATE
+    // =============================================
+    const state = {
+      hsk: { level: '1', cardIdx: 0, cardList: [], flipped: false, quizIdx: 0, correct: 0, wrong: 0, quizList: [] },
+      tocfl: { level: 'A1', cardIdx: 0, cardList: [], flipped: false, quizIdx: 0, correct: 0, wrong: 0, quizList: [] }
+    };
+
+    // =============================================
+    // NAVIGATION
+    // =============================================
+    function showPage(page) {
+      document.getElementById('page-home').classList.remove('active');
+      document.getElementById('page-hsk').classList.remove('active');
+      document.getElementById('page-tocfl').classList.remove('active');
+      if (page === 'home') document.getElementById('page-home').classList.add('active');
+      else if (page === 'hsk') document.getElementById('page-hsk').classList.add('active');
+      else if (page === 'tocfl') document.getElementById('page-tocfl').classList.add('active');
+      
+      document.getElementById('nav-home')?.classList.toggle('active', page === 'home');
+      document.getElementById('nav-hsk')?.classList.toggle('active', page === 'hsk');
+      document.getElementById('nav-tocfl')?.classList.toggle('active', page === 'tocfl');
+      
+      window.scrollTo(0, 0);
+    }
+
+    function showLevel(type, level) {
+      showPage(type);
+      if (type === 'hsk') switchHSK(level);
+      else switchTOCFL(level);
+    }
+
+    // =============================================
+    // HSK / TOCFL LEVEL SWITCHERS
+    // =============================================
+    function switchHSK(level) {
+      state.hsk.level = level;
+      const data = HSK_DATA[level];
+      document.getElementById('hsk-level-title').textContent = data.title;
+      document.getElementById('hsk-level-desc').textContent = data.desc;
+      // Update tabs
+      document.querySelectorAll('#hsk-level-tabs .level-tab').forEach((t, i) => {
+        t.classList.toggle('active', String(i + 1) === level);
+      });
+      // Level info
+      renderLevelInfo('hsk', level);
+      // Load vocab
+      renderVocab('hsk');
+      // Reset flashcard
+      state.hsk.cardList = [...data.words];
+      state.hsk.cardIdx = 0;
+      renderFlashcard('hsk');
+      // Reset quiz
+      startQuiz('hsk');
+    }
+
+    function switchTOCFL(level) {
+      state.tocfl.level = level;
+      const data = TOCFL_DATA[level];
+      document.getElementById('tocfl-level-title').textContent = data.title;
+      document.getElementById('tocfl-level-desc').textContent = data.desc;
+      const levels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
+      document.querySelectorAll('#tocfl-level-tabs .level-tab').forEach((t, i) => {
+        t.classList.toggle('active', levels[i] === level);
+      });
+      renderLevelInfo('tocfl', level);
+      renderVocab('tocfl');
+      state.tocfl.cardList = [...data.words];
+      state.tocfl.cardIdx = 0;
+      renderFlashcard('tocfl');
+      startQuiz('tocfl');
+    }
+
+    // =============================================
+    // LEVEL INFO
+    // =============================================
+    const HSK_INFO = {
+      '1': { words: 150, chars: '~150', cefr: 'A1', topics: 'Salam, keluarga, angka, waktu' },
+      '2': { words: 300, chars: '~300', cefr: 'A2', topics: 'Transport, cuaca, kesehatan, kerja' },
+      '3': { words: 600, chars: '~600', cefr: 'B1', topics: 'Perjalanan, budaya, hobi, pendidikan' },
+      '4': { words: 1200, chars: '~1200', cefr: 'B2', topics: 'Sosial, ekonomi, lingkungan, sains' },
+      '5': { words: 2500, chars: '~2500', cefr: 'C1', topics: 'Media, hukum, teknologi, ilmu' },
+      '6': { words: 5000, chars: '~5000', cefr: 'C2', topics: 'Semua topik kompleks' },
+    };
+    const TOCFL_INFO = {
+      'A1': { words: 500, cefr: 'A1', topics: 'Situasi dasar, sapaan, perkenalan' },
+      'A2': { words: 1000, cefr: 'A2', topics: 'Kehidupan sehari-hari, tempat, aktivitas' },
+      'B1': { words: 2000, cefr: 'B1', topics: 'Topik umum, teknologi, lingkungan' },
+      'B2': { words: 3000, cefr: 'B2', topics: 'Sosial, budaya, analisis' },
+      'C1': { words: 4000, cefr: 'C1', topics: 'Akademik, abstrak, filosofi' },
+      'C2': { words: 5000, cefr: 'C2', topics: 'Setara penutur asli' },
+    };
+
+    function renderLevelInfo(type, level) {
+      const info = type === 'hsk' ? HSK_INFO[level] : TOCFL_INFO[level];
+      const data = type === 'hsk' ? HSK_DATA[level] : TOCFL_DATA[level];
+      const el = document.getElementById(`${type}-info`);
+      el.innerHTML = `
+    <div class="info-card"><div class="info-card-label">Standar</div><div class="info-card-value">CEFR ${info.cefr}</div></div>
+    <div class="info-card"><div class="info-card-label">Kosakata Resmi</div><div class="info-card-value">${info.words.toLocaleString()}</div><div class="info-card-sub">kata total</div></div>
+    <div class="info-card"><div class="info-card-label">Dalam Database</div><div class="info-card-value">${data.words.length}</div><div class="info-card-sub">kata dipilih</div></div>
+    <div class="info-card"><div class="info-card-label">Topik Utama</div><div class="info-card-value" style="font-size:0.9rem">${info.topics}</div></div>
+  `;
+    }
+
+    // =============================================
+    // VOCABULARY TABLE
+    // =============================================
+    const TYPE_LABELS = { n: 'Kata Benda', v: 'Kata Kerja', adj: 'Kata Sifat', adv: 'Keterangan', pron: 'Kata Ganti', num: 'Bilangan', mw: 'Kata Ukur', part: 'Partikel', prep: 'Kata Depan', conj: 'Konjungsi', int: 'Seruan' };
+
+    function renderVocab(type) {
+      const data = type === 'hsk' ? HSK_DATA[state[type].level] : TOCFL_DATA[state[type].level];
+      const query = (document.getElementById(`${type}-search`)?.value || '').toLowerCase();
+      const words = data.words.filter(w =>
+        w.h.includes(query) || w.p.toLowerCase().includes(query) || w.m.toLowerCase().includes(query)
+      );
+      const tbody = document.getElementById(`${type}-vocab-body`);
+      tbody.innerHTML = words.map((w, i) => `
+    <tr>
+      <td style="color:var(--text-muted);font-size:0.8rem">${i + 1}</td>
+      <td><span class="hanzi-cell">${w.h}</span></td>
+      <td><span class="pinyin-cell">${w.p}</span></td>
+      <td><span class="meaning-cell">${w.m}</span></td>
+      <td><span class="type-badge type-${w.t}">${TYPE_LABELS[w.t] || w.t}</span></td>
+    </tr>
+  `).join('');
+      document.getElementById(`${type}-vocab-count`).textContent = `${words.length} kata`;
+    }
+
+    function filterVocab(type) { renderVocab(type); }
+
+    // =============================================
+    // FLASHCARD
+    // =============================================
+    function renderFlashcard(type) {
+      const s = state[type];
+      s.flipped = false;
+      const ci = document.getElementById(`${type}-card-inner`);
+      if (ci) ci.classList.remove('flipped');
+      if (!s.cardList.length) return;
+      const w = s.cardList[s.cardIdx];
+      document.getElementById(`${type}-card-hanzi`).textContent = w.h;
+      document.getElementById(`${type}-card-pinyin`).textContent = w.p;
+      document.getElementById(`${type}-card-meaning`).textContent = w.m;
+      document.getElementById(`${type}-card-type`).innerHTML = `<span class="type-badge type-${w.t}">${TYPE_LABELS[w.t] || w.t}</span>`;
+      // Progress
+      const pct = Math.round(((s.cardIdx + 1) / s.cardList.length) * 100);
+      document.getElementById(`${type}-fc-progress`).textContent = `${s.cardIdx + 1} / ${s.cardList.length}`;
+      document.getElementById(`${type}-fc-bar`).style.width = pct + '%';
+      document.getElementById(`${type}-fc-pct`).textContent = pct + '%';
+      // Buttons
+      document.getElementById(`${type}-prev-btn`).disabled = s.cardIdx === 0;
+      document.getElementById(`${type}-next-btn`).disabled = s.cardIdx === s.cardList.length - 1;
+    }
+
+    function flipCard(type) {
+      const s = state[type];
+      s.flipped = !s.flipped;
+      document.getElementById(`${type}-card-inner`).classList.toggle('flipped', s.flipped);
+    }
+
+    function nextCard(type) {
+      const s = state[type];
+      if (s.cardIdx < s.cardList.length - 1) { s.cardIdx++; renderFlashcard(type); }
+    }
+
+    function prevCard(type) {
+      const s = state[type];
+      if (s.cardIdx > 0) { s.cardIdx--; renderFlashcard(type); }
+    }
+
+    function shuffleCards(type) {
+      const s = state[type];
+      for (let i = s.cardList.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [s.cardList[i], s.cardList[j]] = [s.cardList[j], s.cardList[i]];
+      }
+      s.cardIdx = 0;
+      renderFlashcard(type);
+    }
+
+    // =============================================
+    // QUIZ
+    // =============================================
+    function startQuiz(type) {
+      const s = state[type];
+      s.correct = 0; s.wrong = 0; s.quizIdx = 0;
+      document.getElementById(`${type}-correct-count`).textContent = 0;
+      document.getElementById(`${type}-wrong-count`).textContent = 0;
+      document.getElementById(`${type}-quiz-result`).classList.remove('show');
+
+      const data = type === 'hsk' ? HSK_DATA[s.level] : TOCFL_DATA[s.level];
+      s.quizList = [...data.words].sort(() => Math.random() - 0.5).slice(0, Math.min(20, data.words.length));
+      renderQuestion(type);
+    }
+
+    function renderQuestion(type) {
+      const s = state[type];
+      const mode = document.getElementById(`${type}-quiz-mode`).value;
+      const content = document.getElementById(`${type}-quiz-content`);
+      const resultEl = document.getElementById(`${type}-quiz-result`);
+
+      if (s.quizIdx >= s.quizList.length) {
+        // Show result
+        content.innerHTML = '';
+        resultEl.classList.add('show');
+        const pct = Math.round((s.correct / s.quizList.length) * 100);
+        const icon = pct >= 80 ? '🏆' : pct >= 50 ? '👏' : '📚';
+        const cls = pct >= 80 ? 'excellent' : pct >= 50 ? 'good' : 'needs-work';
+        const msg = pct >= 80 ? 'Luar biasa!' : pct >= 50 ? 'Bagus, terus berlatih!' : 'Yuk belajar lagi!';
+        document.getElementById(`${type}-result-icon`).textContent = icon;
+        document.getElementById(`${type}-result-score`).textContent = `${s.correct}/${s.quizList.length}`;
+        document.getElementById(`${type}-result-score`).className = `result-score ${cls}`;
+        document.getElementById(`${type}-result-label`).textContent = `${msg} Nilai kamu: ${pct}%`;
+        return;
+      }
+
+      const w = s.quizList[s.quizIdx];
+      const data = type === 'hsk' ? HSK_DATA[s.level] : TOCFL_DATA[s.level];
+
+      if (mode === 'pilihan') {
+        // Multiple choice – choose correct pinyin
+        const allWords = data.words;
+        const wrongs = allWords.filter(x => x.p !== w.p).sort(() => Math.random() - 0.5).slice(0, 3);
+        const options = [...wrongs.map(x => x.p), w.p].sort(() => Math.random() - 0.5);
+        content.innerHTML = `
+      <div class="quiz-card">
+        <div class="quiz-question-label">Apa pinyin dari hanzi ini?</div>
+        <div class="quiz-hanzi">${w.h}</div>
+      </div>
+      <div class="quiz-options">
+        ${options.map(opt => `<button class="quiz-option" onclick="checkMC('${type}','${opt}','${w.p}',this)">${opt}</button>`).join('')}
+      </div>
+      <div class="quiz-feedback" id="${type}-quiz-feedback"></div>
+      <button class="quiz-next" id="${type}-quiz-next" onclick="nextQuestion('${type}')">Lanjut →</button>
+    `;
+      } else if (mode === 'ketik') {
+        // Type pinyin
+        content.innerHTML = `
+      <div class="quiz-card">
+        <div class="quiz-question-label">Ketikkan pinyin dari hanzi ini!</div>
+        <div class="quiz-hanzi">${w.h}</div>
+      </div>
+      <div class="quiz-input-wrap">
+        <input type="text" class="quiz-input" id="${type}-quiz-input" placeholder="Ketik pinyin tanpa tanda nada..." 
+          onkeydown="if(event.key==='Enter')checkType('${type}','${w.p}')" />
+        <button class="quiz-submit" onclick="checkType('${type}','${w.p}')">Cek ✓</button>
+      </div>
+      <div class="quiz-feedback" id="${type}-quiz-feedback"></div>
+      <button class="quiz-next" id="${type}-quiz-next" onclick="nextQuestion('${type}')">Lanjut →</button>
+    `;
+        setTimeout(() => document.getElementById(`${type}-quiz-input`)?.focus(), 50);
+      } else {
+        // Multiple choice – choose correct meaning
+        const allWords = data.words;
+        const wrongs = allWords.filter(x => x.m !== w.m).sort(() => Math.random() - 0.5).slice(0, 3);
+        const options = [...wrongs.map(x => x.m), w.m].sort(() => Math.random() - 0.5);
+        content.innerHTML = `
+      <div class="quiz-card">
+        <div class="quiz-question-label">Pilih arti yang benar!</div>
+        <div class="quiz-hanzi">${w.h}</div>
+        <div class="quiz-meaning" style="color:var(--accent-red)">${w.p}</div>
+      </div>
+      <div class="quiz-options">
+        ${options.map(opt => `<button class="quiz-option" onclick="checkArti('${type}',\`${opt}\`,\`${w.m}\`,this)">${opt}</button>`).join('')}
+      </div>
+      <div class="quiz-feedback" id="${type}-quiz-feedback"></div>
+      <button class="quiz-next" id="${type}-quiz-next" onclick="nextQuestion('${type}')">Lanjut →</button>
+    `;
+      }
+    }
+
+    function checkMC(type, chosen, correct, btn) {
+      const opts = document.querySelectorAll(`#${type}-quiz-content .quiz-option`);
+      opts.forEach(o => { o.disabled = true; if (o.textContent === correct) o.classList.add('correct'); });
+      const fb = document.getElementById(`${type}-quiz-feedback`);
+      fb.style.display = 'block';
+      if (chosen === correct) {
+        state[type].correct++;
+        document.getElementById(`${type}-correct-count`).textContent = state[type].correct;
+        btn.classList.add('correct');
+        fb.className = 'quiz-feedback correct'; fb.textContent = '✅ Benar!';
+      } else {
+        state[type].wrong++;
+        document.getElementById(`${type}-wrong-count`).textContent = state[type].wrong;
+        btn.classList.add('wrong');
+        fb.className = 'quiz-feedback wrong'; fb.textContent = `❌ Salah! Jawaban: ${correct}`;
+      }
+      document.getElementById(`${type}-quiz-next`).style.display = 'block';
+    }
+
+    function checkArti(type, chosen, correct, btn) {
+      const opts = document.querySelectorAll(`#${type}-quiz-content .quiz-option`);
+      opts.forEach(o => { o.disabled = true; if (o.textContent === correct) o.classList.add('correct'); });
+      const fb = document.getElementById(`${type}-quiz-feedback`);
+      fb.style.display = 'block';
+      if (chosen === correct) {
+        state[type].correct++;
+        document.getElementById(`${type}-correct-count`).textContent = state[type].correct;
+        btn.classList.add('correct');
+        fb.className = 'quiz-feedback correct'; fb.textContent = '✅ Benar!';
+      } else {
+        state[type].wrong++;
+        document.getElementById(`${type}-wrong-count`).textContent = state[type].wrong;
+        btn.classList.add('wrong');
+        fb.className = 'quiz-feedback wrong'; fb.textContent = `❌ Salah! Jawaban: ${correct}`;
+      }
+      document.getElementById(`${type}-quiz-next`).style.display = 'block';
+    }
+
+    function normalizePinyin(str) {
+      return str.toLowerCase()
+        .replace(/[āáǎà]/g, 'a').replace(/[ēéěè]/g, 'e').replace(/[īíǐì]/g, 'i')
+        .replace(/[ōóǒò]/g, 'o').replace(/[ūúǔù]/g, 'u').replace(/[ǘǚǜ]/g, 'v')
+        .replace(/\s+/g, '').replace(/[^a-z0-9v]/g, '');
+    }
+
+    function checkType(type, correct) {
+      const inp = document.getElementById(`${type}-quiz-input`);
+      const userVal = inp?.value || '';
+      const fb = document.getElementById(`${type}-quiz-feedback`);
+      fb.style.display = 'block';
+      if (inp) { inp.disabled = true; }
+      const normalUser = normalizePinyin(userVal);
+      const normalCorrect = normalizePinyin(correct);
+      if (normalUser === normalCorrect) {
+        state[type].correct++;
+        document.getElementById(`${type}-correct-count`).textContent = state[type].correct;
+        if (inp) inp.classList.add('correct');
+        fb.className = 'quiz-feedback correct'; fb.textContent = '✅ Benar!';
+      } else {
+        state[type].wrong++;
+        document.getElementById(`${type}-wrong-count`).textContent = state[type].wrong;
+        if (inp) inp.classList.add('wrong');
+        fb.className = 'quiz-feedback wrong'; fb.textContent = `❌ Salah! Jawaban benar: ${correct}`;
+      }
+      document.getElementById(`${type}-quiz-next`).style.display = 'block';
+    }
+
+    function nextQuestion(type) {
+      state[type].quizIdx++;
+      renderQuestion(type);
+    }
+
+    // =============================================
+    // CONTENT TAB SWITCHER
+    // =============================================
+    function switchContentTab(type, tab) {
+      const tabs = ['vocab', 'flashcard', 'quiz'];
+      tabs.forEach(t => {
+        const el = document.getElementById(`${type}-${t}-tab`);
+        if (el) el.classList.toggle('active', t === tab);
+      });
+      // Update tab buttons
+      const btns = document.querySelectorAll(`#page-${type} .content-tab`);
+      btns.forEach((btn, i) => btn.classList.toggle('active', tabs[i] === tab));
+
+      if (tab === 'flashcard') renderFlashcard(type);
+      if (tab === 'quiz') startQuiz(type);
+    }
+
+    // =============================================
+    // KEYBOARD NAVIGATION
+    // =============================================
+    document.addEventListener('keydown', (e) => {
+      const hskActive = document.getElementById('page-hsk').classList.contains('active');
+      const tocflActive = document.getElementById('page-tocfl').classList.contains('active');
+      const type = hskActive ? 'hsk' : tocflActive ? 'tocfl' : null;
+      if (!type) return;
+      const fcTab = document.getElementById(`${type}-flashcard-tab`);
+      if (!fcTab?.classList.contains('active')) return;
+      if (e.key === 'ArrowRight') nextCard(type);
+      if (e.key === 'ArrowLeft') prevCard(type);
+      if (e.key === ' ') { e.preventDefault(); flipCard(type); }
+    });
+
+    // =============================================
+    // INIT
+    // =============================================
+    switchHSK('1');
+    switchTOCFL('A1');
+    showPage('home');
+  </script>
+  <!-- Core Utilities -->
+  <script src="assets/js/storage.js"></script>
+  <script src="assets/js/sounds.js"></script>
+  <script src="assets/js/theme.js"></script>
+
+  <!-- SPA & Spotify Plugins -->
+  <script src="assets/js/router.js"></script>
+  <script src="assets/js/player.js"></script>
+
+</body>
+
+</html>

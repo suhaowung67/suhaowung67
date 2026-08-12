@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Michael Wung - Mini Games</title>
+  <meta name="description" content="Halaman Mini Games Michael Wung. Mainkan 10 game seru langsung di browser!">
+  <meta name="author" content="Michael Wung">
+
+  <!-- Early Theme Detector -->
+  <script>
+    const savedTheme = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  </script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Tailwind Config -->
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Plus Jakarta Sans', 'Inter', 'sans-serif'] },
+          colors: {
+            theme: {
+              dark: 'var(--bg-primary)', card: 'var(--bg-card)', cardHover: 'var(--bg-card-hover)',
+              accent: 'var(--accent)', accentHover: 'var(--accent-hover)', border: 'var(--border)',
+              borderStrong: 'var(--border-strong)', accentLight: 'var(--bg-accent-light)',
+              darker: 'var(--bg-darker)', textPrimary: 'var(--text-primary)', textSecondary: 'var(--text-secondary)',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    :root {
+      --bg-primary: #f8fafc; --bg-card: #ffffff; --bg-card-hover: #f1f5f9;
+      --accent: #dc2626; --accent-hover: #b91c1c;
+      --border: rgba(220,38,38,0.08); --border-strong: rgba(220,38,38,0.15);
+      --bg-accent-light: rgba(220,38,38,0.04); --bg-darker: #f1f5f9;
+      --text-primary: #0f172a; --text-secondary: #475569;
+      --glass-bg-rgb: 255,255,255; --nav-bg-rgb: 248,250,252;
+    }
+    .dark {
+      --bg-primary: #09090b; --bg-card: #121216; --bg-card-hover: #1c1c22;
+      --accent: #ef4444; --accent-hover: #f87171;
+      --border: rgba(239,68,68,0.08); --border-strong: rgba(239,68,68,0.18);
+      --bg-accent-light: rgba(239,68,68,0.06); --bg-darker: #040406;
+      --text-primary: #f8fafc; --text-secondary: #94a3b8;
+      --glass-bg-rgb: 18,18,22; --nav-bg-rgb: 10,10,12;
+    }
+    body { transition: background-color 0.3s ease, color 0.3s ease; }
+    .glass, .glass-nav, header, footer, card, section, button, input, textarea {
+      transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+    }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg-darker); }
+    ::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 9999px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+    .glass { background: rgba(var(--glass-bg-rgb),0.75); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid var(--border); }
+    .glass-nav { background: rgba(var(--nav-bg-rgb),0.85); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); }
+    .glow-red { box-shadow: 0 0 25px rgba(239,68,68,0.08); }
+
+    /* ========== GAME STYLES ========== */
+    #game-area canvas { display: block; margin: 0 auto; border-radius: 12px; }
+
+    /* Snake */
+    .snake-cell { position: absolute; border-radius: 3px; transition: background 0.05s; }
+
+    /* 2048 */
+    .tile-2 { background: #eee4da; color: #776e65; }
+    .tile-4 { background: #ede0c8; color: #776e65; }
+    .tile-8 { background: #f2b179; color: #f9f6f2; }
+    .tile-16 { background: #f59563; color: #f9f6f2; }
+    .tile-32 { background: #f67c5f; color: #f9f6f2; }
+    .tile-64 { background: #f65e3b; color: #f9f6f2; }
+    .tile-128 { background: #edcf72; color: #f9f6f2; }
+    .tile-256 { background: #edcc61; color: #f9f6f2; }
+    .tile-512 { background: #edc850; color: #f9f6f2; }
+    .tile-1024 { background: #edc53f; color: #f9f6f2; }
+    .tile-2048 { background: #edc22e; color: #f9f6f2; }
+    .tile-0 { background: rgba(255,255,255,0.05); color: transparent; }
+    .tile { display: flex; align-items: center; justify-content: center; font-weight: 900; border-radius: 8px; font-size: clamp(14px, 2vw, 22px); transition: all 0.1s; }
+
+    /* Memory */
+    .memory-card { perspective: 1000px; cursor: pointer; }
+    .memory-card .inner { position: relative; width: 100%; height: 100%; transition: transform 0.5s; transform-style: preserve-3d; }
+    .memory-card.flipped .inner, .memory-card.matched .inner { transform: rotateY(180deg); }
+    .memory-card .front, .memory-card .back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 2rem; }
+    .memory-card .front { background: var(--bg-card-hover); border: 1px solid var(--border-strong); }
+    .memory-card .back { background: linear-gradient(135deg, #7c3aed, #4f46e5); transform: rotateY(180deg); }
+    .memory-card.matched .back { background: linear-gradient(135deg, #059669, #10b981); }
+
+    /* Typing */
+    .word.current { text-decoration: underline; color: var(--accent); }
+    .word.correct { color: #10b981; }
+    .word.wrong { color: #ef4444; }
+
+    /* Whack A Mole */
+    .mole-hole { position: relative; overflow: hidden; }
+    .mole { position: absolute; bottom: -100%; transition: bottom 0.2s; font-size: 2.5rem; line-height: 1; }
+    .mole.up { bottom: 5%; }
+
+    /* Achievement Toast */
+    #achievement-toast { transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); }
+  </style>
+</head>
+
+<body class="bg-theme-dark text-theme-textPrimary font-sans min-h-screen flex flex-col relative overflow-x-hidden">
+
+  <!-- Background Decorative Glowing Blobs -->
+  <div class="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-purple-500/[0.03] blur-[150px] -z-10 pointer-events-none"></div>
+  <div class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-purple-500/[0.03] blur-[150px] -z-10 pointer-events-none"></div>
+
+  <!-- Header Navigation -->
+  <header class="sticky top-0 z-40 w-full glass-nav shadow-lg transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <!-- Logo -->
+        <a href="index.html" class="flex items-center gap-2 cursor-pointer group">
+          <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-theme-accent to-red-700 dark:from-red-600 dark:to-red-500 flex items-center justify-center text-white font-extrabold shadow-md shadow-red-500/10 group-hover:scale-105 transition-all">MW</div>
+          <span class="text-lg font-bold tracking-tight text-theme-textPrimary group-hover:text-theme-accent transition-colors">Michael<span class="text-theme-accent font-extrabold">Wung</span></span>
+        </a>
+
+        <!-- Desktop Nav -->
+        <nav class="hidden md:flex space-x-1.5">
+          <a href="index.html" id="nav-dashboard" class="nav-btn px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 flex items-center gap-2 text-theme-textSecondary hover:text-theme-textPrimary hover:bg-theme-cardHover"><i class="fa-solid fa-chart-pie text-xs"></i> Dashboard</a>
+          <a href="profile.html" id="nav-profile" class="nav-btn px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 flex items-center gap-2 text-theme-textSecondary hover:text-theme-textPrimary hover:bg-theme-cardHover"><i class="fa-solid fa-user text-xs"></i> Profile</a>
+          <a href="informatika.html" id="nav-informatika" class="nav-btn px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 flex items-center gap-2 text-theme-textSecondary hover:text-theme-textPrimary hover:bg-theme-cardHover"><i class="fa-solid fa-code text-xs"></i> Informatika</a>
+          <a href="bahasa-indonesia.html" id="nav-bahasa-indonesia" class="nav-btn px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 flex items-center gap-2 text-theme-textSecondary hover:text-theme-textPrimary hover:bg-theme-cardHover"><i class="fa-solid fa-book-open text-xs"></i> Bahasa Indonesia</a>
+          <a href="games.html" id="nav-games" class="nav-btn px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 flex items-center gap-2 bg-purple-600/10 text-purple-400 border border-purple-500/20 shadow-sm"><i class="fa-solid fa-gamepad text-xs"></i> Mini Games</a>
+          <a href="songs.html" id="nav-songs" class="nav-btn px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 flex items-center gap-2 text-theme-textSecondary hover:text-theme-textPrimary hover:bg-pink-500/10 hover:text-pink-400 border border-transparent">
+            <i class="fa-solid fa-music text-xs"></i> Songs
+          </a>
+        </nav>
+
+        <!-- Right Controls -->
+        <div class="flex items-center gap-3">
+          <button id="theme-toggle" onclick="toggleDarkMode()" class="p-2.5 rounded-xl bg-theme-accentLight border border-theme-border text-theme-accent hover:bg-theme-accent hover:text-white transition-all duration-300" title="Ganti Tema">
+            <i id="theme-toggle-icon" class="fa-solid fa-moon text-sm animate-pulse"></i>
+          </button>
+          <button id="sound-toggle" onclick="toggleSounds()" class="p-2.5 rounded-xl bg-theme-darker border border-theme-border text-theme-textSecondary hover:text-theme-textPrimary transition-all duration-300" title="Suara">
+            <i id="sound-icon" class="fa-solid fa-volume-high text-sm"></i>
+          </button>
+          <button onclick="toggleMobileMenu()" class="md:hidden p-2.5 rounded-xl bg-theme-cardHover border border-theme-border text-theme-textSecondary hover:text-theme-textPrimary transition-all">
+            <i class="fa-solid fa-bars text-sm"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Drawer Menu -->
+  <div id="mobile-menu" class="hidden md:hidden fixed inset-0 z-50 bg-black/40 dark:bg-black/70 backdrop-blur-sm transition-opacity duration-300">
+    <div class="fixed right-0 top-0 bottom-0 w-64 bg-theme-card border-l border-theme-border p-6 shadow-2xl flex flex-col justify-between">
+      <div>
+        <div class="flex items-center justify-between mb-8 pb-4 border-b border-theme-border">
+          <span class="font-extrabold text-sm tracking-wider text-theme-textSecondary">MENU</span>
+          <button onclick="toggleMobileMenu()" class="p-1 rounded-lg hover:bg-theme-cardHover text-theme-textSecondary hover:text-theme-textPrimary"><i class="fa-solid fa-xmark text-lg"></i></button>
+        </div>
+        <div class="flex flex-col gap-2">
+          <a href="index.html" id="mob-nav-dashboard" class="w-full text-left px-4 py-3 rounded-xl text-sm font-semibold flex items-center gap-3 text-theme-textSecondary hover:bg-theme-cardHover hover:text-theme-textPrimary transition"><i class="fa-solid fa-chart-pie w-5 text-center"></i> Dashboard</a>
+          <a href="profile.html" id="mob-nav-profile" class="w-full text-left px-4 py-3 rounded-xl text-sm font-semibold flex items-center gap-3 text-theme-textSecondary hover:bg-theme-cardHover hover:text-theme-textPrimary transition"><i class="fa-solid fa-user w-5 text-center"></i> Profil</a>
+          <a href="informatika.html" id="mob-nav-informatika" class="w-full text-left px-4 py-3 rounded-xl text-sm font-semibold flex items-center gap-3 text-theme-textSecondary hover:bg-theme-cardHover hover:text-theme-textPrimary transition"><i class="fa-solid fa-code w-5 text-center"></i> Informatika</a>
+          <a href="bahasa-indonesia.html" id="mob-nav-bahasa-indonesia" class="w-full text-left px-4 py-3 rounded-xl text-sm font-semibold flex items-center gap-3 text-theme-textSecondary hover:bg-theme-cardHover hover:text-theme-textPrimary transition"><i class="fa-solid fa-book-open w-5 text-center"></i> Bahasa Indonesia</a>
+          <a href="games.html" id="mob-nav-games" class="w-full text-left px-4 py-3 rounded-xl text-sm font-bold flex items-center gap-3 bg-purple-600/10 text-purple-400 border border-purple-500/10"><i class="fa-solid fa-gamepad w-5 text-center"></i> Mini Games</a>
+          <a href="songs.html" id="mob-nav-songs" class="w-full text-left px-4 py-3 rounded-xl text-sm font-semibold flex items-center gap-3 text-theme-textSecondary hover:bg-pink-500/10 hover:text-pink-400 transition">
+            <i class="fa-solid fa-music w-5 text-center"></i> Songs
+          </a>
+        </div>
+      </div>
+      <div class="text-[10px] text-theme-textSecondary/50 text-center font-medium mt-auto">Michael Wung &bull; Mini Games</div>
+    </div>
+  </div>
+
+  <!-- Achievement Toast -->
+  <div id="achievement-toast" class="fixed top-20 right-6 z-50 translate-x-32 opacity-0 glass rounded-2xl p-4 shadow-2xl flex items-center gap-3 max-w-xs border border-yellow-500/20">
+    <div class="w-10 h-10 rounded-xl bg-yellow-500/10 text-yellow-400 flex items-center justify-center text-lg shrink-0"><i class="fa-solid fa-trophy"></i></div>
+    <div>
+      <h5 class="text-xs font-bold text-yellow-400">Achievement Unlocked!</h5>
+      <p id="achievement-msg" class="text-[11px] text-theme-textSecondary mt-0.5">-</p>
+    </div>
+  </div>
+
+  <!-- ========================= MAIN CONTENT ========================= -->
+  <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+    <!-- Header Banner -->
+    <div class="glass rounded-3xl p-6 sm:p-8 mb-8 relative overflow-hidden" style="box-shadow: 0 0 25px rgba(168,85,247,0.08);">
+      <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-purple-500/[0.04] rounded-full blur-2xl"></div>
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 relative z-10">
+        <div>
+          <span class="text-xs font-bold text-purple-400 uppercase tracking-widest"><i class="fa-solid fa-gamepad"></i> Mini Games Area</span>
+          <h1 class="text-2xl sm:text-3xl font-extrabold text-theme-textPrimary mt-1">🎮 Game Launcher</h1>
+          <p class="text-sm text-theme-textSecondary mt-2">Pilih game dan mulai bermain! Semua skor tersimpan otomatis.</p>
+        </div>
+        <div class="flex gap-3 flex-wrap">
+          <div class="glass rounded-xl px-4 py-2 text-center">
+            <div class="text-xs text-theme-textSecondary">Total Dimainkan</div>
+            <div id="stat-total-played" class="text-xl font-black text-purple-400">0</div>
+          </div>
+          <div class="glass rounded-xl px-4 py-2 text-center">
+            <div class="text-xs text-theme-textSecondary">Total Kemenangan</div>
+            <div id="stat-total-wins" class="text-xl font-black text-emerald-400">0</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Game Launcher Grid (hidden when a game is open) -->
+    <div id="launcher-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+      <!-- Game cards injected by JS -->
+    </div>
+
+    <!-- Game Play Area (hidden by default) -->
+    <div id="game-area" class="hidden">
+      <div class="glass rounded-3xl p-5 sm:p-8 relative">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+          <div>
+            <button onclick="closeGame()" class="text-theme-textSecondary hover:text-theme-accent transition text-sm flex items-center gap-1 mb-1">
+              <i class="fa-solid fa-arrow-left text-xs"></i> Kembali ke Launcher
+            </button>
+            <h2 id="game-title" class="text-xl font-extrabold text-theme-textPrimary"></h2>
+            <div class="flex items-center gap-4 mt-1">
+              <span class="text-sm text-theme-textSecondary">Skor: <span id="score-display" class="font-bold text-theme-textPrimary">0</span></span>
+              <span class="text-sm text-theme-textSecondary">High Score: <span id="highscore-display" class="font-bold text-yellow-400">0</span></span>
+            </div>
+          </div>
+          <button id="restart-btn" onclick="restartCurrentGame()" class="px-5 py-2.5 rounded-xl text-sm font-bold bg-purple-500/10 text-purple-400 border border-purple-500/20 hover:bg-purple-500 hover:text-white transition-all flex items-center gap-2 w-fit">
+            <i class="fa-solid fa-rotate-right"></i> Restart
+          </button>
+        </div>
+
+        <!-- Dynamic game content injected here -->
+        <div id="game-content" class="w-full flex flex-col items-center"></div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="glass-nav py-6 mt-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-xs text-theme-textSecondary font-medium">
+      <p class="mb-1">🎮 Mini Games — Bagian dari Website Portofolio Michael Wung</p>
+      <p class="text-[10px] text-theme-textSecondary/50">&copy; 2026 Michael Wung. Seluruh hak cipta dilindungi undang-undang.</p>
+    </div>
+  </footer>
+
+  <!-- ========================= JAVASCRIPT ========================= -->
+  <script>
+  // ================================================
+  // THEME & NAVIGATION
+  // ================================================
+  function toggleDarkMode() {
+    const isDark = document.documentElement.classList.toggle('dark');
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    updateThemeIcon();
+  }
+  function updateThemeIcon() {
+    const isDark = document.documentElement.classList.contains('dark');
+    const icon = document.getElementById('theme-toggle-icon');
+    if (icon) icon.className = isDark ? 'fa-solid fa-sun text-sm animate-pulse' : 'fa-solid fa-moon text-sm animate-pulse';
+  }
+  function toggleMobileMenu() {
+    document.getElementById('mobile-menu').classList.toggle('hidden');
+  }
+  updateThemeIcon();
+
+  // ================================================
+  // SOUND ENGINE (Web Audio API)
+  // ================================================
+  let soundEnabled = localStorage.getItem('soundEnabled') !== 'false';
+  const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+  function toggleSounds() {
+    soundEnabled = !soundEnabled;
+    localStorage.setItem('soundEnabled', soundEnabled);
+    const icon = document.getElementById('sound-icon');
+    if (icon) icon.className = soundEnabled ? 'fa-solid fa-volume-high text-sm' : 'fa-solid fa-volume-xmark text-sm';
+  }
+  // Update icon on load
+  (function() {
+    const icon = document.getElementById('sound-icon');
+    if (icon) icon.className = soundEnabled ? 'fa-solid fa-volume-high text-sm' : 'fa-solid fa-volume-xmark text-sm';
+  })();
+
+  function playTone(freq, type='sine', dur=0.1, vol=0.08) {
+    if (!soundEnabled) return;
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = type; osc.frequency.value = freq;
+    gain.gain.setValueAtTime(vol, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + dur);
+    osc.connect(gain); gain.connect(audioCtx.destination);
+    osc.start(); osc.stop(audioCtx.currentTime + dur);
+  }
+  const sounds = {
+    click: () => playTone(600, 'sine', 0.05, 0.05),
+    move: () => playTone(300, 'sine', 0.04, 0.03),
+    eat: () => playTone(800, 'sine', 0.08, 0.06),
+    win: () => { [400,600,800].forEach((f,i) => setTimeout(() => playTone(f,'square',0.1,0.08), i*80)); },
+    lose: () => { [300,250,200].forEach((f,i) => setTimeout(() => playTone(f,'sawtooth',0.15,0.08), i*120)); },
+    flip: () => playTone(500, 'sine', 0.06, 0.05),
+    match: () => { playTone(600,'sine',0.07,0.06); setTimeout(() => playTone(900,'sine',0.1,0.06), 80); },
+  };
+
+  // ================================================
+  // STORAGE HELPERS
+  // ================================================
+  const Storage = {
+    get: (k, def=null) => { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : def; } catch(e) { return def; } },
+    set: (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch(e) {} },
+  };
+
+  // ================================================
+  // GLOBAL STATS & ACHIEVEMENTS
+  // ================================================
+  let stats = Storage.get('mw_game_stats', { totalPlayed: 0, totalWins: 0 });
+
+  function incrementPlayed() {
+    stats.totalPlayed++;
+    Storage.set('mw_game_stats', stats);
+    updateStatsDisplay();
+    if (stats.totalPlayed === 1) unlockAchievement('🎮 Pemain Pertama! Main game pertama kali.');
+    if (stats.totalPlayed >= 10) unlockAchievement('🕹️ Gamer Sejati! Sudah main 10 kali.');
+  }
+  function incrementWins() {
+    stats.totalWins++;
+    Storage.set('mw_game_stats', stats);
+    updateStatsDisplay();
+    if (stats.totalWins === 5) unlockAchievement('🏆 5 Kemenangan! Hebat sekali!');
+  }
+  function updateStatsDisplay() {
+    const tp = document.getElementById('stat-total-played');
+    const tw = document.getElementById('stat-total-wins');
+    if (tp) tp.textContent = stats.totalPlayed;
+    if (tw) tw.textContent = stats.totalWins;
+  }
+
+  function unlockAchievement(msg) {
+    const ach = Storage.get('mw_achievements', []);
+    if (ach.includes(msg)) return;
+    ach.push(msg);
+    Storage.set('mw_achievements', ach);
+    showAchievementToast(msg);
+  }
+  function showAchievementToast(msg) {
+    const toast = document.getElementById('achievement-toast');
+    document.getElementById('achievement-msg').textContent = msg;
+    toast.classList.remove('translate-x-32', 'opacity-0');
+    toast.classList.add('translate-x-0', 'opacity-100');
+    sounds.win();
+    setTimeout(() => {
+      toast.classList.add('translate-x-32', 'opacity-0');
+      toast.classList.remove('translate-x-0', 'opacity-100');
+    }, 3500);
+  }
+
+  // ================================================
+  // GAME REGISTRY
+  // ================================================
+  const GAMES = [
+    { id: 'snake', name: 'Snake', icon: '🐍', color: 'emerald', desc: 'Makan makanan, tumbuh lebih panjang!' },
+    { id: 'flappy', name: 'Flappy Bird', icon: '🐦', color: 'sky', desc: 'Lewati pipa tanpa menabrak!' },
+    { id: 'game2048', name: '2048', icon: '🔢', color: 'orange', desc: 'Gabungkan angka untuk capai 2048!' },
+    { id: 'tictactoe', name: 'Tic Tac Toe', icon: '❌', color: 'rose', desc: 'X vs O, isi 3 kotak berturut!' },
+    { id: 'memory', name: 'Memory Card', icon: '🃏', color: 'violet', desc: 'Temukan semua pasangan kartu!' },
+    { id: 'guess', name: 'Guess The Number', icon: '🎯', color: 'amber', desc: 'Tebak angka rahasia 1–100!' },
+    { id: 'rps', name: 'Rock Paper Scissors', icon: '✂️', color: 'pink', desc: 'Gunting Batu Kertas klasik!' },
+    { id: 'breakout', name: 'Breakout', icon: '🧱', color: 'cyan', desc: 'Hancurkan semua balok dengan bola!' },
+    { id: 'whack', name: 'Whack A Mole', icon: '🔨', color: 'lime', desc: 'Pukul tikus yang muncul secepat mungkin!' },
+    { id: 'typing', name: 'Typing Speed', icon: '⌨️', color: 'indigo', desc: 'Seberapa cepat kamu mengetik?' },
+  ];
+
+  let currentGame = null;
+  let gameLoopId = null;
+
+  // ================================================
+  // LAUNCHER UI
+  // ================================================
+  const GAME_COLORS = {
+    snake:    { bg: '#10b98120', text: '#10b981', border: '#10b98140' },
+    flappy:   { bg: '#0ea5e920', text: '#0ea5e9', border: '#0ea5e940' },
+    game2048: { bg: '#f9731620', text: '#f97316', border: '#f9731640' },
+    tictactoe:{ bg: '#f4364620', text: '#f43f5e', border: '#f43f5e40' },
+    memory:   { bg: '#8b5cf620', text: '#8b5cf6', border: '#8b5cf640' },
+    guess:    { bg: '#f59e0b20', text: '#f59e0b', border: '#f59e0b40' },
+    rps:      { bg: '#ec489920', text: '#ec4899', border: '#ec489940' },
+    breakout: { bg: '#06b6d420', text: '#06b6d4', border: '#06b6d440' },
+    whack:    { bg: '#84cc1620', text: '#84cc16', border: '#84cc1640' },
+    typing:   { bg: '#6366f120', text: '#6366f1', border: '#6366f140' },
+  };
+
+  function renderLauncher() {
+    const grid = document.getElementById('launcher-grid');
+    if (!grid) return;
+    grid.innerHTML = '';
+    GAMES.forEach(g => {
+      const hs = Storage.get('hs_' + g.id, 0);
+      const col = GAME_COLORS[g.id] || { bg: '#64748b20', text: '#94a3b8', border: '#64748b40' };
+      const card = document.createElement('div');
+      card.style.cssText = 'cursor:pointer;transition:transform 0.2s,box-shadow 0.2s;';
+      card.className = 'glass rounded-2xl p-5 flex flex-col gap-3';
+      card.innerHTML = `
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <div style="width:48px;height:48px;border-radius:14px;background:${col.bg};display:flex;align-items:center;justify-content:center;font-size:1.6rem;transition:transform 0.2s;">${g.icon}</div>
+          <span style="font-size:10px;font-weight:700;color:${col.text};background:${col.bg};padding:4px 8px;border-radius:8px;">HS: ${hs}</span>
+        </div>
+        <div>
+          <h3 style="font-weight:800;font-size:0.875rem;color:var(--text-primary);">${g.name}</h3>
+          <p style="font-size:0.6875rem;color:var(--text-secondary);margin-top:2px;">${g.desc}</p>
+        </div>
+        <button style="margin-top:auto;width:100%;padding:8px;border-radius:10px;font-size:11px;font-weight:700;background:${col.bg};color:${col.text};border:1px solid ${col.border};transition:all 0.2s;cursor:pointer;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">
+          ▶ Main
+        </button>`;
+      card.onclick = () => openGame(g.id);
+      card.onmouseover = () => { card.style.transform = 'scale(1.02)'; card.style.boxShadow = '0 8px 30px ' + col.border; };
+      card.onmouseout = () => { card.style.transform = ''; card.style.boxShadow = ''; };
+      grid.appendChild(card);
+    });
+  }
+
+  function openGame(id) {
+    sounds.click();
+    const g = GAMES.find(x => x.id === id);
+    if (!g) return;
+    currentGame = id;
+    document.getElementById('launcher-grid').classList.add('hidden');
+    document.getElementById('game-area').classList.remove('hidden');
+    document.getElementById('game-title').textContent = `${g.icon} ${g.name}`;
+    document.getElementById('score-display').textContent = '0';
+    document.getElementById('highscore-display').textContent = Storage.get(`hs_${id}`, 0);
+    document.getElementById('game-content').innerHTML = '';
+    if (gameLoopId) { clearInterval(gameLoopId); clearTimeout(gameLoopId); cancelAnimationFrame(gameLoopId); gameLoopId = null; }
+    incrementPlayed();
+    const fn = gameInits[id];
+    if (fn) fn();
+  }
+
+  function closeGame() {
+    sounds.click();
+    if (gameLoopId) { clearInterval(gameLoopId); clearTimeout(gameLoopId); cancelAnimationFrame(gameLoopId); gameLoopId = null; }
+    currentGame = null;
+    document.getElementById('game-area').classList.add('hidden');
+    document.getElementById('launcher-grid').classList.remove('hidden');
+    renderLauncher();
+  }
+
+  function restartCurrentGame() {
+    sounds.click();
+    if (currentGame) openGame(currentGame);
+  }
+
+  function setScore(s) {
+    document.getElementById('score-display').textContent = s;
+    const hs = Storage.get(`hs_${currentGame}`, 0);
+    if (s > hs) {
+      Storage.set(`hs_${currentGame}`, s);
+      document.getElementById('highscore-display').textContent = s;
+    }
+  }
+
+  // ================================================
+  // GAME IMPLEMENTATIONS
+  // ================================================
+  const gameInits = {};
+
+  // ---------- 1. SNAKE ----------
+  gameInits['snake'] = function() {
+    const size = Math.min(window.innerWidth - 80, 480);
+    const cols = 20, rows = 20;
+    const cellW = size / cols, cellH = size / rows;
+    const gc = document.getElementById('game-content');
+    gc.innerHTML = `<div id="snake-board" style="position:relative;width:${size}px;height:${size}px;background:var(--bg-darker);border-radius:12px;border:1px solid var(--border-strong);overflow:hidden;"></div>
+    <p class="text-xs text-theme-textSecondary mt-3">Gunakan tombol panah atau WASD untuk bergerak. Di HP: swipe!</p>
+    <div class="flex gap-2 mt-3">
+      <button onclick="snakeDir={x:0,y:-1}" class="p-3 rounded-lg bg-theme-darker border border-theme-border text-theme-textSecondary hover:text-purple-400 hover:border-purple-500/30 transition"><i class="fa-solid fa-arrow-up"></i></button>
+    </div>
+    <div class="flex gap-2">
+      <button onclick="snakeDir={x:-1,y:0}" class="p-3 rounded-lg bg-theme-darker border border-theme-border text-theme-textSecondary hover:text-purple-400 hover:border-purple-500/30 transition"><i class="fa-solid fa-arrow-left"></i></button>
+      <button onclick="snakeDir={x:0,y:1}" class="p-3 rounded-lg bg-theme-darker border border-theme-border text-theme-textSecondary hover:text-purple-400 hover:border-purple-500/30 transition"><i class="fa-solid fa-arrow-down"></i></button>
+      <button onclick="snakeDir={x:1,y:0}" class="p-3 rounded-lg bg-theme-darker border border-theme-border text-theme-textSecondary hover:text-purple-400 hover:border-purple-500/30 transition"><i class="fa-solid fa-arrow-right"></i></button>
+    </div>`;
+    const board = document.getElementById('snake-board');
+    let snake = [{x:10,y:10}], food = {x:5,y:5};
+    window.snakeDir = {x:1,y:0};
+    let nextDir = {x:1,y:0}, score = 0, running = true;
+
+    function rndFood() {
+      let f;
+      do { f = {x:Math.floor(Math.random()*cols), y:Math.floor(Math.random()*rows)}; }
+      while (snake.some(s=>s.x===f.x&&s.y===f.y));
+      return f;
+    }
+    function draw() {
+      board.innerHTML = '';
+      snake.forEach((s,i) => {
+        const el = document.createElement('div');
+        el.style.cssText = `position:absolute;left:${s.x*cellW}px;top:${s.y*cellH}px;width:${cellW-1}px;height:${cellH-1}px;background:${i===0?'#a855f7':'#7c3aed'};border-radius:4px;`;
+        board.appendChild(el);
+      });
+      const f = document.createElement('div');
+      f.style.cssText = `position:absolute;left:${food.x*cellW}px;top:${food.y*cellH}px;width:${cellW-1}px;height:${cellH-1}px;background:#ef4444;border-radius:50%;`;
+      board.appendChild(f);
+    }
+    function tick() {
+      if (!running) return;
+      window.snakeDir = nextDir;
+      const head = { x: snake[0].x + window.snakeDir.x, y: snake[0].y + window.snakeDir.y };
+      if (head.x<0||head.x>=cols||head.y<0||head.y>=rows||snake.some(s=>s.x===head.x&&s.y===head.y)) {
+        running = false;
+        sounds.lose();
+        board.innerHTML = `<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;background:rgba(0,0,0,0.7);border-radius:12px;">
+          <div style="font-size:2.5rem;">💀</div>
+          <div style="color:#fff;font-weight:900;font-size:1.25rem;margin-top:8px;">Game Over!</div>
+          <div style="color:#94a3b8;font-size:0.85rem;margin-top:4px;">Skor: ${score}</div>
+        </div>`;
+        return;
+      }
+      snake.unshift(head);
+      if (head.x===food.x&&head.y===food.y) {
+        score++; sounds.eat(); setScore(score); food = rndFood();
+        if (score >= 10) unlockAchievement('🐍 Snake Master! Skor Snake mencapai 10!');
+      } else { snake.pop(); }
+      draw();
+    }
+    draw();
+    gameLoopId = setInterval(tick, 130);
+    const dirMap = { ArrowUp:{x:0,y:-1}, ArrowDown:{x:0,y:1}, ArrowLeft:{x:-1,y:0}, ArrowRight:{x:1,y:0}, w:{x:0,y:-1}, s:{x:0,y:1}, a:{x:-1,y:0}, d:{x:1,y:0} };
+    document.onkeydown = e => { const d = dirMap[e.key]; if (d && !(d.x===-window.snakeDir.x||d.y===-window.snakeDir.y)) { nextDir=d; e.preventDefault(); } };
+    // Swipe
+    let tx=0,ty=0;
+    board.addEventListener('touchstart', e => { tx=e.touches[0].clientX; ty=e.touches[0].clientY; });
+    board.addEventListener('touchend', e => {
+      const dx=e.changedTouches[0].clientX-tx, dy=e.changedTouches[0].clientY-ty;
+      if (Math.abs(dx)>Math.abs(dy)) nextDir = dx>0?{x:1,y:0}:{x:-1,y:0};
+      else nextDir = dy>0?{x:0,y:1}:{x:0,y:-1};
+    });
+  };
+
+  // ---------- 2. FLAPPY BIRD ----------
+  gameInits['flappy'] = function() {
+    const W=360, H=480;
+    const gc = document.getElementById('game-content');
+    gc.innerHTML = `<canvas id="flappy-canvas" width="${W}" height="${H}" style="border-radius:12px;max-width:100%;"></canvas>
+    <p class="text-xs text-theme-textSecondary mt-3">Tekan Spasi / Klik / Tap untuk terbang!</p>`;
+    const canvas = document.getElementById('flappy-canvas');
+    const ctx = canvas.getContext('2d');
+    let bird = {y:H/2,vy:0}, pipes=[], score=0, frame=0, alive=true, started=false;
+    const g=0.4, flap=-7, pW=50, gap=130, pSpeed=2.5;
+
+    function drawRoundRect(ctx, x, y, w, h, r, fill) {
+      ctx.beginPath(); ctx.roundRect(x, y, w, h, r); ctx.fillStyle = fill; ctx.fill();
+    }
+    function loop() {
+      ctx.clearRect(0,0,W,H);
+      // BG
+      ctx.fillStyle = document.documentElement.classList.contains('dark') ? '#0f1723' : '#dbeafe';
+      ctx.fillRect(0,0,W,H);
+      // Bird
+      if (started) { bird.vy+=g; bird.y+=bird.vy; }
+      if (bird.y>H-20) { alive=false; }
+      // Pipes
+      if (started && frame%80===0) {
+        const top = 60+Math.random()*(H-gap-120);
+        pipes.push({x:W, top});
+      }
+      pipes.forEach(p => {
+        if (started) p.x -= pSpeed;
+        drawRoundRect(ctx, p.x, 0, pW, p.top, [0,0,8,8], '#22c55e');
+        drawRoundRect(ctx, p.x, p.top+gap, pW, H-p.top-gap, [8,8,0,0], '#22c55e');
+        // Cap
+        drawRoundRect(ctx, p.x-5, p.top-20, pW+10, 20, 4, '#16a34a');
+        drawRoundRect(ctx, p.x-5, p.top+gap, pW+10, 20, 4, '#16a34a');
+        // Score
+        if (started && p.x+pW < 50 && p.x+pW > 47) { score++; sounds.eat(); setScore(score); }
+        // Collision
+        if (50>p.x&&50<p.x+pW&&(bird.y<p.top+10||bird.y>p.top+gap-10)) alive=false;
+      });
+      pipes = pipes.filter(p=>p.x>-pW);
+      // Draw bird
+      const bX=50, bY=bird.y;
+      ctx.save(); ctx.translate(bX, bY); ctx.rotate(Math.max(-0.5, Math.min(0.5, bird.vy*0.05)));
+      ctx.font='24px serif'; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText('🐦',0,0);
+      ctx.restore();
+      // Score text
+      ctx.fillStyle='rgba(255,255,255,0.9)'; ctx.font='bold 20px Plus Jakarta Sans';
+      ctx.textAlign='center'; ctx.fillText(score, W/2, 30);
+      if (!started) {
+        ctx.fillStyle='rgba(0,0,0,0.5)'; ctx.fillRect(0,0,W,H);
+        ctx.fillStyle='white'; ctx.font='bold 22px Plus Jakarta Sans'; ctx.textAlign='center';
+        ctx.fillText('Tekan Spasi / Klik', W/2, H/2-10); ctx.fillText('untuk mulai!', W/2, H/2+20);
+      }
+      if (!alive) {
+        sounds.lose();
+        ctx.fillStyle='rgba(0,0,0,0.7)'; ctx.fillRect(0,0,W,H);
+        ctx.fillStyle='white'; ctx.font='bold 28px Plus Jakarta Sans'; ctx.textAlign='center';
+        ctx.fillText('💀 Game Over!', W/2, H/2-20); ctx.fillText(`Skor: ${score}`, W/2, H/2+20);
+        return;
+      }
+      if (started) frame++;
+      gameLoopId = requestAnimationFrame(loop);
+    }
+    function flapAction() {
+      if (!alive) return;
+      if (!started) started=true;
+      bird.vy=flap; sounds.move();
+    }
+    document.onkeydown = e => { if (e.code==='Space') { e.preventDefault(); flapAction(); } };
+    canvas.onclick = flapAction;
+    canvas.ontouchstart = e => { e.preventDefault(); flapAction(); };
+    loop();
+  };
+
+  // ---------- 3. 2048 ----------
+  gameInits['game2048'] = function() {
+    const gc = document.getElementById('game-content');
+    gc.innerHTML = `
+      <div id="g2048" style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:16px;background:var(--bg-darker);border-radius:16px;width:min(320px,90vw);"></div>
+      <p class="text-xs text-theme-textSecondary mt-3">Gunakan tombol panah atau swipe untuk menggeser.</p>`;
+    let board = Array.from({length:4}, ()=>Array(4).fill(0));
+    let score = 0;
+
+    function addTile() {
+      const empty=[];
+      board.forEach((r,i)=>r.forEach((c,j)=>{ if(!c) empty.push([i,j]); }));
+      if (!empty.length) return;
+      const [r,c]=empty[Math.floor(Math.random()*empty.length)];
+      board[r][c]=Math.random()<0.9?2:4;
+    }
+    function render() {
+      const el=document.getElementById('g2048'); if(!el) return;
+      el.innerHTML='';
+      board.forEach(row=>row.forEach(v=>{
+        const d=document.createElement('div');
+        d.className=`tile tile-${v}`;
+        d.style.cssText=`width:100%;aspect-ratio:1;font-size:${v>=1024?'clamp(12px,3vw,18px)':'clamp(14px,4vw,22px)'};font-weight:900;display:flex;align-items:center;justify-content:center;border-radius:8px;`;
+        d.style.background=v?'':"rgba(255,255,255,0.04)";
+        if(v){
+          const colors={2:'#eee4da',4:'#ede0c8',8:'#f2b179',16:'#f59563',32:'#f67c5f',64:'#f65e3b',128:'#edcf72',256:'#edcc61',512:'#edc850',1024:'#edc53f',2048:'#edc22e'};
+          d.style.background=colors[v]||'#3b1f8f';
+          d.style.color=v<=4?'#776e65':'#f9f6f2';
+          d.textContent=v;
+        }
+        el.appendChild(d);
+      }));
+    }
+    function slide(row) {
+      let r=row.filter(v=>v), changed=false;
+      for(let i=0;i<r.length-1;i++) {
+        if(r[i]===r[i+1]){ r[i]*=2; score+=r[i]; r[i+1]=0; changed=true; }
+      }
+      r=r.filter(v=>v);
+      while(r.length<4) r.push(0);
+      return {row:r, changed: changed||r.join()!==row.join()};
+    }
+    function move(dir) {
+      let moved=false;
+      if(dir==='left') { board=board.map(r=>{const{row,changed}=slide(r);if(changed)moved=true;return row;}); }
+      if(dir==='right') { board=board.map(r=>{const{row,changed}=slide([...r].reverse());if(changed)moved=true;return row.reverse();}); }
+      if(dir==='up') {
+        for(let c=0;c<4;c++){let col=board.map(r=>r[c]);const{row,changed}=slide(col);if(changed)moved=true;row.forEach((v,r)=>board[r][c]=v);}
+      }
+      if(dir==='down') {
+        for(let c=0;c<4;c++){let col=board.map(r=>r[c]).reverse();const{row,changed}=slide(col);if(changed)moved=true;[...row].reverse().forEach((v,r)=>board[r][c]=v);}
+      }
+      if(moved){addTile();render();setScore(score);sounds.move();}
+      if(board.flat().includes(2048)) unlockAchievement('🔢 2048! Kamu berhasil mencapai 2048!');
+    }
+    addTile(); addTile(); render();
+    document.onkeydown=e=>{const m={ArrowLeft:'left',ArrowRight:'right',ArrowUp:'up',ArrowDown:'down'};if(m[e.key]){e.preventDefault();move(m[e.key]);}};
+    let tx=0,ty=0;
+    gc.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;ty=e.touches[0].clientY;});
+    gc.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx,dy=e.changedTouches[0].clientY-ty;if(Math.abs(dx)>Math.abs(dy))move(dx>0?'right':'left');else move(dy>0?'down':'up');});
+  };
+
+  // ---------- 4. TIC TAC TOE ----------
+  gameInits['tictactoe'] = function() {
+    const gc=document.getElementById('game-content');
+    let board=Array(9).fill(''), turn='X', scores={X:0,O:0}, gameOver=false;
+    function render() {
+      gc.innerHTML=`
+        <div class="flex gap-6 mb-4">
+          <div class="text-center"><div class="text-xs text-theme-textSecondary">Pemain X</div><div class="text-2xl font-black text-rose-400" id="sx">${scores.X}</div></div>
+          <div class="text-center"><div class="text-xs text-theme-textSecondary">Status</div><div class="text-sm font-bold text-theme-textPrimary mt-1" id="status">${gameOver?'':'Giliran '+turn}</div></div>
+          <div class="text-center"><div class="text-xs text-theme-textSecondary">Pemain O</div><div class="text-2xl font-black text-blue-400" id="so">${scores.O}</div></div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;width:min(280px,85vw);" id="ttt-board"></div>
+        <button onclick="resetTTT()" class="mt-4 px-4 py-2 rounded-xl text-xs font-bold bg-rose-500/10 text-rose-400 border border-rose-500/20 hover:bg-rose-500 hover:text-white transition-all">Reset Skor</button>`;
+      const b=document.getElementById('ttt-board');
+      board.forEach((v,i)=>{
+        const c=document.createElement('div');
+        c.style.cssText=`aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:2.5rem;font-weight:900;border-radius:12px;cursor:pointer;background:var(--bg-darker);border:2px solid var(--border-strong);transition:all 0.2s;color:${v==='X'?'#f87171':v==='O'?'#60a5fa':'transparent'};`;
+        c.textContent=v||'·'; c.onclick=()=>tttClick(i); b.appendChild(c);
+      });
+    }
+    function tttClick(i) {
+      if(board[i]||gameOver) return;
+      sounds.click(); board[i]=turn;
+      const w=checkWin(); const status=document.getElementById('status');
+      if(w){
+        gameOver=true; scores[turn]++; setScore(scores[turn]);
+        if(status) status.textContent=`🎉 ${turn} Menang!`;
+        sounds.win(); incrementWins(); render(); return;
+      }
+      if(!board.includes('')){ if(status) status.textContent='🤝 Seri!'; gameOver=true; render(); return; }
+      turn=turn==='X'?'O':'X';
+      render();
+    }
+    function checkWin() {
+      const lines=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+      return lines.some(l=>l.every(i=>board[i]&&board[i]===board[l[0]]));
+    }
+    window.resetTTT=()=>{ board=Array(9).fill(''); turn='X'; gameOver=false; scores={X:0,O:0}; setScore(0); render(); };
+    render();
+  };
+
+  // ---------- 5. MEMORY CARD ----------
+  gameInits['memory'] = function() {
+    const emojis=['🍕','🎵','⭐','🌈','🎮','🚀','🦄','🌺'];
+    let cards=[...emojis,...emojis].sort(()=>Math.random()-0.5).map((e,i)=>({id:i,emoji:e,flipped:false,matched:false}));
+    let first=null, second=null, lockBoard=false, score=0, moves=0;
+    const gc=document.getElementById('game-content');
+
+    function render() {
+      gc.innerHTML=`<div class="text-xs text-theme-textSecondary mb-3">Langkah: <span class="font-bold text-theme-textPrimary">${moves}</span> | Pasangan: <span class="font-bold text-emerald-400">${score}/8</span></div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;width:min(320px,90vw);" id="mem-board"></div>`;
+      const board=document.getElementById('mem-board');
+      cards.forEach(c=>{
+        const el=document.createElement('div');
+        el.className=`memory-card${c.flipped?' flipped':''}${c.matched?' matched':''}`;
+        el.style.cssText='aspect-ratio:1;cursor:pointer;';
+        el.innerHTML=`<div class="inner" style="width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform 0.45s;">
+          <div class="front" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:1.8rem;background:var(--bg-card-hover);border:1px solid var(--border-strong);border-radius:10px;backface-visibility:hidden;">🎴</div>
+          <div class="back" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:1.8rem;background:linear-gradient(135deg,${c.matched?'#059669,#10b981':'#7c3aed,#4f46e5'});border-radius:10px;backface-visibility:hidden;transform:rotateY(180deg);">${c.emoji}</div>
+        </div>`;
+        el.style.setProperty('--tw-rotate-y', (c.flipped||c.matched)?'180deg':'0deg');
+        el.querySelector('.inner').style.transform=(c.flipped||c.matched)?'rotateY(180deg)':'rotateY(0deg)';
+        el.onclick=()=>flipCard(c.id);
+        board.appendChild(el);
+      });
+    }
+    function flipCard(id) {
+      if(lockBoard) return;
+      const c=cards.find(x=>x.id===id);
+      if(c.flipped||c.matched) return;
+      sounds.flip(); c.flipped=true; moves++; render();
+      if(!first){first=c;return;}
+      second=c; lockBoard=true;
+      if(first.emoji===second.emoji){
+        first.matched=second.matched=true; score++;
+        first=second=null; lockBoard=false;
+        sounds.match(); setScore(score); render();
+        if(score===8){ sounds.win(); unlockAchievement('🃏 Memory Master! Semua kartu terbuka!'); incrementWins(); }
+      } else {
+        setTimeout(()=>{ first.flipped=second.flipped=false; first=second=null; lockBoard=false; render(); }, 900);
+      }
+    }
+    render();
+  };
+
+  // ---------- 6. GUESS THE NUMBER ----------
+  gameInits['guess'] = function() {
+    let secret=Math.floor(Math.random()*100)+1, attempts=0, maxAttempts=7, gameOver=false;
+    const gc=document.getElementById('game-content');
+    function render(msg='') {
+      gc.innerHTML=`<div class="glass rounded-2xl p-6 w-full max-w-sm text-center">
+        <div class="text-5xl mb-4">🎯</div>
+        <p class="text-theme-textSecondary text-sm mb-1">Tebak angka antara 1 – 100</p>
+        <p class="text-xs text-theme-textSecondary mb-4">Sisa percobaan: <span class="font-bold text-amber-400">${maxAttempts-attempts}</span></p>
+        ${msg?`<div class="mb-4 py-2 px-3 rounded-xl text-sm font-bold ${msg.includes('Benar')||msg.includes('🎉')?'bg-emerald-500/10 text-emerald-400':'bg-rose-500/10 text-rose-400'}">${msg}</div>`:''}
+        ${gameOver?`<button onclick="openGame('guess')" class="w-full py-2.5 rounded-xl font-bold bg-amber-500/10 text-amber-400 border border-amber-500/20 hover:bg-amber-500 hover:text-white transition-all">Main Lagi</button>`:`
+        <div class="flex gap-2">
+          <input id="guess-input" type="number" min="1" max="100" placeholder="Angka..." class="flex-1 px-3 py-2.5 rounded-xl bg-theme-darker border border-theme-border text-theme-textPrimary text-center font-bold focus:outline-none focus:border-amber-500/50" />
+          <button onclick="submitGuess()" class="px-4 py-2.5 rounded-xl font-bold bg-amber-500/10 text-amber-400 border border-amber-500/20 hover:bg-amber-500 hover:text-white transition-all">Tebak</button>
+        </div>`}
+      </div>`;
+      const inp=document.getElementById('guess-input');
+      if(inp) { inp.focus(); inp.onkeydown=e=>{ if(e.key==='Enter') submitGuess(); }; }
+    }
+    window.submitGuess=function(){
+      const inp=document.getElementById('guess-input');
+      const val=parseInt(inp?.value);
+      if(isNaN(val)||val<1||val>100){ render('Masukkan angka valid 1-100!'); return; }
+      attempts++;
+      if(val===secret){ setScore(maxAttempts-attempts+1); gameOver=true; sounds.win(); incrementWins(); render(`🎉 Benar! Angka ${secret} ditemukan dalam ${attempts} percobaan!`); unlockAchievement('🎯 Penebak Jitu! Berhasil menebak angka!'); }
+      else if(attempts>=maxAttempts){ gameOver=true; sounds.lose(); render(`❌ Habis! Angkanya adalah ${secret}.`); }
+      else { sounds.move(); render(val<secret?'📈 Terlalu kecil! Coba lebih besar.':'📉 Terlalu besar! Coba lebih kecil.'); }
+    };
+    render();
+  };
+
+  // ---------- 7. ROCK PAPER SCISSORS ----------
+  gameInits['rps'] = function() {
+    const choices=['✊','✋','✌️'], names=['Batu','Kertas','Gunting'];
+    let playerScore=0, cpuScore=0, rounds=0;
+    const gc=document.getElementById('game-content');
+    function render(result='', playerPick='', cpuPick='') {
+      gc.innerHTML=`<div class="glass rounded-2xl p-6 w-full max-w-sm text-center">
+        <div class="flex justify-center gap-8 mb-4">
+          <div><div class="text-xs text-theme-textSecondary mb-1">Kamu</div><div class="text-4xl font-black text-emerald-400">${playerScore}</div></div>
+          <div class="text-xs text-theme-textSecondary self-center font-bold">VS</div>
+          <div><div class="text-xs text-theme-textSecondary mb-1">Komputer</div><div class="text-4xl font-black text-rose-400">${cpuScore}</div></div>
+        </div>
+        ${result?`<div class="text-3xl my-2">${playerPick} vs ${cpuPick}</div>
+        <div class="py-2 px-4 rounded-xl text-sm font-bold mb-4 ${result.includes('Menang')?'bg-emerald-500/10 text-emerald-400':result.includes('Kalah')?'bg-rose-500/10 text-rose-400':'bg-theme-darker text-theme-textSecondary'}">${result}</div>` : `<div class="text-5xl my-4">🤜🤛</div>`}
+        <p class="text-xs text-theme-textSecondary mb-4">Pilih senjatamu:</p>
+        <div class="flex gap-3 justify-center">
+          ${choices.map((c,i)=>`<button onclick="rpsPlay(${i})" class="text-3xl p-3 rounded-2xl bg-theme-darker border border-theme-border hover:border-pink-500/50 hover:scale-110 transition-all" title="${names[i]}">${c}</button>`).join('')}
+        </div>
+        ${rounds>=10?`<button onclick="openGame('rps')" class="mt-4 w-full py-2 rounded-xl text-xs font-bold bg-pink-500/10 text-pink-400 border border-pink-500/20 hover:bg-pink-500 hover:text-white transition-all">Reset</button>`:''}
+      </div>`;
+    }
+    window.rpsPlay=function(i) {
+      sounds.click(); rounds++;
+      const cpu=Math.floor(Math.random()*3);
+      let result='🤝 Seri!';
+      if((i===0&&cpu===2)||(i===1&&cpu===0)||(i===2&&cpu===1)){ playerScore++; result='🎉 Kamu Menang!'; sounds.win(); setScore(playerScore); incrementWins(); }
+      else if(i!==cpu){ cpuScore++; result='😢 Kamu Kalah!'; sounds.lose(); }
+      if(playerScore>=5) unlockAchievement('✂️ RPS Champion! Menang 5 kali di RPS!');
+      render(result, choices[i], choices[cpu]);
+    };
+    render();
+  };
+
+  // ---------- 8. BREAKOUT ----------
+  gameInits['breakout'] = function() {
+    const W=360, H=400;
+    const gc=document.getElementById('game-content');
+    gc.innerHTML=`<canvas id="bo-canvas" width="${W}" height="${H}" style="border-radius:12px;max-width:100%;"></canvas>
+    <p class="text-xs text-theme-textSecondary mt-2">Gerakkan mouse / sentuh untuk mengontrol paddle.</p>`;
+    const canvas=document.getElementById('bo-canvas');
+    const ctx=canvas.getContext('2d');
+    const ROWS=4, COLS=8, bW=40, bH=14, bGap=3;
+    let paddle = {x: W/2-40, w: 80, h: 12, y: H-20};
+    let ball={x:W/2,y:H-50,vx:2.5,vy:-3.5,r:6};
+    let bricks=[];
+    let score=0, lives=3, running=true;
+    for(let r=0;r<ROWS;r++) for(let c=0;c<COLS;c++) bricks.push({x:c*(bW+bGap)+4,y:r*(bH+bGap)+30,alive:true,color:`hsl(${r*60+180},70%,55%)`});
+    function loop(){
+      if(!running) return;
+      ctx.clearRect(0,0,W,H);
+      ctx.fillStyle=document.documentElement.classList.contains('dark')?'#0a0a10':'#1e1b4b';
+      ctx.fillRect(0,0,W,H);
+      // Bricks
+      bricks.forEach(b=>{ if(!b.alive) return; ctx.fillStyle=b.color; ctx.beginPath(); ctx.roundRect(b.x,b.y,bW,bH,4); ctx.fill(); });
+      // Paddle
+      ctx.fillStyle='#818cf8'; ctx.beginPath(); ctx.roundRect(paddle.x,paddle.y,paddle.w,paddle.h,6); ctx.fill();
+      // Ball
+      ctx.fillStyle='#f472b6'; ctx.beginPath(); ctx.arc(ball.x,ball.y,ball.r,0,Math.PI*2); ctx.fill();
+      // Score/lives
+      ctx.fillStyle='rgba(255,255,255,0.7)'; ctx.font='12px Plus Jakarta Sans'; ctx.textAlign='left'; ctx.fillText(`❤️ ${lives}`, 8, 18);
+      ctx.textAlign='right'; ctx.fillText(`Skor: ${score}`, W-8, 18);
+      // Move ball
+      ball.x+=ball.vx; ball.y+=ball.vy;
+      if(ball.x<=ball.r||ball.x>=W-ball.r) ball.vx*=-1;
+      if(ball.y<=ball.r) ball.vy*=-1;
+      if(ball.y>=H){ lives--; if(lives<=0){ running=false; sounds.lose(); ctx.fillStyle='rgba(0,0,0,0.7)';ctx.fillRect(0,0,W,H);ctx.fillStyle='white';ctx.font='bold 24px Plus Jakarta Sans';ctx.textAlign='center';ctx.fillText('💀 Game Over!',W/2,H/2-10);ctx.fillText(`Skor: ${score}`,W/2,H/2+20); return; } ball.x=W/2;ball.y=H-50;ball.vy=-3.5; }
+      // Paddle collision
+      if(ball.y+ball.r>=paddle.y&&ball.x>=paddle.x&&ball.x<=paddle.x+paddle.w){ ball.vy=-Math.abs(ball.vy); ball.vx+=(ball.x-(paddle.x+paddle.w/2))*0.05; sounds.move(); }
+      // Brick collision
+      bricks.forEach(b=>{ if(!b.alive) return; if(ball.x>b.x&&ball.x<b.x+bW&&ball.y>b.y&&ball.y<b.y+bH){ b.alive=false; ball.vy*=-1; score+=10; setScore(score); sounds.eat(); } });
+      if(bricks.every(b=>!b.alive)){ running=false; sounds.win(); incrementWins(); unlockAchievement('🧱 Breakout King! Hancurkan semua balok!'); ctx.fillStyle='rgba(0,0,0,0.7)';ctx.fillRect(0,0,W,H);ctx.fillStyle='white';ctx.font='bold 24px Plus Jakarta Sans';ctx.textAlign='center';ctx.fillText('🎉 Level Clear!',W/2,H/2); return; }
+      gameLoopId=requestAnimationFrame(loop);
+    }
+    canvas.onmousemove=e=>{ const r=canvas.getBoundingClientRect(); paddle.x=Math.max(0,Math.min(W-paddle.w,(e.clientX-r.left)-paddle.w/2)); };
+    canvas.ontouchmove=e=>{ e.preventDefault(); const r=canvas.getBoundingClientRect(); paddle.x=Math.max(0,Math.min(W-paddle.w,(e.touches[0].clientX-r.left)-paddle.w/2)); };
+    loop();
+  };
+
+  // ---------- 9. WHACK A MOLE ----------
+  gameInits['whack'] = function() {
+    const gc=document.getElementById('game-content');
+    gc.innerHTML=`<div class="text-center mb-3">
+      <span class="text-xs text-theme-textSecondary">Waktu: <span id="whack-timer" class="font-bold text-lime-400">30</span>s</span>
+    </div>
+    <div id="whack-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;width:min(300px,90vw);"></div>
+    <p class="text-xs text-theme-textSecondary mt-3">Klik / Tap tikus yang muncul secepat mungkin!</p>`;
+    const grid=document.getElementById('whack-grid');
+    let score=0, timeLeft=30, active=-1;
+    for(let i=0;i<9;i++){
+      const hole=document.createElement('div');
+      hole.style.cssText='aspect-ratio:1;background:var(--bg-darker);border-radius:50%;border:2px solid var(--border-strong);display:flex;align-items:center;justify-content:center;font-size:2rem;cursor:pointer;overflow:hidden;position:relative;user-select:none;';
+      hole.id=`hole-${i}`; hole.onclick=()=>whack(i);
+      hole.innerHTML='<span id="mole-'+i+'" style="opacity:0;transition:all 0.2s;transform:translateY(100%);">🐹</span>';
+      grid.appendChild(hole);
+    }
+    function showMole(){
+      if(active>=0){ const m=document.getElementById('mole-'+active); if(m){m.style.opacity='0';m.style.transform='translateY(100%)';} }
+      active=Math.floor(Math.random()*9);
+      const m=document.getElementById('mole-'+active); if(m){m.style.opacity='1';m.style.transform='translateY(0)';}
+    }
+    window.whack=function(i){
+      if(i!==active) return;
+      sounds.eat(); score++; setScore(score);
+      const m=document.getElementById('mole-'+i); if(m){m.style.opacity='0';m.style.transform='translateY(100)';}
+      active=-1;
+      if(score>=15) unlockAchievement('🔨 Whacker Pro! Skor 15 di Whack-A-Mole!');
+    };
+    const moleTimer=setInterval(showMole, 800);
+    const timerEl=document.getElementById('whack-timer');
+    const countdown=setInterval(()=>{
+      timeLeft--;
+      if(timerEl) timerEl.textContent=timeLeft;
+      if(timeLeft<=0){
+        clearInterval(moleTimer); clearInterval(countdown);
+        sounds.lose();
+        grid.style.opacity='0.4'; grid.style.pointerEvents='none';
+        gc.insertAdjacentHTML('beforeend',`<div class="mt-4 glass rounded-2xl p-4 text-center"><div class="text-2xl mb-1">⏰</div><div class="font-black text-lg text-theme-textPrimary">Waktu Habis!</div><div class="text-sm text-theme-textSecondary">Skor final: ${score}</div></div>`);
+        if(score>0) incrementWins();
+      }
+    },1000);
+    gameLoopId=setTimeout(()=>{ clearInterval(moleTimer); clearInterval(countdown); },35000);
+  };
+
+  // ---------- 10. TYPING SPEED ----------
+  gameInits['typing'] = function() {
+    const wordList=['the','quick','brown','fox','jumps','over','lazy','dog','javascript','python','keyboard','monitor','screen','typing','speed','test','game','code','html','css','design','dark','mode','light','mode','play','score','high','learning','school','student','homework','project','website','mobile','browser'];
+    let words=[], idx=0, cIdx=0, score=0, errors=0, started=false, startTime=0;
+    const gc=document.getElementById('game-content');
+    function genWords(n=30){ words=[]; for(let i=0;i<n;i++) words.push(wordList[Math.floor(Math.random()*wordList.length)]); }
+    function render(){
+      gc.innerHTML=`<div class="w-full max-w-lg">
+        <div class="flex gap-4 mb-4 text-center">
+          <div><div class="text-xs text-theme-textSecondary">WPM</div><div id="wpm" class="text-2xl font-black text-indigo-400">0</div></div>
+          <div><div class="text-xs text-theme-textSecondary">Akurasi</div><div id="acc" class="text-2xl font-black text-emerald-400">100%</div></div>
+          <div><div class="text-xs text-theme-textSecondary">Kata</div><div id="wcnt" class="text-2xl font-black text-theme-textPrimary">${idx}</div></div>
+        </div>
+        <div id="words-display" class="glass rounded-xl p-4 mb-4 text-sm leading-relaxed font-mono tracking-wide min-h-[80px] max-h-24 overflow-hidden"></div>
+        <input id="typing-input" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+          class="w-full px-4 py-3 rounded-xl bg-theme-darker border-2 border-theme-border focus:outline-none focus:border-indigo-500/50 text-theme-textPrimary font-mono text-sm transition-all"
+          placeholder="Mulai mengetik untuk memulai...">
+        <p class="text-[11px] text-theme-textSecondary mt-2 text-center">Ketik kata yang ditampilkan. Tekan spasi untuk kata berikutnya.</p>
+      </div>`;
+      renderWords();
+      const inp=document.getElementById('typing-input');
+      inp.focus();
+      inp.oninput=e=>{
+        if(!started){ started=true; startTime=Date.now(); sounds.click(); }
+        const val=e.target.value;
+        if(val.endsWith(' ')){
+          const typed=val.trim();
+          const target=words[idx];
+          if(typed!==target) errors++;
+          idx++; cIdx=0; e.target.value='';
+          if(idx>=words.length){ finishTyping(); return; }
+          renderWords(); updateStats();
+        } else { cIdx=val.length; renderWords(); }
+      };
+    }
+    function renderWords(){
+      const disp=document.getElementById('words-display'); if(!disp) return;
+      disp.innerHTML=words.map((w,wi)=>{
+        if(wi<idx) return `<span class="text-emerald-400">${w} </span>`;
+        if(wi===idx){
+          const inp=document.getElementById('typing-input');
+          const typed=inp?inp.value:'';
+          return '<span class="text-theme-textPrimary font-bold underline">' + w.split('').map((ch,ci)=>{
+            if(ci<typed.length) return `<span class="${typed[ci]===ch?'text-emerald-400':'text-rose-500'}">${ch}</span>`;
+            return ch;
+          }).join('') + ' </span>';
+        }
+        return `<span class="text-theme-textSecondary">${w} </span>`;
+      }).join('');
+    }
+    function updateStats(){
+      const mins=(Date.now()-startTime)/60000;
+      const wpm=Math.round(idx/Math.max(mins,0.001));
+      const acc=Math.max(0,Math.round(((idx-errors)/Math.max(idx,1))*100));
+      const w=document.getElementById('wpm'), a=document.getElementById('acc'), c=document.getElementById('wcnt');
+      if(w) w.textContent=wpm; if(a) a.textContent=acc+'%'; if(c) c.textContent=idx;
+      setScore(wpm);
+    }
+    function finishTyping(){
+      const mins=(Date.now()-startTime)/60000;
+      const wpm=Math.round(idx/Math.max(mins,0.001));
+      const acc=Math.max(0,Math.round(((idx-errors)/Math.max(idx,1))*100));
+      sounds.win(); setScore(wpm); incrementWins();
+      if(wpm>=60) unlockAchievement('⌨️ Speed Typer! WPM mencapai 60+!');
+      gc.innerHTML=`<div class="glass rounded-2xl p-6 text-center max-w-sm">
+        <div class="text-4xl mb-3">⌨️</div>
+        <div class="text-xl font-black text-theme-textPrimary mb-4">Selesai!</div>
+        <div class="grid grid-cols-2 gap-3 mb-5">
+          <div class="bg-theme-darker rounded-xl p-3"><div class="text-xs text-theme-textSecondary">WPM</div><div class="text-3xl font-black text-indigo-400">${wpm}</div></div>
+          <div class="bg-theme-darker rounded-xl p-3"><div class="text-xs text-theme-textSecondary">Akurasi</div><div class="text-3xl font-black text-emerald-400">${acc}%</div></div>
+        </div>
+        <button onclick="openGame('typing')" class="w-full py-2.5 rounded-xl font-bold bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 hover:bg-indigo-500 hover:text-white transition-all">Coba Lagi</button>
+      </div>`;
+    }
+    genWords(); render();
+  };
+
+  // ================================================
+  // INIT
+  // ================================================
+  updateStatsDisplay();
+  renderLauncher();
+  </script>
+
+  <!-- Core Utilities -->
+  <script src="assets/js/storage.js"></script>
+  <script src="assets/js/router.js"></script>
+  <script src="assets/js/player.js"></script>
+
+</body>
+</html>
